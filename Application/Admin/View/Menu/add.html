@@ -1,0 +1,66 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center" enctype="multipart/form-data">
+<table>
+    <input type="hidden" name="parent" value="{$parentName.id}"/>
+    <input type="hidden" name="rank" value="{$_GET['rank']}"/>
+    <notempty name="parentName.name">
+    <tr>
+        <td align="right" width="200px" height="40px"><label>上级菜单：</label></td>
+        <td align="left">{$parentName.name}</td>
+    </tr>
+    </notempty>
+    <tr>
+        <td align="right" width="200px" height="40px"><label>排序：</label></td>
+        <td align="left"><input name="displayorder" value="100" class="input-text radius" placeholder="输入排序" style="width:200px;height: 30px"></td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>分类名称：</label></td>
+        <td align="left"><input name="name" class="input-text radius" placeholder="输入分类名称" style="width:200px;height: 30px"></td>
+    </tr>
+
+    <tr>
+        <td align="right" height="40px"><label>上传图片：</label></td>
+        <td align="left">
+            <img src="" id="show_image" height="100" style="display: none;"/>
+            <input type="hidden" value="" id="url"  name="image" class="input-text radius" />
+            <input type="button" id="uploadButton" value="Upload" />
+            <!--<font color="red">图片尺寸130*130</font>-->
+        </td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>URL：</label></td>
+        <td align="left"><input name="url" class="input-text radius" value="__APP__/Home/" style="width:200px;height: 30px"></td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>分类描述：</label></td>
+        <td align="left">
+            <textarea placeholder="输入分类描述" name="description" cols="35" rows="5"></textarea>
+        </td>
+    </tr>
+</table>
+</form>
+<include file="Index/foot" />
+<script>
+    KindEditor.ready(function(K) {
+        var uploadbutton = K.uploadbutton({
+            button : K('#uploadButton')[0],
+            fieldName : 'image',
+            url : '__URL__/upload',
+            afterUpload : function(data) {
+                //console.log(data)
+                data= eval(data);
+                if (data.status == 1) {
+                    K('#url').val(data.msg);
+                    var img = '__APP__/../'+data.msg;
+                    $('#show_image').attr('src',img);
+                    $('#show_image').css('display','');
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+        uploadbutton.fileBox.change(function(e) {
+            uploadbutton.submit();
+        });
+    });
+</script>

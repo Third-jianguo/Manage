@@ -1,0 +1,740 @@
+﻿<include file="Index/top"/>
+
+<script type="text/javascript" src="__PUBLIC__/btc/js/swfobject.js"></script>
+<script type="text/javascript" src="__PUBLIC__/btc/js/web_socket.js"></script>
+<script type="text/javascript" src="/Public/btc/js/jquery-sinaEmotion-2.1.0.min.js"></script>
+
+<script>
+    connect();
+    if (typeof console == "undefined") {
+        this.console = {
+            log: function (msg) {
+            }
+        };
+    }
+    WEB_SOCKET_SWF_LOCATION = "/Public/btc/swf/WebSocketMain.swf";
+    // 开启flash的websocket debug
+    WEB_SOCKET_DEBUG = true;
+    var ws, name, uid, client_list = {};
+    var toUserId = '{$toUser.id}';
+    var toUserName = '{$toUser.name}';
+    var head_img = '{$user.head_img}';
+    var order_id = "{$_GET['id']}";
+    uid = '{$user.id}';
+    name = '{$user.name}';
+    function connect() {
+        ws = new WebSocket("ws://" + document.domain + ":7272");
+        ws.onopen = onopen;
+        ws.onmessage = onmessage;
+        ws.onclose = function () {
+//            console.log("连接关闭，定时重连");
+            connect();
+        };
+        ws.onerror = function () {
+//            console.log("出现错误");
+        };
+    }
+    // 连接建立时发送登录信息
+    function onopen() {
+
+        if ('' == uid) {
+            showAlert("{$lang.please_login}", function(){
+                window.location = "__APP__/Home/User/login";
+            });
+
+            return false;
+        }
+
+        var login_data = '{"type":"login","msg_type":"tip","client_id":"' + uid + '","client_name":"' + name + '","order_id":"' + order_id + '","content":"登录"}';
+//        console.log("websocket握手成功，发送登录数据:" + login_data);
+        ws.send(login_data);
+    }
+
+    // 服务端发来消息时
+    function onmessage(e) {
+        console.log(e.data);
+        var data = JSON.parse(e.data);
+        switch (data['type']) {
+            case 'ping':
+                ws.send('{"type":"pong"}');
+                break;
+            case 'login':
+//                console.log(data['client_name'] + "登录成功");
+                break;
+            case 'say':
+                say(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'say_img':
+                say_img(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'admin_say':
+                admin_say(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'admin_say_img':
+                admin_say_img(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'tips':
+                tips(data['title'], data['content'], data['time']);
+                break;
+            case 'logout':
+//                say(data['from_client_id'], data['from_client_name'], data['from_client_name'] + ' 退出了', data['time']);
+//                delete client_list[data['from_client_id']];
+        }
+    }
+
+    // 提交对话
+    function onSubmit() {
+        var input = document.getElementById("sayInput");
+        if ('' == input) {
+            return false;
+        }
+
+        if ('{$orderInfo.order_status}' == 40 || '{$orderInfo.order_status}' == '99') {
+            return false;
+        }
+        ws.send('{"type":"say","uid":"' + uid + '","order_id":"' + order_id + '","client_name":"' + name + '","to_client_id":"' + toUserId + '","to_client_name":"' + toUserName + '","head_img":"' + head_img + '", "content":"' +
+        input.value.replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g,
+                '\\r') + '"}');
+        input.value = "";
+        input.focus();
+    }
+
+    // 发言
+    function say(sayType, content, time, head_img) {
+        if (sayType == 'ta-l') {
+            $(".chating").append('<div class="chat ' + sayType + '"><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ><span class="chat-message">' + content + '<span class="time">' + time + '</span></span></div>');
+        } else {
+            $(".chating").append('<div class="chat ' + sayType + '"><span class="chat-message">' + content + '<span class="time">' + time + '</span></span><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ></div>');
+        }
+
+        $(".chating").scrollTop($(".chating")[0].scrollHeight);
+    }
+    // admin_say
+    function admin_say(sayType, content, time, head_img) {
+            $(".chating").append('<div class="chat ta-l"><img class="user-logo" src="/Public/images/adminHead.jpg" ><span class="chat-message">' + content + '<span class="time">' + time + '</span></span></div>');
+
+        $(".chating").scrollTop($(".chating")[0].scrollHeight);
+    }
+    // admin_say
+    function admin_say_img(sayType, content, time, head_img) {
+        $(".chating").append('<div class="chat ta-l"><img class="user-logo" src="/Public/images/adminHead.jpg" /><img src="' + content + '" width="300" height=""/><span class="time">' + time + '</span></div>');
+
+        $(".chating").scrollTop($(".chating")[0].scrollHeight);
+    }
+
+    function say_img(sayType, content, time, head_img) {
+        if (sayType == 'ta-l') {
+            $(".chating").append('<div class="chat ' + sayType + '"><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ><img src="' + content + '" width="300" height=""/><span class="time">' + time + '</span></div>');
+        } else {
+            $(".chating").append('<div class="chat ' + sayType + '"><img src="' + content + '" width="300" height=""/><span class="time">' + time + '</span><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ></div>');
+        }
+    }
+
+    function tips(title, content, time) {
+        $(".chating").append('<div class="chat sys1"> <div class="title">' + title + '</div> <div class="content">' + content + '</div> <span class="time">' + time + '</span> </div>');
+    }
+
+    //chat end ==================================
+
+    $(function () {
+        $(".tab").each(function (e) {
+            $('.tab').eq(e).click(function () {
+                if (e == 0) {
+                    $(".tab").removeClass("active");
+                    $('.tab').eq(e).addClass('active');
+                    $("#chating").show();
+                    $("#user-info").hide();
+                }
+                if (e == 1) {
+                    $(".tab").removeClass("active");
+                    $('.tab').eq(e).addClass('active');
+                    $("#chating").hide();
+                    $("#user-info").show();
+                }
+            });
+        })
+    });
+
+    $(function () {
+        $(".news-text").each(function (e) {
+            $(".icon-view-news").eq(e).click(function () {
+                if ($(".news-text").eq(e).css("display") == "none") {
+                    $(".news-text").eq(e).show();
+                    /*   $(".zk").eq(e).text("{$lang.hide}")*/
+                } else {
+                    $(".news-text").eq(e).hide();
+                    /*  $(".zk").eq(e).text("展开");*/
+                }
+
+            });
+        });
+
+
+        document.onkeydown = function () {
+            if (event.keyCode == 13) {
+                if ($("#sayInput").val() != "") {
+                    onSubmit();
+                }
+            }
+        }
+    });
+
+</script>
+
+
+<div class="container order clear-float con_top">
+    <div class="flow-area">
+
+        <!--<div class="flow-cont clear-float">-->
+            <!--<div class="flow-item finish">-->
+                <!--<div class="icon order-step1"></div>-->
+                <!--<div class="status-text">{$lang.please_login}已拍下</div>-->
+            <!--</div>-->
+            <!--<div class="flow-right-arrow finish"></div>-->
+            <!--<div class="flow-item ">-->
+                <!--<div class="icon order-step2"></div>-->
+                <!--<div class="status-text">-->
+
+                    <!--{$lang.please_login}待付款-->
+
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="flow-right-arrow "></div>-->
+            <!--<div class="flow-item ">-->
+                <!--<div class="icon order-step3"></div>-->
+                <!--<div class="status-text">-->
+
+                    <!--{$lang.please_login}待收货-->
+
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="flow-right-arrow "></div>-->
+            <!--<div class="flow-item ">-->
+                <!--<div class="icon order-step4"></div>-->
+                <!--<div class="status-text">-->
+
+                    <!--{$lang.please_login}待评价-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+    </div>
+
+    <div class="status-text-b">
+        <span class="stage-text">{$lang.yipaixia}</span>
+
+        <span class="v-line"></span>
+
+
+        <span class="status-decs">{$lang.order_well_save}<span class="blue-text expiration">{$orderInfo.pay_time}</span>{$lang.order_well_save2}</span>
+
+
+    </div>
+
+    <div class="order-info">
+        <strong>{$lang.order_info}</strong>
+        <span class="item-name">{$lang.price}: {$orderInfo.price_count} {$orderInfo.pay_currency_type}</span>
+        <span class="item-name">{$lang.deal_number}: {$orderInfo.number} {$orderInfo.currency_type_name}</span>
+        <span class="item-name">{$lang.deal_money}: {$orderInfo.money} {$orderInfo.pay_currency_type}</span>
+
+    </div>
+
+    <div class="detail-left">
+        <div class="chat-cont">
+            <div class="chat-tab-cont clear-float">
+                <a class="tab col-50 active" click-for="chating">{$lang.chat}</a>
+                <a class="tab col-50" click-for="user-info">
+                    <eq name="touserType" value="sell">
+                        {$lang.sell_info}
+                        <else/>
+                        {$lang.buy_info}
+                    </eq>
+                </a>
+            </div>
+
+            <div class="tab-chat" id="chating">
+                <div class="chating">
+
+                </div>
+                <!--<div class="real-name">卖家已开启 KYC 认证，请确保付款与实名一致。</div>-->
+                <div class="btn-cont">
+                    <div class="add-pic">
+                        <form id="chatImgForm">
+                        <input type="file" name="chatImg" accept="image/jpg,image/jpeg,image/png" class="img-input">
+                        </form>
+
+                    </div>
+                    <input class="message-input" id="sayInput" type="text" name="" value="" placeholder="{$lang.say_something}...">
+                    <a type="SELL" stage="PLACED_ORDER" onclick="onSubmit()" href="javascript:void(0)"
+                       class="icon-send send"></a>
+                </div>
+            </div>
+            <div class="tab-fellow-info" id="user-info" style="display: none">
+                <div>
+                    <img class="user-head" src="{$userInfo.head_img}">
+                    <a href="__APP__/Home/User/user_detail/id/{$userInfo.id}" class="user-name">{$userInfo.name}</a>
+                </div>
+                <div class="user-info ml-100">
+                    <!--<div class="info-item">交易量: 3xxx0+ BTC</div>-->
+                    <div class="info-item">{$lang.dealCount}: {$userInfo.trust.dealCount}</div>
+                    <div class="info-item">{$lang.goodReputation}: {$userInfo.trust.good}</div>
+                    <div class="info-item">{$lang.createtime}: {$userInfo.createtime|date="Y-m-d H:s:i", ###}</div>
+                </div>
+                <div class="user-info">
+                    <!-- <div class="info-item"> 语言: zh-TW</div> -->
+                    <div class="info-item"> {$lang.email}:
+                        <empty name="userInfo.email">{$lang.unverified}
+                            <else/>
+                            {$lang.verify}
+                        </empty>
+                    </div>
+                    <div class="info-item"> {$lang.mobile}: {$lang.verify}</div>
+                    <div class="info-item"> {$lang.realName}:
+                        <empty name="userInfo.verify">{$lang.unverified}
+                            <else/>
+                            {$lang.verify}
+                        </empty>
+                    </div>
+                    <div class="info-item"> {$lang.trust}: {$userInfo.trust.trust}</div>
+                    <!-- <div class="info-item"> 屏蔽: none</div> -->
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-title pt-30">
+            <span class="form-name">{$lang.question}</span>
+        </div>
+        <div class="line mt-20 mb-30"></div>
+
+        <ul class="news-list">
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">1. 如何购买数字资产？</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">第 1 步<br>在CoinCola 上注册一个帐户。您将获得一个免费的在线数字资产钱包，不需要安装任何应用即可使用。<br>第 2 步<br>可在顶部菜单栏进入购买数字资产页面，通过列表里强大的搜索功能可以帮助您查找到更符合您要求的广告，网站默认会列出您所在区域的数字资产交易广告。<br>第
+                        3 步<br>从广告列表中，您可选择一个拥有良好信誉和较多交易记录的交易者。您可以单击“购买”按钮查看广告的更多信息。<br>第 4 步<br>按“购买”按钮后，您会看到更多有关该广告的信息，包括交易条款。请在提交交易请求前仔细阅读这些信息，如果您不同意，可以返回至上一页面，选择另一个广告。<br>准备开始交易，请在下单操作区输入想要购买的数量，在留言框里给卖家说明你的相关交易条款，如果对方在线，也可以通过实时聊天工具直接和对方联系沟通，然后单击购买按钮开始交易。单击按钮时，请确保已经准备付款，如果您未在付款窗口过期前付款，交易将会自动取消。<br>第
+                        5 步<br>付款后，单击标记付款为完成按钮。对方验证已经收到您的付款后，数字资产将从托管放行，立刻出现在您的CoinCola钱包中。<br>就是这样，恭喜您完成了第一次数字资产交易！</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">2. 我不知道该如何支付，而且我也看不懂有关付款的说明</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">
+                        一般卖家会设置详细的付款信息。有时卖家只会披露部分信息，例如接收方银行帐户名称等，更详细的信息需要下单之后卖家才会提供。如果您不知道如何按照给定信息支付，请联系卖家沟通以获得进一步的指示。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">3. 我无法在给定的时间期限内支付</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">请取消交易或留言给卖家，说明您无法及时付款。 卖家可以在您准备好付款以后重新开启交易。 </p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">4. 我没及时付款或者忘记了按下“标记已完成付款”按钮</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">如果您把钱付给了卖家，却没有在付款期限内标记付款为完成， 请要求卖家重新开启交易。您可以使用聊天框与对方联系。
+                        重新开启的交易将再次得到托管的保护，直到卖家确认您的付款已经到达他的账户。<br>如果卖家一直不回复您的请求，您可在付款截止时间后发起申诉并提供付款的回执以及该交易的相关信息，CoinCola的工作人员将介入申诉的处理。
+                    </p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">5. 交易对方没有响应或放行数字资产</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">可通过聊天功能与对方保持联系，请保持耐心。付款常会有延迟，交易对方可能并不总是在线。如果问题仍然存在，您可以在标记支付已完成一段时间后，通过发起申诉来解决问题。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">6. 我已经向卖家付款，但现在还未收到数字资产，正常吗?</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">卖家通常都会在收到付款后尽快地放行数字资产，可能会需要 1 或 2 小时。如果您已经付款，但仍在等待，请不用担心，因为所有的在线交易均受到托管保护，卖家无法取走您的数字资产。<br>如果交易出现任何问题，卖家不放行您的数字资产，您可以对交易发起申诉，让
+                        CoinCola 客服解决问题。<br>如果您要在线购买或出售数字资产，可以在将付款标记为完成后的 1
+                        小时对交易发起申诉。<br>如果数字资产已从托管中放行或交易结束，将无法发起申诉。<br>如果您参与的交易被申诉，您将会接收到电子邮件和站内信，大多数情况下，发起申诉即可引起交易对方的注意。申诉中的交易通常会在
+                        24-48 小时内被解决。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">7. 我不慎标记付款为完成，但没有支付</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">如果您没有完成支付，请取消交易并在您准备好支付后发起一个新的交易请求。 标记付款为完成的交易将导致数字资产被锁定在托管中卖家无法出售它们。<br>未付款却不慎标记付款为完成，且不主动取消购买，将导致您的用户帐户得到负面的评价。
+                        CoinCola会对此类行为的账户进行限制或关闭。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">8. 我在付款时无法附上交易编号或留言</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">某些付款方式和银行不允许您在付款时附上订单编号或留言。通常在这种情况下，
+                        您会在支付完成后得到一个转账号。在这种情况下，付款完成后，标记付款为完成，通过聊天框和卖家联系，告诉他这个转账号，以便卖家可以在 收到付款后使用此编号来确认是来自您的。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">9. 数字资产是怎么托管的？</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">
+                        当一个交易请求发出后，所要购买的数字资产金额将会从卖家的钱包中扣除，并锁定在CoinCola的托管保护中。在卖家确认已经收到付款之前，数字资产将不会被放行。托管程序将锁定数字资产，直至卖家确认收到付款。如果出现问题，CoinCola客服将处理申诉。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">10. 为什么我的数字资产价格和交易广告中的不同？</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">目前发布的广告的价格是基于各大知名实时交易所的价格均衡算出的一种价格，可以大概反映出市场价，这个价格是会不断被更新的，以便让您的广告保持趋于合理的范围内。</p>
+                </div>
+            </li>
+
+            <li class="news-item">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title">11. 使用CoinCola产品的相关费用说明</div>
+                <div class="news-text">
+                    <span class="close"></span>
+
+                    <p class="p">注册CoinCola是完全免费的，而且您将获得一个免费的在线数字资产钱包。不需要安装任何应用即可使用。<br>从CoinCola市场上购买和出售数字资产完全免费。<br>发布交易广告的CoinCola用户每笔完成的交易需要缴纳
+                        <span class="advertiser_fee">0.7%</span> 的费用。<br>与其他CoinCola用户的钱包进行转账交易免费。<br>与其他数字资产钱包进行交易需要缴纳数字资产网络转账费。费用多少会根据数字资产区块链当前的使用率有所变化，我们会根据当前网络阻塞情况自动调整此费用，以确保您的交易能够尽快得到确认。您发送交易后，交易费将从您的CoinCola钱包中扣除。<br>当前与其他数字资产钱包之间的网络手续费约为
+                        <span class="block_chain_fee">0.0009 BTC</span>。网络手续费按笔计。</p>
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+
+    <div class="detail-right">
+        <div class="form-title">
+            <span class="form-name">{$lang.deal_op}</span>
+        </div>
+        <div class="line mt-20 mb-10"></div>
+        <div class="font-16">{$lang.order_sn}</div>
+        <p class="p mb-10" id="tradeId">{$orderInfo.order_sn}</p>
+
+        <div class="font-16">{$lang.paymentMethod}</div>
+        <p class="p mb-10">{$orderInfo.pay_way}</p>
+
+        <div class="font-16">{$lang.advertisingComment}</div>
+        <p class="p mb-10 has-height">{$orderInfo.comment}</p>
+
+
+        <!-- <p class="p mb-30"></p> -->
+
+
+        <div class="font-16">{$lang.deal_tip}</div>
+        <p class="p tips-buyer-1">
+            {$lang.deal_tip1}
+        </p>
+
+        <p class="p tips-buyer-2" style="display: none">
+            {$lang.deal_tip12}
+        </p>
+
+        <div class="btn-cont">
+            <eq name="userType" value="buy">
+                <a id="btnPay" class="btn">{$lang.pay_ok}</a>
+                <else/>
+                <a id="receiveOk" class="btn">{$lang.receive_ok}</a>
+            </eq>
+            <a id="btnCancel" style="text-decoration: underline!important;">{$lang.deal_cancel}</a>
+        </div>
+
+        <div class="comment-cont" style="">
+            <div class="comment">{$lang.toUser}<strong>{$toUser.name}</strong>{$lang.common}?</div>
+            <div class="radio-cont">
+                <form class="feedback">
+                    <input type="hidden" name="order_id" value="{$_GET['id']}"/>
+                    <input type="hidden" name="user_id" value="{$userInfo.id}"/>
+
+                    <div
+                            class="fl"><input type="radio" checked="" name="type" value="1"><label>{$lang
+                        .good}</label></div>
+                    <div class="fm"><input type="radio" name="type" value="2"><label>{$lang.good1}</label></div>
+                    <div class="fr"><input type="radio" name="type" value="3"><label>{$lang.good2}</label></div>
+                </form>
+            </div>
+            <a class="btn" id="btnComment">{$lang.submit_common}</a>
+        </div>
+
+        <ul class="news-list">
+            <li class="news-item before-release">
+                <span class="icon-view-news"></span>
+
+                <div class="news-title blue-text">{$lang.deal_question}</div>
+                <div class="news-text clear-float shensu">
+                    <div class="p">
+
+                        <p> {$lang.shensu_tip}</p>
+                        <a id="btnTipOffNext" class="btn tip-off">{$lang.shensu}</a>
+
+                    </div>
+
+                    <div class="p hidden">
+                        <div>{$lang.shensu_why}</div>
+                        <select name="reason" class="tipoff-select mb-10">
+                            <option value="我已付款，但卖家未放行">{$lang.shensu_why1}</option>
+                            <option value="卖家未遵守交易广告条款">{$lang.shensu_why2}</option>
+                        </select>
+                        <textarea name="comment" class="textarea" placeholder="{$lang.say_your_question}"></textarea>
+                        <!-- <div><a class="btn-add-pic">添加图片</a><span class="pic-placeholder">接受PNG或JPEG,最多选择4张图片</span></div> -->
+                        <a id="btnTipOff" class="btn tip-off" href="javascript:;">{$lang.shensu}</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="line mt-20 mb-10"></div>
+        <div class="complain">
+            <span class="icon-complain"></span>
+            <span class="text">{$lang.complain}</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div tabindex="0"
+     style="display: none;     background: rgba(0,0,0,0.7); position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; overflow: hidden; -webkit-user-select: none; z-index: 1024;"
+     class="ui-popup-backdrop">
+    <div tabindex="-1" aria-labelledby="title:1515226772146" aria-describedby="content:1515226772146"
+         class=" ui-popup ui-popup-modal ui-popup-show ui-popup-focus" role="alertdialog"
+         style="position: absolute; outline: 0px; left: 746px; top: 218px; z-index: 1024;">
+        <div i="dialog" class="ui-dialog">
+            <div class="ui-dialog-arrow-a"></div>
+            <div class="ui-dialog-arrow-b"></div>
+            <table class="ui-dialog-grid">
+                <tbody>
+
+                <tr>
+                    <input type="hidden" id="selected"/>
+                    <td i="body" class="ui-dialog-body">
+                        <div i="content" class="ui-dialog-content0" id="content:1515226772146">
+                            <div class="complain-cont" style="">
+                                <div class="title">{$lang.complain}</div>
+                                <div class="desc">{$lang.complainContent}</div>
+                                <div class="opt-cont clear-float">
+                                    <label check="" class="label">{$lang.noRespond}</label>
+                                    <label check="" class="label">{$lang.bufangbi}</label>
+                                    <label check="" class="label nr">{$lang.qizha}</label>
+                                    <label check="" class="label">{$lang.induce}</label>
+                                    <label check="" class="label">{$lang.spite}</label>
+                                    <label check="" class="label nr">{$lang.falseAdvertising}</label>
+                                </div>
+                            <textarea name="content" id="content" maxlength="1000" class="textarea"
+                                      placeholder="{$lang.feedback}"></textarea>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td i="footer" class="ui-dialog-footer">
+                        <div i="statusbar" class="ui-dialog-statusbar" style="display: none;"></div>
+                        <div i="button" class="ui-dialog-button">
+                            <button type="button" class="btn_close">{$lang.close}</button>
+                            <button type="button" class="btn_complain_ok">{$lang.anonymitySubmit}</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script language="javascript">
+    $(function () {
+        var order_id = "{$_GET['id']}";
+
+        $("#btnCancel").click(function () {
+            $.post("__APP__/Home/Order/orderCancel", {order_id: order_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"cancel","order_id":"' + order_id + '","user_id":"' + uid + '"}');
+                window.location.reload();
+            }, "json");
+        });
+
+
+        $("#btnPay").click(function () {
+
+            $.post("__APP__/Home/Order/payOk", {order_id: order_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"pay_ok","order_id":"' + order_id + '","user_id":"' + uid + '"}');
+
+                showAlert(e.msg);
+            }, "json");
+        });
+
+        $("#receiveOk").click(function () {
+
+            $.post("__APP__/Home/Order/receiveOk", {order_id: order_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"receive_ok","order_id":"' + order_id + '","user_id":"' + uid + '"}');
+
+                showAlert(e.msg);
+            }, "json");
+        });
+
+
+        $("#btnComment").click(function () {
+            form = $(".feedback").serialize();
+            $.post("__APP__/Home/Order/commentOrder", form, function (e) {
+                ws.send('{"type":"tips","msg_type":"common","order_id":"' + order_id + '","user_id":"' + uid + '"}');
+                $(".comment-cont").hide();
+//                alert(e.msg);
+            }, 'json');
+        });
+
+
+//举报begin
+
+        $(".ui-popup-backdrop").each(function (e) {
+            $(".complain").eq(e).click(function () {
+                if ($(".ui-popup-backdrop").eq(e).css("display") == "none") {
+                    $(".ui-popup-backdrop").eq(e).show();
+                }
+            });
+            //关闭
+            $(".btn_close").click(function () {
+                $(".ui-popup-backdrop").hide();
+            });
+            $(".label").each(function () {
+                $(this).click(function () {
+                    if ($(this).attr("check") == 'ok') {
+                        $(this).removeClass("active");
+                        $(this).attr("check", '');
+                    } else {
+                        $(this).addClass("active");
+                        $(this).attr("check", 'ok');
+                    }
+                    var string = '';
+                    $(".active").each(function () {
+                        if (string == '') {
+                            string += $(this).html();
+                        } else {
+                            string += ',' + $(this).html();
+                        }
+                        $("#selected").val(string);
+                    });
+                });
+            });
+        });
+
+        $(".btn_complain_ok").click(function () {
+            tip = $("#selected").val();
+            content = $("#content").val();
+            adv_id = "{$_GET['id']}";
+
+            if (content == "" || tip == '') {
+                showAlert("{$lang.please_input_more}");
+                return false;
+            }
+            $.post("__APP__/Home/Advertising/advReport", {tip: tip, content: content, adv_id: adv_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"report","order_id":"' + order_id + '"}');
+
+                showAlert(e.msg, function () {
+                    $(".btn_close").click();
+                    $("#content").val('');
+                    $(".label").removeClass("active");
+                    $("#selected").val('');
+                });
+
+            }, "json");
+        });
+
+//        举报end
+        $(".news-title").each(function (e) {
+            $(".news-title").eq(e).click(function () {
+                $(".news-text").hide();
+                $(".news-text").eq(e).show();
+            });
+        });
+
+        $("#btnTipOffNext").click(function () {
+            $("#btnTipOffNext").hide();
+            $(".hidden").show();
+        });
+        $("#btnTipOff").click(function () {
+            reason = $(".tipoff-select").val();
+            comment = $(".textarea").val();
+            adv_id = "{$_GET['id']}";
+            if (comment == "") {
+                showAlert("{$lang.please_input_more}");
+                return false;
+            }
+            $.post("__URL__/shensu", {adv_id: adv_id, reason: reason, comment: comment}, function (e) {
+                ws.send('{"type":"tips","msg_type":"report","order_id":"' + order_id + '"}');
+
+                showAlert(e.msg, function(){
+                    $(".shensu").hide();
+                });
+
+            }, "JSON");
+
+        });
+
+        //聊天图片
+        $(".img-input").change(function(){
+            var formData = new FormData($("#chatImgForm")[0]);
+            $.ajax({
+                type: "POST",
+                url:"/index.php/Home/Api/chat_img_upload",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    ws.send('{"type":"say_img","uid":"' + uid + '","order_id":"' + order_id + '","client_name":"' + name + '","to_client_id":"' + toUserId + '","to_client_name":"' + toUserName + '","head_img":"' + head_img + '", "content":"'
+                    + data + '"}');
+                }
+            });
+        });
+
+
+
+
+    })
+</script>
+<include file="Index/footer"/>

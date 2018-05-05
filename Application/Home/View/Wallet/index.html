@@ -1,0 +1,313 @@
+<include file="Index/top"/>
+<div class="container con_top">
+    <div class="currency-tabs">
+        <volist name="currency" id="curr">
+            <a href="__URL__/index/type/{$curr.id}" class="tab-tx <eq name='curr.name' value='$type'>active</eq> ">
+                {$curr.name}</a>
+        </volist>
+    </div>
+
+    <div class="panel">
+        <div class="h3">{$lang.balance}: <span class="link available"> {$walletInfo.money}</span> {$type}</div>
+        <div class="wallet-view">
+            <span class="s-text available">{$lang.moneyAvailable}: <span>{$walletInfo.money}</span> {$type}</span>
+            <span class="s-text locked">{$lang.moneyFreeze}: <span>{$walletInfo.stock_money}</span> {$type}</span>
+            <span class="s-text total">{$lang.moneyAll}: <span>{$walletInfo.all}</span> {$type}</span>
+        </div>
+    </div>
+
+    <div class="tabs-tx clear-float">
+        <div class="tab-tx get actived">{$lang.receive} {$type}</div>
+        <div class="tab-tx send ">{$lang.send} {$type}</div>
+    </div>
+
+    <div class="panel clear-float">
+        <!--接收-->
+        <div class="change_type btc-get ">
+            <div class="address">{$lang.receiveAddress}: <span class="blue-text">{$walletInfo.address}</span>
+                <a id="showEWM" class="icon-qrcode"></a>
+                <!--<a class="btn btn-vh" id="allAddress">{$lang.manageAddress}</a>-->
+            </div>
+
+            <div class="tips-panel">{$lang.wallet_tip}：<span style="color: #ff4c39">{$type} 地址只能充值 {$type} 资产，任何充入 {$type} 地址的非 {$type}
+                资产将不可找回。</span>在
+                {$type} 网络接收 {$type} 通常需要 10 分钟。我们会在收到 {$type} 网络 1 个确认后给您入账。最低存入金额为<span class="min_recharge"> 0.0002 {$type}</span>，我们不会处理少于该金额的
+                {$type} 存入请求。在平台内相互转账是实时到账且免费的。
+            </div>
+        </div>
+
+        <!--发送-->
+        <div class="change_type btc-send " style="display: none;">
+
+            <div class="tips-panel">{$lang.wallet_tip}：<span style="color: #ff4c39">{$type} 钱包只能向 {$type} 地址发送资产，如果向非 {$type} 地址发送资产将不可找回。</span>在
+                {$type} 网络发送 {$type}，通常需要 10 分钟，{$type} 网络转账费为 <span class="block_chain_fee">0.0009 {$type}</span>；CoinCola
+                会先审核后再广播到 {$type} 网络，正在处理中代表平台正在审核中，处理完毕的您可以在交易明细中查看到转账详情。在平台内与 CoinCola 用户之间的相互转账是实时到账且免费的。
+            </div>
+            <div class="normal-form form-cont clear-float">
+                <div class="form-item input-cont">
+                    <div class="input-name">{$lang.sendAddress}:</div>
+                    <input type="text" name="address" class="input">
+                </div>
+                <div class="form-item input-cont">
+                    <div class="input-name">{$lang.number}:</div>
+                    <input type="number" name="number" class="input"
+                           placeholder="{$lang.sendD} {$can_send} {$type}">
+                </div>
+                <!--<div class="form-item input-cont">-->
+                    <!--<div class="input-name" type="password">{$lang.passwordToMoney}:</div>-->
+                    <!--<input type="text" name="password" class="input"-->
+                           <!--onfocus="this.type='password'" placeholder="{$lang.please_input}{$lang.passwordToMoney}">-->
+
+                    <!--<a class="link1" href="__APP__/Home/User/find_pwd_mobile">{$lang.forgetPassword}</a>-->
+                <!--</div>-->
+                <div class="form-item input-cont">
+                    <div class="input-name">{$lang.remark}:</div>
+                    <input type="text" name="message" class="input">
+                </div>
+
+                <a id="sendBtc" class="btn1 submit ">{$lang.ok}</a>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="panel-head">{$lang.paymentLog}</div>
+    <div class="panel transactions-panel">
+        <!--<div class="mask">-->
+            <!--<img class="loading-img" src="__PUBLIC__/btc/images/loading_new.gif">-->
+        <!--</div>-->
+        <!--<div class="filter">-->
+            <!--<span type="ALL" class="filter-item actived">全部</span>-->
+            <!--<span type="NETWORK_IN" class="filter-item">网络转入</span>-->
+            <!--<span type="NETWORK_OUT" class="filter-item">网络转出</span>-->
+            <!--<span type="TRADE_IN" class="filter-item">交易买入</span>-->
+            <!--<span type="TRADE_OUT" class="filter-item">交易卖出</span>-->
+            <!--<span type="PLATFORM_IN" class="filter-item">平台转入</span>-->
+            <!--<span type="PLATFORM_OUT" class="filter-item">平台转出</span>-->
+            <!--<span type="FEE" class="filter-item">手续费</span>-->
+            <!--<span type="TRADING_COMMISSION" class="filter-item">提成奖励</span>-->
+            <!--<span type="ACTIVITY_REWARD" class="filter-item">活动奖励</span>-->
+        <!--</div>-->
+
+        <empty name="walletLog" >
+            <div class="no-record">
+                <span class="icon-address-no-record"></span><span>{$lang.noDetail}</span>
+            </div>
+        <else/>
+            <table class="table-money transactions">
+                <thead>
+                <tr>
+                    <th class="transactions-1">{$lang.createtime}</th>
+                    <th class="transactions-2">{$lang.deal_type}</th>
+                    <th class="transactions-3">{$lang.deal_money}</th>
+                    <th class="transactions-4">{$lang.remark}</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <volist name="walletLog" id="log">
+                    <tr>
+                        <td>{$log.createtime|date="Y-m-d H:s:i",###}</td>
+                        <td>{$log.log_name}</td>
+                        <td class="green">{$log.number} {$log.money_type}</td>
+                        <td>
+                            {$log.msg}
+                        </td>
+                    </tr>
+                </volist>
+                <!--<tr>-->
+                    <!--<td>2017-12-19 12:32:13</td>-->
+                    <!--<td>交易买入</td>-->
+                    <!--<td class="green">1.614555 ETH</td>-->
+                    <!--<td>-->
+
+                        <!--卖家:-->
+                        <!--aaa2017 <i></i>-->
+                        <!--报价: 5574.29 CNY<i></i>-->
+
+
+                    <!--</td>-->
+                <!--</tr>-->
+
+                <!--<tr>-->
+                    <!--<td>2017-12-18 18:36:38</td>-->
+                    <!--<td>网络转出</td>-->
+                    <!--<td class="green">1.488008 ETH</td>-->
+                    <!--<td>-->
+
+
+                        <!--转出地址-->
+
+                        <!--0x69076745d8d5ec7b56268655aae171f744bb5962-->
+                        <!--<br>-->
+                        <!--txid: <a class="link" target="_blank"-->
+
+                                 <!--href="https://etherchain.org/tx/0x042e39aaf0a5ff41fa6c0098-->
+
+    <!--a47292ca4cf4506c9ab3023e9e52873c1388fba5">0x042e39aaf0a5ff-->
+
+                        <!--41fa6c0098a47292ca4cf4506c9ab3023e9e52873c1388fba5</a>-->
+
+                        <!--<br>手续费 0.009-->
+
+
+                    <!--</td>-->
+                <!--</tr>-->
+
+                <!--<tr>-->
+                    <!--<td>2017-12-16 18:38:10</td>-->
+                    <!--<td>交易买入</td>-->
+                    <!--<td class="green">1.06383 ETH</td>-->
+                    <!--<td>-->
+
+                        <!--卖家:-->
+                        <!--huju121x <i></i>-->
+                        <!--报价: 4700 CNY<i></i>-->
+
+
+                    <!--</td>-->
+                <!--</tr>-->
+
+                <!--<tr>-->
+                    <!--<td>2017-12-16 15:10:31</td>-->
+                    <!--<td>交易买入</td>-->
+                    <!--<td class="green">0.424178 ETH</td>-->
+                    <!--<td>-->
+
+                        <!--卖家:-->
+                        <!--laucas <i></i>-->
+                        <!--报价: 4715 CNY<i></i>-->
+
+
+                    <!--</td>-->
+                <!--</tr>-->
+
+                </tbody>
+            </table>
+        </empty>
+        <div class="pagination" total="5" limit="10"></div>
+    </div>
+</div>
+<div id="EWM_img" tabindex="-1" style="display: none;position: absolute; outline: 0px; left: 828px; top: 266px; z-index: 1028;" class="ui-popup ui-popup-modal ui-popup-show ui-popup-focus" role="alertdialog">
+    <div i="dialog" class="ui-dialog">
+        <table class="ui-dialog-grid">
+            <img class="qrcode" src="__APP__/Home/Api/create_ewm/data/{$walletInfo.address}">
+        </table>
+    </div>
+</div>
+
+
+<div class="gg-shade ta-c" style="display:none; position: fixed;left: 0;right: 0;top: 0;bottom: 0;background:
+rgba(0,0,0,0.5);">
+    <div class="gg-cont clear-float" style="width: 340px;margin: 0 auto;background: #fff;padding: 30px 10px;font-size: 16px;position: relative;top: 20%;">
+        <div style="margin-bottom: 20px;">您已开启谷歌验证，请输入谷歌验证码</div>
+        <span class="gg-code-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <br>
+        </span>
+        <a style="float: right;margin-right: 40px;margin-top: 20px;color: #1798f2;" class="btn-cancel">取消</a>
+    </div>
+</div>
+<script language="JavaScript">
+
+
+
+    $(function(){
+            show = "{$wallet_type}";
+            if(show == 'tx'){
+                $(".tab-tx").removeClass('actived');
+                $(".send").addClass('actived');
+
+                $(".btc-send").show();
+                $(".btc-get").hide();
+            }
+
+        $(".tab-tx").each(function(e){
+            $(this).click(function(){
+                $(".tab-tx").removeClass('actived');
+                $(this).addClass('actived');
+
+                if($(this).hasClass("get")){
+                    $(".btc-get").show();
+                    $(".btc-send").hide();
+                }
+                if($(this).hasClass("send")){
+                    $(".btc-get").hide();
+                    $(".btc-send").show();
+                }
+            })
+        })
+
+
+
+        $(".submit").click(function(){
+            address = $(".input").eq(0).val();
+            num = $(".input").eq(1).val();
+            pwd = $(".input").eq(2).val();
+            msg = $(".input").eq(3).val();
+            walletId = '{$walletInfo["id"]}';
+            money_type = '{$type_sn}';
+            $.post("__URL__/sendMoney",
+                    {address:address,num:num,pwd:pwd,msg:msg,walletId:walletId,money_type:money_type},function(d){
+
+
+                        //google check
+                        if(d.code == 4){
+                            $(".gg-shade").show();
+                            $(".gg-input").eq(0).focus();
+                            $(".gg-input").each(function(e){
+                                $(".gg-input").eq(e).keyup(function(){
+                                    $(".gg-input").eq(e+1).focus();
+                                    if(e == 5){
+                                        google_code = $(".gg-input").eq(0).val();
+                                        google_code += $(".gg-input").eq(1).val();
+                                        google_code += $(".gg-input").eq(2).val();
+                                        google_code += $(".gg-input").eq(3).val();
+                                        google_code += $(".gg-input").eq(4).val();
+                                        google_code += $(".gg-input").eq(5).val();
+                                        $.post("__URL__/check_google",{code:google_code, id:d.id},function(res){
+
+                                            showAlert(res.msg, function(){
+                                                if(res.code == 1){
+                                                    location.reload();
+                                                }else{
+                                                    $(".gg-input").val("");
+                                                    $(".gg-input").eq(0).focus();
+                                                }
+                                            });
+                                        },'json')
+                                    }
+                                });
+                                $(this).click(function(){
+                                    $(this).val("");
+                                });
+                            });
+                        }else{
+                            //没有google验证
+                            showAlert(d.msg, function(){
+                                if(d.code == 1){
+                                    location.reload();
+                                }
+                                if(d.code == 3){
+                                    window.location.href = d.url;
+                                }
+
+                            });
+                        }
+
+
+                    }, 'json');
+        });
+        $(".btn-cancel").click(function(){$(".gg-shade").hide();$(".gg-input").val("");})
+
+
+    })
+</script>
+<include file="Index/footer"/>

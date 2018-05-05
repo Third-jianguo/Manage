@@ -1,0 +1,236 @@
+<include file="Index/top"/>
+<!-- <div class="float-cont">
+  <div class="cont-item">需要帮助</div>
+</div> -->
+
+<div class="container con_top">
+    <div class="coin-tab">
+        <volist name="currency" id="curr">
+            <a href="__URL__/index/o/{$opt}/type/{$curr.id}"
+               class="coin <eq name='curr.id' value='$type'>current</eq>">{$curr.name}({$curr
+                .sn})</a>
+        </volist>
+        <div class="search-switch">
+            <span class="search-input-icon"></span>
+            <span>{$lang.search}</span>
+            <!--<span class="country">CN</span>,-->
+            <!--<span class="payment-method">全部货币</span>,-->
+            <!--<span class="currency">全部付款方式</span>-->
+        </div>
+    </div>
+</div>
+
+<div class="search-cont clear-float" style="display: none;">
+    <div class="search-filter"><span class="type-text"><eq name="search.search_type" value="user">{$lang.search_user}<else/>{$lang.search_gg}</eq> </span> <span
+            class="arrow-down-blue"></span>
+
+        <div class="search-type">
+            <a href="javascript:;" type="adv" class="type-item">{$lang.search_gg}</a>
+            <a href="javascript:;" type="user" class="type-item">{$lang.search_user}</a>
+        </div>
+    </div>
+    <div class="input-cont search-input" style="display:none;">
+        <input class="input ta-l" id="name" placeholder="{$lang.please_input_name}">
+    </div>
+    <div class="ad-opt">
+        <select class="search-filter" id="country_code">
+            <option value="">--{$lang.country}--</option>
+            <volist name="static_country" id="country">
+                <option value="{$country.id}" <eq name="country.id" value="$search.country_id">selected</eq>
+                >{$country.name}</option>
+            </volist>
+        </select>
+        <select class="search-filter" id="currency">
+            <option value="">--{$lang.formMoneyType}--</option>
+            <volist name="static_money" id="money">
+                <option value="{$money.sn}" <eq name="money.sn" value="$search.currency">selected</eq>
+                >{$money.name}</option>
+            </volist>
+
+
+        </select>
+        <select class="search-filter" id="payment_provider">
+            <option value="">--{$lang.paymentMethod}--</option>
+            <volist name="payWay" id="pay">
+                <option value="{$pay.name}" <eq name="pay.name" value="$search.pay_way">selected</eq>>{$pay.name}</option>
+            </volist>
+
+        </select>
+
+    </div>
+
+    <a href="javascript:;" class="btn-search"><span class="search-input-icon"></span></a>
+</div>
+
+
+<div class="container">
+    <div class="mask">
+        <!--<img class="loading-img" src="__PUBLIC__/btc/picture/loading_new_6.gif">-->
+    </div>
+    <table class="table buy">
+        <thead>
+        <tr>
+            <!--<th class="pl-30">昵称</th>-->
+            <!--<th>信用</th>-->
+            <!--<th>付款方式</th>-->
+            <!--<th>限额</th>-->
+            <!--<th>价格</th>-->
+            <th class="pl-30">{$lang.nickname}</th>
+            <th>{$lang.credit}</th>
+            <th>{$lang.paymentMethod}</th>
+            <th>{$lang.quota}</th>
+            <th>{$lang.price}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <volist name="list" id="li" key="k">
+            <tr class="odd">
+                <td class="td-name pl-30">
+                    <a
+                            href="__APP__/Home/User/user_detail/id/{$li.uid}"><img class="user-head"
+                                                                                   src="{$li.head_img}"
+                                                                                   onerror="this.src='/Public/images/noHead.png'"
+                                                                                   alt=""></a>
+                    <a href="__APP__/Home/User/user_detail/id/{$li.uid}">{$li.name}</a>
+                    <span class="state ONLINE"></span>
+                </td>
+                <td class="td-normal">
+                    {$lang.transaction} {$li.trustInfo.dealCount} |
+                    {$lang.goodReputation} {$li.trustInfo.good} | {$lang.trust} {$li.trustInfo.trust}
+                </td>
+                <td>{$li.pay_way}</td>
+                <td class="td-name">{$li.price_low}-{$li.price_high} {$li.pay_currency_type}</td>
+                <td class="td-price">{$li.price_count} {$li.pay_currency_type}</td>
+                <td class="pr-30"><a href="__URL__/detail/id/{$li.id}" class="btn submit">
+                    <eq name="opt" value="1">{$lang.sell}</eq>
+                    <eq name="opt" value="2">{$lang.buy}</eq>
+                    </a>
+                </td>
+            </tr>
+        </volist>
+        <!--<tr class="even">-->
+        <!--<td class="td-name pl-30">-->
+        <!--<a href="/user/1000073155"><img class="user-head" src="__PUBLIC__/btc/picture/head_portrait60_6.png" alt=""></a>-->
+        <!--<a href="/user/1000073155">warrior</a>-->
+        <!--<span class="state ONLINE"></span>-->
+        <!--</td>-->
+        <!--<td class="td-normal">-->
+        <!--交易 16 |-->
+        <!--好评度 100% | 信任 5-->
+        <!--</td>-->
+        <!--<td>支付宝</td>-->
+        <!--<td class="td-name">5000-10000 CNY</td>-->
+        <!--<td class="td-price">119267.03 CNY</td>-->
+        <!--<td class="pr-30"><a href="/ad-detail/25345" class="btn submit">购买 BTC</a></td>-->
+        <!--</tr>-->
+        <!---->
+        <!--<tr class="odd">-->
+        <!--<td class="td-name pl-30">-->
+        <!--<a href="/user/1000053800"><img class="user-head" src="__PUBLIC__/btc/picture/092dcc08b0e6487788b8f9e809c53977.jpg" alt=""></a>-->
+        <!--<a href="/user/1000053800">wanmei339</a>-->
+        <!--<span class="state ONLINE"></span>-->
+        <!--</td>-->
+        <!--<td class="td-normal">-->
+        <!--交易 911 |-->
+        <!--好评度 99% | 信任 319-->
+        <!--</td>-->
+        <!--<td>支付宝</td>-->
+        <!--<td class="td-name">100-400 CNY</td>-->
+        <!--<td class="td-price">119322.17 CNY</td>-->
+        <!--<td class="pr-30"><a href="/ad-detail/24548" class="btn submit">购买 BTC</a></td>-->
+        <!--</tr>-->
+
+
+        </tbody>
+    </table>
+    <div class="no-record" style="display: none;">
+        <div class="icon-no-record"></div>
+        <div class="text-no-record">{$lang.no_adv}</div>
+    </div>
+
+    <div class="pagination-gm" total="100" limit="20">
+        {$page}
+        <!--<span class="pager prev"><span class="page-left"></span></span><span class="pager current" page="1">1</span><span class="pager" page="2">2</span><span class="pager" page="3">3</span><span class="pager" page="4">4</span><span class="pager" page="5">5</span><span class="pager next"><span class="page-right"></span></span>-->
+    </div>
+</div>
+
+
+<script language="javascript">
+
+    $(function () {
+        var search_type = "{$search.search_type}";
+
+        if("{$search.search_type}" == "user"){
+            $(".search-input").show();
+            $(".ad-opt").hide();
+            $(".search-cont").show();
+        }
+        if("{$search.search_type}" == "adv"){
+            $(".search-cont").show();
+        }
+
+        if(search_type == ''){
+            search_type = "adv";
+        }
+
+        $(".type-item").click(function () {
+            if ($(this).attr("type") == "adv") {
+                $(".search-input").hide();
+                $(".ad-opt").show();
+                search_type = "adv";
+            }
+            if ($(this).attr("type") == "user") {
+                $(".search-input").show();
+                $(".ad-opt").hide();
+                search_type = "user";
+            }
+        });
+
+
+        $(".search-switch").click(function () {
+            if ($(".search-cont").css("display") == 'none') {
+                $(".search-cont").show(200);
+            } else {
+                $(".search-cont").hide(200);
+            }
+        });
+
+
+//        search
+        $(".btn-search").click(function () {
+            var type = "{$type}";
+            var opt = "{$opt}";
+
+
+
+
+            if (search_type == "adv") {
+                country_id = $("#country_code").val();
+                currency = $("#currency").val();
+                pay_way = $("#payment_provider").val();
+                var url = '';
+                if(country_id != ''){
+                    url += "/country_id/"+country_id;
+                }
+                if(currency != ''){
+                    url += "/currency/"+currency;
+                }
+                if(pay_way != ''){
+                    url += "/pay_way/"+pay_way;
+                }
+
+                window.location =
+                      "__URL__/index/o/"+opt+"/type/"+type+"/search_type/"+search_type+url;
+            }else{
+                keyword = $("#name").val();
+                window.location = "__URL__/index/o/"+opt+"/type/"+type+"/search_type/"+search_type+"/keyword/"+keyword;
+            }
+        });
+
+    })
+
+</script>
+
+<include file="Index/footer"/>

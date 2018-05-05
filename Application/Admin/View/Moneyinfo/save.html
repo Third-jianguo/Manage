@@ -1,0 +1,30 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <table>
+        <input type="hidden" name="id" value="{$info.id}" />
+
+        <tr>
+            <td align="right" height="40px"><label>货币类型：</label></td>
+            <td align="left">
+                <select name="currency_id" class="search_input">
+                    <volist name="currency" id="curr">
+                        <option value="{$curr.id}" <eq name="curr.id" value="$info.currency_id">selected</eq>>{$curr
+                        .sn}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>CNY：</label></td>
+            <td align="left"><input name="cny" value="{$info.cny}" class="input-text radius"
+                                    style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>KRW：</label></td>
+            <td align="left"><input name="krw" value="{$info.krw}" class="input-text radius"
+                                    style="width:200px;height: 30px"></td>
+        </tr>
+
+    </table>
+</form>
+<include file="Index/foot" />

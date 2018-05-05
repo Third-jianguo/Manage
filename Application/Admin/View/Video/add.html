@@ -1,0 +1,145 @@
+<include file="Index/header" />
+<script type="text/javascript" src="/Public/uploadAudio/js/plupload.full.min.js"></script>
+
+<form style="width:90%;text-align: center" >
+    <table>
+        <input type="hidden" name="url" id="url" />
+        <tr>
+            <td align="right" height="40px"><label>标题：</label></td>
+            <td align="left"><input name="title" class="input-text radius" placeholder="输入标题" style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>视频地址：</label></td>
+            <td align="left"><input name="video_url" class="input-text radius" placeholder="视频地址" style="width:200px;height: 30px">(如果填写此项将忽略本次上传的视频文件)</td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>上传：</label></td>
+            <td align="left">
+
+                <div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+                <br />
+
+                <div id="container">
+                    <a id="pickfiles" href="javascript:;">选择文件</a>
+                    <a id="uploadfiles" href="javascript:;">开始上传</a>
+                </div>
+
+                <br />
+                <pre id="console"></pre>
+        </tr>
+        <tr>
+            <td align="right" width="15%" height="40px"><label>上传图片：</label></td>
+            <td align="left">
+                <img src="" id="show_image" height="50" style="display: none"/>
+                <input type="hidden" value="" id="imgUrl"  name="img" class="input-text radius" />
+                <input type="button" id="uploadButton" value="Upload" />
+            </td>
+        </tr>
+
+    </table>
+</form>
+<script type="text/javascript">
+    // Custom example logic
+
+    var uploader = new plupload.Uploader({
+        runtimes : 'html5,flash,silverlight,html4',
+        browse_button : 'pickfiles', // you can pass an id...
+        container: document.getElementById('container'), // ... or DOM Element itself
+        url : '__URL__/uploadAudio',
+        flash_swf_url : '../js/Moxie.swf',
+        silverlight_xap_url : '../js/Moxie.xap',
+
+        filters : {
+            max_file_size : '250mb',
+            mime_types: [
+                {title : "Image files", extensions : "jpg,gif,png"},
+                {title : "Zip files", extensions : "zip"},
+                {title : "video files", extensions : "mp4,avi"}
+            ]
+        },
+
+        init: {
+            PostInit: function() {
+                document.getElementById('filelist').innerHTML = '';
+
+                document.getElementById('uploadfiles').onclick = function() {
+                    uploader.start();
+                    return false;
+                };
+            },
+
+            FilesAdded: function(up, files) {
+                plupload.each(files, function(file) {
+                    document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+                });
+            },
+
+            UploadProgress: function(up, file) {
+                $("#url").val('/video/' + file.name);
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+            },
+
+            Error: function(up, err) {
+                document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
+            }
+        }
+    });
+
+    uploader.init();
+
+</script>
+
+
+<include file="Index/foot" />
+<script>
+    KindEditor.ready(function(K) {
+        var uploadbutton = K.uploadbutton({
+            button : K('#uploadButton')[0],
+            fieldName : 'image',
+            url : '__URL__/upload',
+            afterUpload : function(data) {
+                //console.log(data)
+                data= eval(data);
+                if (data.status == 1) {
+                    K('#imgUrl').val(data.msg);
+                    var img = '__APP__/../'+data.msg;
+                    $('#show_image').attr('src',img);
+                    $('#show_image').css('display','');
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+        uploadbutton.fileBox.change(function(e) {
+            uploadbutton.submit();
+        });
+    });
+</script>
+
+<script>
+    var editor;
+    KindEditor.ready(function (K) {
+        editor = K.create('textarea[name="content"]', {
+            resizeType: 1,width:"80%",height:"280px",
+            allowPreviewEmoticons: false,
+            allowImageUpload: true,
+            items: [
+                'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                'table', 'hr',  'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink'
+            ],
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+    });
+
+    function getcontent(){
+        var content = editor.html();
+        $('#inscontent').val(content);
+    }
+</script>

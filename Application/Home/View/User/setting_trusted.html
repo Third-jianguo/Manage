@@ -1,0 +1,121 @@
+<include file="Index/top" />
+
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").removeClass("jiajian");
+
+
+                    /*   $(".zk").eq(e).text("{$lang.hide}")*/;
+                } else {
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    $(this).addClass("jiajian");
+
+                    $(".menu-item-cont").eq(e).hide();
+
+                }
+
+            });
+        });
+    });
+</script>
+
+<div class="con_top container clear-float main">
+
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item ">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item <eq name='t' value='1' >active</eq>">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item <eq name='t' value='2' >active</eq>">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item <eq name='t' value='3' >active</eq>">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fr">
+        <div class="setting-title"><eq name="t" value="1" >{$lang.trustYou}</eq><eq name="t" value="2" >{$lang.youTrust}</eq><eq name="t" value="3" >{$lang.untrust}</eq></div>
+        <div class="setting-panel set_pb">
+            <ul class="user-list" offset="0">
+                <notempty name="list">
+                <volist name="list" id="li">
+                    <li class="user-item">
+                        <a href="__URL__/user_detail/id/{$li.user.uid}">
+                            <img class="user-head" src="{$li.user.head_img}"
+                                 onerror="this.src='/Public/images/noHead.png'">
+                        </a>
+
+                        <div class="user-info">
+                            <a href="__URL__/user_detail/id/{$li.user.uid}">
+                                <div class="user-name">{$li.user.name}</div>
+                            </a>
+                        </div>
+                        <div class="poster-info-cont clear-float">
+                            <span class="poster-info-item">
+                              <div class="item-d">{$li.trust.dealCount}+</div>
+                              <div class="item-n">{$lang.dealCount}</div>
+                            </span>
+                            <span class="poster-info-item">
+                              <div class="item-d">{$li.trust.trust}</div>
+                              <div class="item-n">{$lang.trustCount}</div>
+                            </span>
+                            <span class="poster-info-item">
+                              <div class="item-d">{$li.trust.good}</div>
+                              <div class="item-n">{$lang.goodReputation}</div>
+                            </span>
+                            <span class="poster-info-item">
+                              <!--<div class="item-d">xxxx+ BTC</div>-->
+                              <!--<div class="item-n">历史交易</div>-->
+                            </span>
+                            <!--<span class="poster-info-item">-->
+                              <!--<div class="item-d">xxxx+ BTC</div>-->
+                              <!--<div class="item-n">历史交易</div>-->
+                            <!--</span>-->
+
+                        </div>
+                        <!--<div class="trade-count">跟TA交易过0次</div>-->
+                    </li>
+                </volist>
+                </notempty>
+
+            </ul>
+            <empty name="list">
+                <div class="no-record">
+                    <div class="icon-no-record"></div>
+                    <div class="text-no-record">{$lang.noSomething}</div>
+                </div>
+            </empty>
+        </div>
+    </div>
+</div>
+
+<include file="Index/footer" />

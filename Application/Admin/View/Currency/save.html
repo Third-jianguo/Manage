@@ -1,0 +1,33 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center" >
+    <table>
+<input type="hidden" name="id" value="{$info.id}" />
+        <tr>
+            <td align="right" height="40px"><label>货币：</label></td>
+            <td align="left"><input name="name" value="{$info.name}" class="input-text radius" style="width:200px;height:
+            30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>缩写：</label></td>
+            <td align="left">
+                <input name="sn"  value="{$info.sn}" class="input-text radius" style="width:200px;height:
+            30px">
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>转出手续费：</label></td>
+            <td align="left">
+                <input name="service" value="{$info.service}" class="input-text radius" style="width:200px;height:
+            30px">
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>是否设为默认货币：</label></td>
+            <td align="left">
+                <select name="show" class="level  radius">
+                    <option value="0" <eq name="info.show" value="0">selected</eq> >正常</option>
+                    <option value="1" <eq name="info.show" value="1">selected</eq>>默认货币</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>
+<include file="Index/foot" />

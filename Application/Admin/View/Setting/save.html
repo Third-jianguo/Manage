@@ -1,0 +1,50 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <div style="padding: 10px">
+        <label>名称：</label>
+        <input name="name" class="input-text radius" placeholder="输入名称" value="{$info.name}" style="width:200px;height: 30px">
+    </div>
+    <div style="padding: 10px">
+        <label>验证：</label>
+        &nbsp;&nbsp;
+        <input name="verify" class="input-radio radius" type="radio" value="1" <eq name="info.verify" value="1">checked</eq>>是
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="verify" class="input-radio radius" type="radio" value="2" <eq name="info.verify" value="2">checked</eq>>否
+        <input name="id" type="hidden" value="{$info.id}">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+    </div>
+    <div style="padding: 10px">
+        <label>类型：</label>
+       <select name="level" class="level select radius" style="width:200px;height: 30px">
+           <option value="1" <eq name="info.level" value="1">selected</eq>>菜单</option>
+           <option value="2" <eq name="info.level" value="2">selected</eq>>模型</option>
+           <option value="3" <eq name="info.level" value="3">selected</eq>>方法</option>
+       </select>
+    </div>
+    <div style="padding: 10px">
+        <label>所属：</label>
+        <select name="belongid" class="belongid select radius" style="width:200px;height: 30px">
+            <option value="0">顶级菜单</option>
+            <volist name="list" id="vo">
+                <option value="{$vo.id}" <eq name="info.belongid" value="$vo['id']">selected</eq>>{$vo.number_str}{$vo.name}</option>
+                <!--<empty name="vo.number"><option value="{$vo.id}" <eq name="info.belongid" value="$vo['id']">selected</eq>>{$vo.name}</option></empty>-->
+                <!--<eq name="vo.number" value="1"><option value="{$vo.id}" <eq name="info.belongid" value="$vo['id']">selected</eq>>├ ─ ─ ─{$vo.name}</option></eq>-->
+            </volist>
+        </select>
+    </div>
+    <div style="padding: 10px">
+        <label>图标：</label>
+        <input name="icon" class="input-text radius" value="{$info.icon}" style="width:200px;height: 30px">
+    </div>
+    <div style="padding: 10px">
+        <label>控制：</label>
+        <input name="controller" value="{$info.controller}" class="input-text radius" placeholder="输入控制器首字母大写" style="width:200px;height: 30px">
+    </div>
+    <div style="padding: 10px">
+        <label>方法：</label>
+        <input name="action" value="{$info.action}" class="input-text radius" placeholder="输入方法，全部小写" style="width:200px;height: 30px">
+    </div>
+</form>
+<include file="Index/foot" />

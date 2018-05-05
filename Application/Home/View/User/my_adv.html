@@ -1,0 +1,144 @@
+<include file="Index/top"/>
+<body class="zh-CN">
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").removeClass("jiajian");
+                } else {
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    $(this).addClass("jiajian");
+                    $(".menu-item-cont").eq(e).hide();
+                }
+            });
+        });
+    });
+</script>
+<div class="container clear-float main pad-top">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head">{$lang.myAdvertising}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.sell_adv}</div>
+            <div class="menu-item-cont">
+                <volist name="currency" id="curr" >
+                    <a href="__URL__/my_adv/type/2/id/{$curr.id}"
+                       class="menu-item <eq name='curr.id' value='$_GET[id]'><eq name='type' value='2'>active</eq></eq>">{$curr
+                        .sn}</a>
+                </volist>
+            </div>
+        </div>
+
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.buy_adv}</div>
+            <div class="menu-item-cont">
+                <volist name="currency" id="curr1">
+                    <a href="__URL__/my_adv/type/1/id/{$curr1.id}" class="menu-item <eq name='curr1.id' value='$_GET[id]'><eq name='type' value='1'>active</eq></eq>">{$curr1.sn}</a>
+                </volist>
+            </div>
+        </div>
+    </div>
+    <div class="fr">
+        <div class="setting-title">
+            {$lang.sendAdvertisinged}
+        </div>
+        <div class="setting-panel-guanggao">
+
+            <div class="tabs">
+                <span class="tab-gg up current">{$lang.the_ing}</span><span class="tab-gg">{$lang.the_end}</span>
+            </div>
+            <table class="table-gg order  up-tab" cellspacing="0" cellpadding="0" style="padding: 0;">
+                <thead>
+                    <tr class="order-head ">
+                        <th class="pl-30">ID</th>
+                        <th>{$lang.advertisingType}</th>
+                        <th>{$lang.country}</th>
+                        <th>{$lang.formPrice}</th>
+                        <th>{$lang.input_price}</th>
+                        <th>{$lang.createtime}</th>
+                        <th>{$lang.status}</th>
+                        <th></th>
+
+                    </tr>
+                    <volist name="adv_list" id="adv" key="k">
+                        <eq name="adv.status" value="0">
+                            <tr>
+                                <td class="pl-30">{$k}</td>
+                                <td>{$adv.currency_name}</td>
+                                <td>{$adv.country_name}</td>
+                                <td>{$adv.price_count}{$adv.pay_currency_type}</td>
+                                <td>{$adv.premium}%</td>
+                                <td>{$adv.createtime|date="Y-m-d H:s:i",###}</td>
+                                <td><eq name="adv.status" value="1">{$lang.closed}<else/>{$lang.the_ing}</eq></td>
+                                <td></td>
+                            </tr>
+                        </eq>
+                    </volist>
+                </thead>
+            </table>
+
+            <table class="table-gg order ACTIVE down-tab" cellspacing="0" cellpadding="0" style="padding: 0; display:
+            none;">
+                <thead>
+                <tr class="order-head ">
+                    <th class="pl-30">ID</th>
+                    <th>{$lang.advertisingType}</th>
+                    <th>{$lang.country}</th>
+                    <th>{$lang.formPrice}</th>
+                    <th>{$lang.input_price}</th>
+                    <th>{$lang.createtime}</th>
+                    <th>{$lang.status}</th>
+                    <th></th>
+
+                </tr>
+                <volist name="adv_list" id="adv1" key="k1">
+                    <eq name="adv1.status" value="1">
+                    <tr>
+                        <td class="pl-30">{$k1}</td>
+                        <td>{$adv1.currency_name}</td>
+                        <td>{$adv1.country_name}</td>
+                        <td>{$adv1.price_count}{$adv.pay_currency_type}</td>
+                        <td>{$adv1.premium}%</td>
+                        <td>{$adv1.createtime|date="Y-m-d H:s:i",###}</td>
+                        <td><eq name="adv1.status" value="1">{$lang.closed}<else/>{$lang.the_ing}</eq></td>
+                        <td></td>
+                    </tr>
+                    </eq>
+                </volist>
+                </thead>
+
+            </table>
+
+            <div class="no-record" style="display: none">
+                <div class="icon-no-record"></div>
+                <div class="text-no-record">{$lang.no_adv}</div>
+            </div>
+
+            <div class="pagination" total="0" limit="10" style="display:none" current-page="1"><span class="pager prev"><span class="page-left"></span></span><span class="pager next"><span class="page-right"></span></span></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+    $(function(){
+        $(".tab-gg").click(function(){
+            $(".tab-gg").removeClass("current");
+            $(this).addClass("current");
+            if($(this).hasClass("up")){
+                $(".up-tab").show();
+                $(".down-tab").hide();
+            }else{
+                $(".down-tab").show();
+                $(".up-tab").hide();
+            }
+
+        });
+    })
+</script>
+
+<include file="Index/footer"/>

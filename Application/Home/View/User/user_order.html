@@ -1,0 +1,132 @@
+<include file="Index/top"/>
+
+<body class=" zh-CN">
+
+<div class="container con_top" style="min-height:788px">
+    <div class="page-title">{$lang.order_manage}</div>
+    <div class="tabs-order clear-float mt-20">
+        <a href="__URL__/user_order" class="tab <empty name='type'>actived</empty>">{$lang.the_ing}</a><span
+            class="br"></span>
+
+        <div class="tab <eq name='type' value='end'>actived</eq>">
+            <span class="down-arrow ">{$lang.the_end} </span>
+
+            <div class="more-item">
+                <volist name="currency" id="curr">
+                    <a href="__URL__/user_order/type/end/currency/{$curr.id}" class="item">{$curr.sn}</a>
+                </volist>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-list">
+        <div class="list-header clear-float mb-10">
+            <span class="header-text width-1">{$lang.deal_people}</span>
+            <span class="header-text width-2">{$lang.order_sn}</span>
+            <span class="header-text width-3">{$lang.deal_type}</span>
+            <span class="header-text width-4">{$lang.deal_money}</span>
+            <span class="header-text width-5">{$lang.deal_number}</span>
+            <span class="header-text width-6">{$lang.createtime}</span>
+            <span class="header-text width-8">{$lang.deal_op}</span>
+            <span class="header-text width-7">{$lang.order_status}</span>
+        </div>
+
+        <!--<a class="link new-message" style="display: none"><span class="new-message-tips">您有新的交易消息，点击刷新页面</span></a>-->
+
+
+        <!--======================-->
+    <volist name="orderList" id="list">
+        <div class="order-list-items" offset="10" total="1">
+
+            <div class="data-cont BUY">
+                <div class=" clear-float"><!-- data-row 可点击-->
+                    <span class="width-1 data-text">
+                        <a class="link" href="__URL__/user_detail/id/{$list.user_id}">
+                    <img class="avatar" onerror="this.src='/Public/images/noHead.png'" src="{$list.head_img}">
+                    </a>
+                    <a href="__URL__/user_detail/id/{$list.user_id}" class="username link">{$list.name}</a>
+                    </span>
+                    <span class="width-2 data-text">
+                        {$list.order_sn}
+                        <!--<a href="__APP__/Order/" class="link">1683967</a>-->
+                    </span>
+                    <span class="width-3 data-text"><eq name="list.advertising_type" value="1">{$lang
+                        .sell}<else/>{$lang.buy}
+                    </eq> {$list.currency_sn}
+                    </span>
+                    <span class="width-4 data-text">{$list.money} {$list.pay_currency_type}</span>
+                    <span class="width-5 data-text">{$list.number} {$list.currency_sn}</span>
+                    <span class="width-6 data-text">{$list.order_createtime|date="Y-m-d H:s:i", ###}</span>
+                    <span class="width-7 data-text red-text">{$list.statusName}</span>
+                <span class="width-8 data-text PLACED_ORDER">
+                    <eq name="list.order_status" value="40">
+                        <a class="btn">{$lang.oked}</a>
+                        <else/>
+                        <eq name="list.order_status" value="99">
+                            <a class="btn">{$lang.closed}</a>
+                            <else/>
+                            <!--<a class="btn btn-pay">标记付款</a>-->
+                            <a class="btn btn-cancel" data-id="{$list.order_id}">{$lang.deal_cancel}</a>
+                            <a class="btn return-chat" href="__APP__/Home/Order/chat/id/{$list.order_id}">{$lang
+                                .return_chat}</a>
+                            <!--<a class="btn btn-comment">交易评价</a>-->
+                        </eq>
+                    </eq>
+
+
+                </span>
+                    <!-- <i class="delet-item"></i> -->
+                </div>
+
+                <div class="chat-cont">
+                    <!--<div class="chating" last-time-label="0"><a class="view-trade-detail"
+                                                                href="/order/1683967">查看交易详情</a>
+
+                        <div class="view-trade-detail real-name"><span>卖家已开启 KYC 认证，请确保付款来自于您本人。</span></div>
+                        <div class="chating-time">2018-01-01 15:46:50</div>
+                        <div class="chat sys">
+                            <div class="title">买家拍下未付款</div>
+                            <div class="content">系统消息: 买家已拍下，等待买家付款</div>
+                        </div>
+                        <div class="chat ta-l"><img class="user-logo"
+                                                    src="https://s3.ap-northeast-2.amazonaws.com/coincola.user/avatar/1513837450401_49900.jpeg"
+                                                    alt=""><span
+                                class="chat-message">支付宝 ttoommbb@126.com 高张博弘 备注单号！！</span></div>
+                    </div>-->
+                    <!--<div class="btn-cont">-->
+                    <!--<div class="add-pic"></div>-->
+                    <!--<input class="message-input" type="text" name="" value="" placeholder="说点什么吧...">-->
+                    <!--<a class="icon-send send"></a>-->
+                    <!--</div>-->
+                    <!--<div class="message-initing" style="display: none;"><span>消息正在初始化</span></div>-->
+                </div>
+            </div>
+        </div>
+    </volist>
+        <!--==============-->
+
+
+
+
+
+        <!--<div class="order-list-items" offset="10" total="0">-->
+
+        <!--</div>-->
+        <!--<a class="load-more" style="display: none">点击加载更多</a>-->
+        <!--<a class="no-more" style="">没有更多内容</a>-->
+    </div>
+
+
+</div>
+<script>
+    $(function(){
+        $(".btn-cancel").click(function(){
+            order_id = $(".btn-cancel").attr("data-id");
+            $.post("__APP__/Home/Order/orderCancel", {order_id:order_id}, function(e){
+                showAlert(e.msg, function(){ window.location.reload();});
+            }, "json");
+        });
+    })
+</script>
+
+<include file="Index/footer"/>

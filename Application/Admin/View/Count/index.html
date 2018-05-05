@@ -1,0 +1,190 @@
+<include file="Index/header"/>
+<script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+
+<div>
+    <form action="__URL__/index" >
+        <div class="search_list">
+
+            <span class="search_list_content">&nbsp;时间：
+        <input type="text" name="start_time" value="{$search.start_time}" class="search_input" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="width: 100px;"/>
+        至 <input type="text" name="end_time" value="{$search.end_time}" class="search_input" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" style="width: 100px;"/>
+        </span>
+ <span class="search_list_content">&nbsp;
+        虚拟币：<select name="currency" class="search_input">
+         <option value="">--全部--</option>
+         <volist name="currency" id="curr">
+            <option value="{$curr.id}" <eq name="curr.id" value="$search.currency">selected</eq> >{$curr.sn}</option>
+         </volist>
+     </select></span>
+
+            <span class="search_list_content">&nbsp;
+        交易币种：<select name="money" class="search_input">
+                    <option value="">--全部--</option>
+                    <volist name="money" id="money">
+                        <option value="{$money.sn}" <eq name="money.sn" value="$search.money">selected</eq>
+                        >{$money.name}</option>
+                    </volist>
+                </select></span>
+
+        <span class="search_list_content">
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="查询" class="btn_fa_css btn btn-primary"
+                                       style="margin:0;"/></span>
+        </div>
+    <div class="page-container">
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg table-hover table-sort">
+                <thead>
+                <tr class="text-c">
+                    <!--<th width="20"><input name="" type="checkbox" value=""></th>-->
+                    <th>货币类型</th>
+                    <th>交易数量</th>
+                    <th>币种</th>
+                    <th>交易额</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <empty name="order">
+                    <tr class="text-c va-m"><td colspan="6">暂无符合条件的数据！</td></tr>
+                <else/>
+                <volist name="order" id="order" key="k">
+                    <tr class="text-c va-m">
+                        <td>{$order.sn}</td>
+                        <td>{$order.number}</td>
+                        <td>{$order.pay_currency_type}</td>
+                        <td>{$order.money}</td>
+                    </tr>
+                </volist>
+                </empty>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </form>
+</div>
+<include file="Index/foot"/>
+<script>
+    $(document).ready(function () {
+        /* 添加菜单按钮单击 */
+        $('.add').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 添加',
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/add/',
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/add', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /* 修改按钮单击 */
+        $('.save').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/save/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/save', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /* 删除数据 */
+        $('.del').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否删除' + title + '? <br>删除后不可恢复，请谨慎操作！', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['删除', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/del', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        })
+
+        // 禁用
+        $('.disable_data').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            $.post('__URL__/disable_data', {id: id}, function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        time: 1000, end: function () {
+                            window.location.reload();
+                        }
+                    })
+                } else {
+                    layer.msg(data.msg, function () {
+                    });
+                }
+            }, 'json');
+        })
+        /* 查看单击 */
+        $('.view').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 查看' + title,
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/view/id/' + id,
+                btn: [ '关闭'],
+                yes: function () {
+                    layer.close(index);
+                }
+            });
+        })
+        //-----------------------------------------------------
+    })
+</script>

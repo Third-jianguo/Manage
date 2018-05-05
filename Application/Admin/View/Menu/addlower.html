@@ -1,0 +1,47 @@
+<include file="Index/header" />
+未使用
+<form style="width:90%;text-align: center">
+<table>
+    <input type="hidden" name="parentid" value="{$cons.id}"/>
+    <tr>
+        <td align="right" width="200px" height="40px"><label>上级分类：</label></td>
+        <td align="left">{$cons.name}</td>
+    </tr>
+    <tr>
+        <td align="right" width="200px" height="40px"><label>排序：</label></td>
+        <td align="left"><input name="displayorder" value="100" class="input-text radius" placeholder="输入排序" style="width:200px;height: 30px"></td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>分类名称：</label></td>
+        <td align="left"><input name="name" class="input-text radius" placeholder="输入分类名称" style="width:200px;height: 30px"></td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>所属小区：</label></td>
+        <td align="left" class="zlregions">
+            <input type="checkbox" id="cball" onclick="checkall(this.form,chekcall)" name="chekcall"/>全选<br/>
+            <volist name="rlist" id="vo">
+                <span><input type="checkbox" name="region_id[]" value="{$vo.id}"/>&nbsp;{$vo.title}&nbsp;</span>
+            </volist>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" height="40px"><label>分类描述：</label></td>
+        <td align="left">
+            <textarea placeholder="输入分类描述" name="description" cols="35" rows="5"></textarea>
+        </td>
+    </tr>
+</table>
+</form>
+<include file="Index/foot" />
+<script>
+    function checkall(frm, checkbox)
+    {
+        for (i = 0; i < frm.elements.length; i++)
+        {
+            if (frm.elements[i].name == 'region_id[]')
+            {
+                frm.elements[i].checked = checkbox.checked;
+            }
+        }
+    }
+</script>

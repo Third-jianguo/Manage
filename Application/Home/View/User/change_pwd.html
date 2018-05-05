@@ -1,0 +1,119 @@
+<include file="Index/top" />
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").removeClass("jiajian");
+
+
+                    /*   $(".zk").eq(e).text("{$lang.hide}")*/;
+                } else {
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    $(this).addClass("jiajian");
+
+                    $(".menu-item-cont").eq(e).hide();
+
+                }
+
+            });
+        });
+    });
+</script>
+<div class="container clear-float main con_top">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item active">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr">
+        <div class="setting-title">{$lang.anquan_setting}&gt;{$lang.edit_money_pwd}</div>
+        <div class="setting-panel">
+
+
+            <div class="form-cont" id="step1">
+                <div class="form-text">{$lang.money_pwd_info}</div>
+                <empty name="user.pay_pwd">
+                    <input name="oldpassword" id="oldpwd" type="hidden">
+
+                    <else/>
+                    <div class="input-cont">
+                        <span class="icon form-password"></span>
+                        <input class="input" onfocus="this.type='password'" name="oldpassword" id="oldpwd" autocomplete="off" placeholder="{$lang.old_pwd}">
+                    </div>
+                </empty>
+                <div class="input-cont">
+                    <span class="icon form-password"></span>
+                    <input class="input" onfocus="this.type='password'"  name="password" id="pwd" autocomplete="off" placeholder="{$lang.new_pwd}">
+                </div>
+                <div class="input-cont">
+                    <span class="icon form-password"></span>
+                    <input class="input" onfocus="this.type='password'"  name="password2" id="pwd2" autocomplete="off" placeholder="{$lang.new_pwd2}">
+                </div>
+                <a id="btnChange" class="btn submit">{$lang.ok}</a>
+                <a href="__URL__/find_pwd_mobile" class="link forgot-pw">{$lang.forgetPassword}</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script language="javascript">
+    $(function(){
+        $(".submit").click(function(){
+            pwd = $("#pwd").val();
+            pwd2 = $("#pwd2").val();
+            if( pwd == '' || pwd2 == ''){
+                showAlert('{$lang.no_pipei}');
+                return false;
+            }
+            if(pwd != pwd2){
+                showAlert('{$lang.no_pipei}');
+                return false;
+            }
+            $.post("__URL__/change_pwd", {pwd:pwd,pwd2:pwd2}, function(d){
+                showAlert(d.msg, function(){
+                    if(d.code == 1){
+                        window.location = "__APP__/Home/User/login";
+                    }
+                });
+
+            }, 'json');
+        });
+    })
+</script>
+<include file="Index/footer"/>

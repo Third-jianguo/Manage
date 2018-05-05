@@ -1,0 +1,95 @@
+<include file="Index/top" />
+<body class="zh-CN">
+
+<!-- <div class="float-cont">
+  <div class="cont-item">需要帮助</div>
+</div> -->
+<div class="container clear-float main">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item ">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item active">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr">
+        <div class="setting-title">{$lang.anquan_setting}>{$lang.bind_google}</div>
+        <div class="setting-panel google-auth">
+            <div class="text mb-25">{$lang.google1}</div>
+            <div class="text mb-25">{$lang.account_name}: <span class="black">{$user.name}</span></div>
+            <div class="qrcode-cont mb-25">
+                <div id="qrcode" class="qrcode">
+                    <img src="{$get_google_code_url}" />
+                </div>
+                <div class="qrcode-text">{$lang.key}: <span class="key">{$googleCode}</span></div>
+            </div>
+            <!--<div class="text">绑定手机短信验证码: </div>-->
+            <!--<div class="input-cont2">-->
+                <!--<input class="input" type="number" length="6" name="one_time_code">-->
+                <!--<a href="javascript:;" id="getToken" class="link get-token">发送验证码</a>-->
+            <!--</div>-->
+            <div class="text">{$lang.google_code}: </div>
+            <div class="input-cont2">
+                <input class="input" type="number" length="6" id="google_code" name="totp_password">
+            </div>
+
+            <div class="text">{$lang.how_to_app_google}?</div>
+            <div class="text black"><span class='key'>iPhone</span>{$lang.how_to_app_google1}</div>
+            <div class="text black mb-25"><span class='key'>Android</span>{$lang.how_to_app_google2}</div>
+            <!--<div class="text mb-25">绑定后，登录、提现、支付时需要谷歌二次验证，<span class='link view-gg-detail'>查看详细教程</span></div>-->
+            <div class="line"></div>
+            <div class="btn submit google_submit">{$lang.google_submit}</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script language="javascript">
+    $(function(){
+
+        $(".google_submit").click(function(){
+            key = $(".key").html();
+            google_code = $("#google_code").val();
+            name = $(".black").html();
+            $.post("__URL__/edit_google", {key:key,google_code:google_code,name:name}, function(d){
+                showAlert(d.msg, function(){
+                    if(d.code == 1){
+                        window.location = "__URL__/index";
+                    }
+                });
+
+            }, 'json');
+        });
+    })
+</script>
+<include file="Index/footer"/>

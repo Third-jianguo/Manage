@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>找回密码 - CoinCola</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.2.1.min.js"></script>
+    <script src="__PUBLIC__/btc/js/jquery-1.8.2.min.js"></script>
+    <script src="__PUBLIC__/btc/js/active.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/signup.css">
+    <link rel="stylesheet" type="text/css" href="/Public/alert/component.css" />
+
+    <!--<script data-cfasync="false" src="__PUBLIC__/btc/js/email-decode.min_3.js"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/common.js" charset="utf-8"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/login.js" charset="utf-8"></script>-->
+    <style>
+        .footer.fix {
+            position: absolute;
+        }
+
+        @media (max-width: 1500px) {
+            .footer.fix {
+                position: relative;
+                margin-top: 20px;
+            }
+        }
+    </style>
+    <script language="javascript">
+
+        $(function(){
+            $("#country_show").click(function(){
+                $(".chosen-drop").css("left", '0');
+                $("#check").focus();
+            });
+
+            $(".chosen-drop").mouseleave(function(){
+                $(".chosen-drop").css("left", '-9999px');
+
+            });
+
+            $(".active-result").each(function(){
+                $(this).click(function(){
+                    $("#country_code").val($(this).attr('value'));
+                    $("#country_show").html($(this).html());
+                    $(".chosen-drop").css("left", '-9999px');
+                });
+            });
+        })
+
+        function select_code(id, name){
+            $("#country_code").val(id);
+            $("#country_show").html(name);
+            $(".chosen-drop").css("left", '-9999px');
+        }
+        function get_tel(keyword){
+            var options = '';
+            $.post("__APP__/Home/Static/get_tel",{keyword:keyword},function(data){
+                $(".chosen-results").empty();
+                for(k in data){
+                    options +=
+                            '<li class="active-result" onclick="select_code(\''+data[k].id+'\',\''+data[k].name+'\')" value="'+
+                            data[k].id
+                            +'">'+
+                            data[k].name
+                            +'</li>';
+                }
+                $(".chosen-results").append(options);
+            },'json');
+        }
+
+    </script>
+</head>
+
+
+<body class="bg-white">
+
+<div class="header header-xl">
+    <div class="container clear-float">
+        <a href="/"><span class="logo-b"></span></a>
+
+        <div class="xl-logo">
+            <h1 class="xl-title">{$lang.find_pwd}</h1>
+
+            <h3 class="xl-decs">{$lang.find_pwdD}</h3>
+        </div>
+        <div class="opt">
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+        </div>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="jianguoAlert"> <div class="md-content"> <h3>Hello</h3> <div> <p id="alertContent">nice to meet you</p> <button class="md-close" >{$lang.close}</button> </div> </div> </div> <div class="md-overlay"></div>
+
+<script language="javascript">
+    var return_func = '';
+    function showAlert(content, func){
+        return_func = func;
+        $("#alertContent").html(content);
+        $("#jianguoAlert").addClass("md-show");
+    }
+    $(function(){
+        $(".md-close").click(function(){
+            $("#jianguoAlert").removeClass("md-show");
+            if(return_func != '' && return_func != undefined){
+                return_func();
+                return_func = '';
+            }
+        });
+    })
+</script>
+<div class="container-s pt-20">
+
+    <form class="form-cont">
+        <input type="hidden" id="csrf" value="{$csrf}" />
+        <div class="form-title mb-20">
+            <span class="form-name">{$lang.find_use_tel} </span>
+            <span class="form-decs"><a href="__URL__/find_pwd_email" class="link">{$lang.find_use_email}</a></span>
+        </div>
+        <div class="input-cont">
+            <span class=" form-location"></span>
+            <input type="hidden" name="country_code" id="country_code" />
+
+            <div class="chosen-container chosen-container-single" style="width: 400px;" title="">
+                <a class="chosen-single" tabindex="-1"><span id="country_show">中国 86</span>
+                    <div><b></b></div>
+                </a>
+
+                <div class="chosen-drop">
+                    <div
+                            class="chosen-search"><input type="text" id="check" onkeyup="get_tel(this.value)"
+                                                         autocomplete="off"></div>
+                    <ul class="chosen-results">
+                        <volist name="telList" id="tel">
+                            <li class="active-result" value="{$tel.id}">{$tel.name}</li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="input-cont">
+            <span class="icon form-phone"></span>
+            <input class="input" id="mobile" type="phone" placeholder="请输入手机号码">
+
+        </div>
+        <div class="input-cont">
+            <span class="icon form-token"></span>
+            <input class="input" type="number" id="mobile_code"  placeholder="请输入验证码">
+
+            <a class="link get-token">{$lang.send_code}</a>
+        </div>
+        <div class="input-cont">
+            <span class="icon form-token"></span>
+            <input class="input" type="text" id="code" placeholder="请输入右侧图像验证码">
+
+            <div class="captcha-cont">
+                <img id="verify" src="__URL__/verify" width="100%" onclick="this.src='__URL__/verify?'+Math.random()"/>
+            </div>
+        </div>
+        <a class="btn submit next ">{$lang.next}</a>
+    </form>
+
+</div>
+
+
+<script language="javascript">
+    $(".submit").click(function () {
+        code = $("#code").val();
+        mobile_code = $("#mobile_code").val();
+        mobile = $("#mobile").val();
+        csrf = $("#csrf").val();
+        country_code = $("#country_code").val();
+        if(country_code == ''){
+            country_code = 37;
+        }
+        if (code == '') {
+            showAlert('{$lang.err_code}');
+            return false;
+        }
+        if (mobile == '') {
+//            showAlert("");
+            return false;
+        }
+
+        $.post("__URL__/find_pwd_mobile",{csrf:csrf,code:code,mobile_code:mobile_code,mobile:mobile,tel_country:country_code},function(msg){
+
+            showAlert(msg.msg, function(){
+                if (msg.code == 1) {
+                    window.location = "__APP__/Home/User/edit_password/2222";//直接修改密码
+                }
+            });
+
+        }, 'json');
+    });
+
+
+</script>
+<include file="Index/footer"/>

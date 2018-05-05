@@ -1,0 +1,140 @@
+<include file="Index/top" />
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").removeClass("jiajian");
+
+
+                    /*   $(".zk").eq(e).text("{$lang.hide}")*/;
+                } else {
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    $(this).addClass("jiajian");
+
+                    $(".menu-item-cont").eq(e).hide();
+
+                }
+
+            });
+        });
+    });
+</script>
+<div class="container clear-float main con_top">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item active">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fr">
+        <div class="setting-title">{$lang.anquan_setting}</div>
+        <div class="setting-panel">
+            <ul class="safe-list">
+                <li class="safe-item money-pw  active">
+                    <div class="icon-money-pw"></div>
+                    <div class="fl">
+                        <div class="opt-title">{$lang.passwordToMoney}</div>
+                        <div class="opt-decs">{$lang.pwdD}</div>
+                    </div>
+                    <div class="fr">
+                        <a href="__URL__/edit_password" class=" line-srtting hasset btn btn_border">{$lang.edit}</a>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li class="safe-item mail-check  ">
+                    <div class="icon-mail-check"></div>
+                    <div class="fl">
+                        <div class="opt-title">{$lang.bind_email}</div>
+                        <div class="opt-decs">{$lang.bind_emailD}</div>
+                    </div>
+                    <div class="fr">
+
+                        <a href="__URL__/edit_email" class="line-srtting hasset btn btn_border">{$lang.edit}</a>
+                        <!--<a href="__URL__/edit_email" class="btn noset hasset">{$lang.edit}</a>-->
+
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li class="safe-item bind-phone active">
+                    <div class="icon-bind-phone"></div>
+                    <div class="fl">
+                        <div class="opt-title">{$lang.bind_tel}</div>
+                        <div class="opt-decs">{$lang.bind_telD}</div>
+                    </div>
+                    <div class="fr">
+
+                        <a href="__URL__/edit_tel" class=" line-srtting hasset btn btn_border">{$lang.edit}</a>
+
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li class="safe-item login-pw active">
+                    <div class="icon-login-pw"></div>
+                    <div class="fl">
+                        <div class="opt-title">{$lang.login_pwd}</div>
+                        <div class="opt-decs">{$lang.use_login}</div>
+                    </div>
+                    <div class="fr">
+                        <a href="__URL__/edit_login" class=" line-srtting hasset btn btn_border">{$lang.edit}</a>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+
+                <li class="safe-item google-auth ">
+                    <div class="icon-google-a"></div>
+                    <div class="fl">
+                        <div class="opt-title">{$lang.bind_google}</div>
+                        <div class="opt-decs">{$lang.bind_googleD}</div>
+                    </div>
+                    <div class="fr">
+
+                        <empty name="user.google" >
+                            <a href="__URL__/edit_google" class="btn noset">{$lang.enable}</a>
+                            <else/>
+                            <a href="javascript:void(0)" class="btn noset">{$lang.is_enable}</a>
+                        </empty>
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+<include file="Index/footer"/>

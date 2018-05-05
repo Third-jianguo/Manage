@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>找回密码 - CoinCola</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.2.1.min.js"></script>
+    <script src="__PUBLIC__/btc/js/jquery-1.8.2.min.js"></script>
+    <script src="__PUBLIC__/btc/js/active.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/signup.css">
+    <link rel="stylesheet" type="text/css" href="/Public/alert/component.css" />
+
+    <!--<script data-cfasync="false" src="__PUBLIC__/btc/js/email-decode.min_3.js"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/common.js" charset="utf-8"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/login.js" charset="utf-8"></script>-->
+    <style>
+        .footer.fix {
+            position: absolute;
+        }
+
+        @media (max-width: 1500px) {
+            .footer.fix {
+                position: relative;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+
+<div class="header header-xl">
+    <div class="container clear-float">
+        <a href="/"><span class="logo-b"></span></a>
+
+        <div class="xl-logo">
+            <h1 class="xl-title">{$lang.find_pwd}</h1>
+
+            <h3 class="xl-decs">{$lang.find_pwdD}</h3>
+        </div>
+        <div class="opt">
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="md-modal md-effect-1" id="jianguoAlert"> <div class="md-content"> <h3>Hello</h3> <div> <p id="alertContent">nice to meet you</p> <button class="md-close" >{$lang.close}</button> </div> </div> </div> <div class="md-overlay"></div>
+
+<script language="javascript">
+    var return_func = '';
+    function showAlert(content, func){
+        return_func = func;
+        $("#alertContent").html(content);
+        $("#jianguoAlert").addClass("md-show");
+    }
+    $(function(){
+        $(".md-close").click(function(){
+            $("#jianguoAlert").removeClass("md-show");
+            if(return_func != '' && return_func != undefined){
+                return_func();
+                return_func = '';
+            }
+        });
+    })
+</script>
+<div class="container-s pt-20">
+    <form class="form-cont">
+        <input type="hidden" id="csrf" value="{$csrf}" />
+        <div class="form-title mb-20">
+            <span class="form-name">{$lang.find_use_email} </span>
+            <span class="form-decs"><a href="__URL__/find_pwd_mobile" class="link">{$lang.find_use_tel}</a></span>
+        </div>
+        <div class="input-cont">
+            <span class="icon form-email"></span>
+            <input class="input" id="email" type="email" placeholder="请输入邮箱地址">
+
+        </div>
+        <div class="input-cont">
+            <span class="icon form-token"></span>
+            <input class="input" type="number" id="email_code" placeholder="请输入验证码">
+
+            <a class="link get-token">{$lang.send_code}</a>
+        </div>
+        <div class="input-cont">
+            <span class="icon form-token"></span>
+            <input class="input" type="text" id="code" placeholder="请输入右侧图像验证码">
+
+            <div class="captcha-cont">
+                <img id="verify" src="__URL__/verify" width="100%" onclick="this.src='__URL__/verify?'+Math.random()"/>
+            </div>
+        </div>
+        <a class="btn submit next ">{$lang.next}</a>
+    </form>
+
+</div>
+
+
+<script language="javascript">
+    $(".submit").click(function () {
+        code = $("#code").val();
+        email = $("#email").val();
+        email_code = $("#email_code").val();
+        csrf = $("#csrf").val();
+        if (code == '') {
+            showAlert('{$lang.err_code}');
+            return false;
+        }
+
+        $.post("__URL__/find_pwd_email", {csrf: csrf, code: code, email: email, email_code: email_code}, function (msg) {
+            showAlert(msg.msg, function(){
+                if (msg.code == 1) {
+                    window.location = "__APP__/Home/User/change_pwd/";//直接修改密码
+                }
+            });
+        }, 'json');
+    });
+
+
+    var s ;
+    $(".get-token").click(function(){
+        if(s != undefined){
+            return false;
+        }
+        clearInterval(s);
+        var t = 59;
+        var email = $("#email").val();
+        if(email == ''){
+            showAlert("请输入邮箱");
+            return false;
+        }
+        $.post("__URL__/get_email_code", {email:email}, function(e){
+            if(e.code == 1){
+                $(".get-token").html("再次发送 60");
+                s = setInterval(function(){
+                    if(t == 0){
+                        $(".get-token").html("再次发送");
+                        clearInterval(s);
+                        s = undefined;
+                    }else{
+                        $(".get-token").html("再次发送 " + t--);
+                    }
+                }, 1000);
+            }else{
+                showAlert(e.msg);
+            }
+        },'json');
+
+
+    });
+</script>
+<include file="Index/footer"/>

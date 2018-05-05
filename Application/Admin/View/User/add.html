@@ -1,0 +1,36 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center" >
+    <table>
+
+        <tr>
+            <td align="right" height="40px"><label>用户名：</label></td>
+            <td align="left"><input name="name" class="input-text radius"  style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>密码：</label></td>
+            <td align="left"><input name="login_pwd" class="input-text radius"  style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+        <td align="right" height="40px"><label>国家：</label></td>
+        <td align="left">
+            <select name="tel_country">
+                <option value="0">--请选择--</option>
+                <volist name="tel" id="t">
+                    <option value="{$t.sn}">{$t.name}</option>
+                </volist>
+            </select>
+        </td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>手机号码：</label></td>
+            <td align="left"><input name="tel" class="input-text radius"  style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>E-mail：</label></td>
+            <td align="left"><input name="email" class="input-text radius"  style="width:200px;height: 30px"></td>
+        </tr>
+
+
+    </table>
+</form>
+<include file="Index/foot" />

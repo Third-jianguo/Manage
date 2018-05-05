@@ -1,0 +1,265 @@
+<include file="Index/header"/>
+<div>
+    <nav class="breadcrumb"><i class="fa fa-home"></i> 系统管理员列表
+        <div class="nav_right_nav">&nbsp;&nbsp;
+            <volist name="ActBtns" id="btn">
+                <eq name="btn.action" value="add">
+                    <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action} add message-right">
+                        <i class="fa fa-{$btn.icon}"></i>&nbsp;{$btn.name}
+                    </a>
+                </eq>
+            </volist>
+        </div>
+    </nav>
+    <div class="page-container">
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg table-hover table-sort">
+                <thead>
+                <tr class="text-c">
+                    <!--<th width="40"><input name="" type="checkbox" value=""></th>-->
+                    <th width="40">ID</th>
+                    <th width="60">用户名</th>
+                    <!--<th>密码</th>-->
+                    <th>登陆时间</th>
+                    <th>ip</th>
+                    <th>有权限小区</th>
+                    <th width="130">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="vo">
+                    <tr class="text-c va-m">
+                        <!--<td><input name="" type="checkbox" value=""></td>-->
+                        <td>{$vo.id}</td>
+                        <td class="text-l"><a style="text-decoration:none">{$vo.username}</a></td>
+                        <!--<td class="text-l">{$vo.password}(加密)</td>-->
+                        <td><eq name="vo.login_time" value="0">尚未登陆<else/>{$vo.login_time|date='Y-m-d H:i:s',###}</eq></td>
+                        <td class="td-status"><eq name="vo.login_ip" value="">尚未登陆<else/>{$vo.login_ip}</eq></td>
+                        <td>{$vo.rname|subtext=16}</td>
+                        <td class="td-manage">
+                            <eq name="vo.type" value="3">
+                                <if condition="$_SESSION['admin']['type'] == 1 OR $_SESSION['admin']['id'] == 99">
+                                    <volist name="ActBtns" id="btn">
+                                        <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.username}" class="{$btn.action}">
+                                            <i class="fa fa-{$btn.icon}"></i>&nbsp;
+                                        </a>
+                                    </volist>
+                                </if>
+                            <else/>
+                                <volist name="ActBtns" id="btn">
+                                    <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.username}" class="{$btn.action}">
+                                        <i class="fa fa-{$btn.icon}"></i>&nbsp;
+                                    </a>
+                                </volist>
+                            </eq>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="Index/foot"/>
+<script>
+    $(document).ready(function () {
+        $('.rbac').click(function () {
+            var id = $(this).data('id');
+            layer.open({
+                type: 2,
+                title: '管理员授权管理',
+                area: ['90vw', '85vh'],
+                content: '__URL__/rbac/id/' + id + '.html'
+
+            })
+        })
+        /**
+         * 添加菜单按钮
+         */
+        $('.add').click(function () {
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 新增管理员',
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/add',
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/add', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        });
+        /**
+         * 修改菜单按钮单击
+         */
+        $('.save').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/save/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/save', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /**
+         * 修改昵称按钮单击
+         */
+        $('.nickname').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/nickname/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/nickname', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /**
+         * 修改昵称按钮单击
+         */
+        $('.erplab').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/erplab/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/erplab', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /**
+         * 小区权限按钮单击
+         */
+        $('.region').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['85vw', '90vh'],
+                fix: false, //不固定
+                content: '__URL__/region/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/region', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /**
+         * 删除数据
+         */
+        $('.del').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否删除' + title + '? <br>删除后不可恢复，请谨慎操作！', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['删除', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/del', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        })
+
+    })
+
+</script>

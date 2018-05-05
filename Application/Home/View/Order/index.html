@@ -1,0 +1,186 @@
+<include file="Index/top"/>
+<script>
+    $(function () {
+        $(".ui-popup-backdrop").each(function (e) {
+            $(".complain").eq(e).click(function () {
+                if ($(".ui-popup-backdrop").eq(e).css("display") == "none") {
+                    $(".ui-popup-backdrop").eq(e).show();
+
+                }
+
+            });
+        });
+    });
+</script>
+
+<div class="container pt-20 clear-float ad-detail">
+    <div class="detail-left ">
+        <div class="poster-info clear-float">
+            <a href="/user/1000130009"><img class="poster-head fl" src="images/63410c6c4b294d868b4778ec79daffb2.jpg"
+                                            alt=""></a>
+
+            <div class="fl">
+                <div class="user-name">
+                    <a href="/user/1000130009">wang521yu</a>
+
+                    <span style="" class="icon-message" userid="1000130009"></span>
+
+                </div>
+                <div class="poster-info-cont clear-float">
+          <span class="poster-info-item">
+            <div class="item-d">30+</div>
+            <div class="item-n">{$lang.dealCount}</div>
+          </span>
+          <span class="poster-info-item">
+            <div class="item-d">18</div>
+            <div class="item-n">{$lang.trustCount}</div>
+          </span>
+          <span class="poster-info-item">
+            <div class="item-d">100%</div>
+            <div class="item-n">{$lang.goodReputation}</div>
+          </span>
+          <span class="poster-info-item">
+            <div class="item-d">5+ BTC</div>
+            <div class="item-n">{$lang.dealHistory}</div>
+          </span>
+                </div>
+            </div>
+        </div>
+
+        <table class="table-info pt-30">
+            <tbody>
+            <tr>
+                <th>{$lang.priceReport}:</th>
+                <td></td>
+                <td class="price">107174.73 CNY/BTC</td>
+            </tr>
+            <tr>
+                <th>{$lang.dealLimit}:</th>
+                <td></td>
+                <td class="ad-limits">10000-11532 CNY</td>
+            </tr>
+            <tr>
+                <th>{$lang.paymentMethod}:</th>
+                <td></td>
+                <td>支付宝</td>
+            </tr>
+            <tr>
+                <th>{$lang.paymentTime}:</th>
+                <td></td>
+                <td>30 分钟</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-cont ad-detail clear-float">
+            <div class="form-title">
+
+
+                <span class="form-name">{$lang.buyHowMany}？</span>
+
+
+                <span class="form-name"></span>
+            </div>
+            <div class="input-cont-o input2-o mr-12-o">
+                <input type="number" placeholder="{$lang.buyHowMuch}" class=" input-o " name="amount">
+
+                <div class="input-after">CNY</div>
+            </div>
+            <span class="icon-equal-o"></span>
+
+            <div class="input-cont-o input2-o">
+                <input type="number" placeholder="{$lang.buyHowManyNumber}" class="input-o" name="qty">
+
+                <div class="input-after">BTC</div>
+            </div>
+
+
+            <!--<a id="noLogin" style="" href="/signup/phone?backto=/ad-detail/31778" class="btn2 submit">免费注册，立即购买</a>-->
+            <a id="haveLogin" style="" href="javascript:;" class="btn-o submit-o disable-o">{$lang.buyNow}</a>
+            <!--            <a class="btn-check-two" href="/setting/user-verification?backto=/ad-detail/32628">进行实名认证</a>
+                        <span class="trade_decs">该广告主需要您进行实名认证之后才能进行交易</span>-->
+
+
+            <div class="form-title pt-30">
+                <span class="form-name">{$lang.dealKnow}</span>
+            </div>
+            <div class="line mt-20 mb-20"></div>
+
+            <p class="p">{$lang.dealKnowContent}</p>
+
+        </div>
+    </div>
+    <div class="detail-right">
+        <div class="form-cont">
+            <div class="form-title pt-30">
+                <span class="form-name">{$lang.advertisingComment}</span>
+            </div>
+            <div class="line mt-20 mb-20"></div>
+            <p class="p mb-20">支付宝账号 * 王忠彬；<br><br>付款肯定放行；肯定好评<br><br>如果没有及时回复 请加微信号 *</p>
+
+            <p class="p mb-20">诚信交易</p>
+
+            <div class="complain">
+                <span class="icon-complain"></span>
+                <span class="text">{$lang.complain}</span>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<div tabindex="0"
+     style="display: none;     background: rgba(0,0,0,0.7); position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; overflow: hidden; -webkit-user-select: none; z-index: 1024;"
+     class="ui-popup-backdrop">
+<div tabindex="-1" aria-labelledby="title:1515226772146" aria-describedby="content:1515226772146"
+     class=" ui-popup ui-popup-modal ui-popup-show ui-popup-focus" role="alertdialog"
+     style="position: absolute; outline: 0px; left: 746px; top: 218px; z-index: 1024;" >
+    <div i="dialog" class="ui-dialog">
+        <div class="ui-dialog-arrow-a"></div>
+        <div class="ui-dialog-arrow-b"></div>
+        <table class="ui-dialog-grid">
+            <tbody>
+            <tr>
+                <td i="header" class="ui-dialog-header" style="display: none;">
+                    <button i="close" class="ui-dialog-close" title="cancel">×</button>
+                    <div i="title" class="ui-dialog-title" id="title:1515226772146"></div>
+                </td>
+            </tr>
+            <tr>
+                <td i="body" class="ui-dialog-body">
+                    <div i="content" class="ui-dialog-content0" id="content:1515226772146">
+                        <div class="complain-cont" style="">
+                            <div class="title">举报这则广告</div>
+                            <div class="desc">举报是指您对此交易有不满或者给我们反馈其他情况，仅用于反馈情况，我们核实后会进行相关处理，如果订单遇到纠纷，请通过申诉渠道解决。</div>
+                            <div class="opt-cont clear-float">
+                                <label class="label">一直不响应</label>
+                                <label class="label">已付款不放币</label>
+                                <label class="label nr">涉嫌欺诈</label>
+                                <label class="label">诱导其他交易</label>
+                                <label class="label">态度差</label>
+                                <label class="label nr">挂虚假广告</label>
+                            </div>
+                            <textarea name="content" maxlength="1000" class="textarea"
+                                      placeholder="请在此反馈更多内容"></textarea>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td i="footer" class="ui-dialog-footer">
+                    <div i="statusbar" class="ui-dialog-statusbar" style="display: none;"></div>
+                    <div i="button" class="ui-dialog-button">
+                        <button type="button" i-id="close">关闭</button>
+                        <button type="button" i-id="complain_ok">匿名举报</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</body>
+
+<include file="Index/footer"/>

@@ -1,0 +1,254 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name = "format-detection" content="telephone = no" />
+    <title>PRCBroker</title>
+    <link rel="stylesheet" type="text/css" href="/Public/Home/css/reset.css"/>
+    <script type="text/javascript" src="/Public/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/Public/Home/js/banner.js"></script>
+    <script type="text/javascript" src="/Public/Home/js/js_z.js"></script>
+    
+
+    <link rel="stylesheet" type="text/css" href="/Public/Home/css/thems.css">
+    <link rel="stylesheet" type="text/css" href="/Public/Home/css/responsive.css">
+    <link type="text/css" href="/Public/Home/css/style.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/Public/Home/js/scroll.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.list_lh li:even').addClass('lieven');
+        })
+        $(function () {
+            $("div.list_lh").myScroll({
+                speed: 40, //数值越大，速度越慢
+                rowHeight: 68 //li的高度
+            });
+        });
+
+
+        $(function () {
+            $('#owl-demo').owlCarousel({
+                items: 1,
+                navigation: true,
+                navigationText: ["上一个", "下一个"],
+                autoPlay: true,
+                stopOnHover: true
+            }).hover(function () {
+                $('.owl-buttons').show();
+            }, function () {
+                $('.owl-buttons').hide();
+            });
+        });
+    </script>
+
+    
+    
+</head>
+
+<body>
+<!--头部-->
+<script>
+
+    function show1() {
+        document.getElementById("div1").style.display = "block";
+        document.getElementById("div2").style.display = "none";
+        document.getElementById("div3").style.display = "none";
+        document.getElementById("div4").style.display = "none";
+        document.getElementById("div5").style.display = "none";
+    }
+    ;
+    function show2() {
+        document.getElementById("div2").style.display = "block";
+        document.getElementById("div1").style.display = "none";
+        document.getElementById("div3").style.display = "none";
+        document.getElementById("div4").style.display = "none";
+        document.getElementById("div5").style.display = "none";
+    }
+    function show3() {
+        document.getElementById("div3").style.display = "block";
+        document.getElementById("div1").style.display = "none";
+        document.getElementById("div2").style.display = "none";
+        document.getElementById("div4").style.display = "none";
+        document.getElementById("div5").style.display = "none";
+    }
+    function show4() {
+        document.getElementById("div4").style.display = "block";
+        document.getElementById("div1").style.display = "none";
+        document.getElementById("div2").style.display = "none";
+        document.getElementById("div3").style.display = "none";
+        document.getElementById("div5").style.display = "none";
+    }
+    function show5() {
+        document.getElementById("div5").style.display = "block";
+        document.getElementById("div1").style.display = "none";
+        document.getElementById("div2").style.display = "none";
+        document.getElementById("div4").style.display = "none";
+        document.getElementById("div3").style.display = "none";
+    }
+	function sho1() {
+        document.getElementById("di1").style.display = "block";
+      
+    }
+
+    $(function () {
+        $("#main_g > li").click(tab);
+
+        function tab() {
+            $(this).addClass("ll").siblings().removeClass("ll");
+            $(this).addClass("act").siblings().removeClass("act");
+            /*  $(".nav-img").addClass("act1").siblings().removeClass("act1"); */
+            var tab = $(this).attr("data-title");
+            $("#" + tab).show().siblings().hide();
+            $("span").show();
+            $("ul").show();
+        };
+
+    });
+$(document).ready(function(){
+  $("#icon-zhuce").click(function(){
+    $(".icon").toggle();
+  });
+});
+	
+	
+</script>
+
+<div class="header">
+	<div>
+    	
+    </div>
+    <div class="head clearfix">
+        <div class="logo">
+        	<a href="/"><img src="/Public/Home/picture/logo.png" alt="鑫科"/></a>
+            
+        </div>
+        <div class="nav_m">
+            <div class="n_icon">
+            	<a href="#"><img     src="/Public/Home/images/weixin.png"  width="40"  alt="鑫科"/></a>
+                <p style="   text-align:  center;">菜单</p>
+               
+            </div>
+            <div class="n_icon2">
+            	 <a href="http://www.prcbrokers.com" ><img src="/Public/Home/images/qq.png"  width="40" alt="鑫科"/>
+                 <p style="   text-align:  center;">登录</p>
+                	 
+				</a>
+            		
+            	<a href="#" id="icon-zhuce"  ><img src="/Public/Home/images/zixun.png"    width="40" alt="鑫科"/>
+                	<div class="icon" style=" display:none">
+                     
+                         <img src="/Public/Home/images/kefu.jpg"  width="170" alt="鑫科"/>
+                         <span>客服二维码</span>
+                         <div>&nbsp </div>
+                         
+                         <img src="/Public/Home/images/gzh.jpg"  width="170" alt="鑫科"/>
+                         <span>公众号二维码</span>
+                         <p onclick="call()">官方联系电话 :  010 8900 7361 <br>QQ 联系方式 : 274 434 9805</p>
+                       
+					</div>
+                    <p style="   text-align:  center;">在线咨询</p>
+                </a>
+                
+                <a href="https://itunes.apple.com/cn/app/metatrader-4/id496212596? utm_source=www.metatrader4.com&utm_campaign=download" class="download-href"><img src="/Public/Home/images/lianxi.png"  width="40"  alt="鑫科"/>
+                	<p style="   text-align:  center;">软件下载</p>
+                </a>
+                
+            </div>
+            <ul id="main_g" class="nav clearfix">
+                <li class="now"><a  class="top_left" href="/">首页</a>
+                	
+                </li>
+
+                <li><a class="top_left" onClick="show1()" href="javascript:void(0)">交易</a>
+                	
+                    <div class="top2_main " id="div1" style="display: none">
+                        <a href="__URL__/waihui.html">外汇</a>
+                        <a href="__URL__/guijinshu.html">贵金属</a>
+                        <a href="__URL__/cfd.html">CFD产品</a>
+                        <a href="__URL__/dazongshangping.html">大宗商品</a>
+                        <a href="javascript:void(0)">金融指数</a>
+                    </div>
+                     
+                </li>
+                <li><a class="top_left" onClick="show2()" href="javascript:void(0)">外汇</a>
+                	
+                	<div class="top2_main" id="div2" style="display: none">
+                    <a href="__URL__/xinshourumen.html">新手入门</a>
+                    <a href="__URL__/xuexiziyuan.html">学习资源</a>
+                    <a href="__URL__/yanjiubaogao.html">研究报告</a>
+               	 	</div>
+                    
+                </li>
+                <li><a class="top_left" onClick="show3()" href="javascript:void(0)">合作</a>
+                	
+                	<div class="top2_main" id="div3" style="display: none">
+                    <a href="__URL__/jigoukehu.html">机构客户</a>
+                    <a href="__URL__/baibiaohezuo.html">白标合作</a>
+                    <a href="__URL__/jiejuefangan.html">解决方案</a>
+               		 </div>
+                     
+                </li>
+                <li>
+                	<a class="top_left" onClick="show4()" href="javascript:void(0)">新闻</a>
+                   
+                	<div class="top2_main" id="div4" style="display: none">
+                    <a href="__URL__/index#news">新闻动态</a>
+                     
+                	</div>
+                   
+                </li>
+                <li><a  class="top_left" onClick="show5()" href="javascript:void(0)">客户</a>
+               		 
+                	 <div class="top2_main" id="div5" style="display: none">
+                    <a href="http://www.prcbrokers.com">登录</a>
+                    
+                	</div>
+                    
+                </li>
+                <li>
+                	
+                	<a class="top_left download-href" href="https://itunes.apple.com/cn/app/metatrader-4/id496212596? utm_source=www.metatrader4.com&utm_campaign=download">下载</a>
+                    <div class="top_bottom"></div> 
+                </li>
+               
+                
+                
+                
+               
+
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/Public/Home/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/Public/Home/js/wow.min.js"></script>
+
+    <script type="text/javascript" src="/Public/Home/js/jq_scroll.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+     $("#scrollDiv").Scroll({line:1,speed:500,timer:3000,up:"but_up",down:"but_down"});
+});
+
+ var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  
+  if(isAndroid){
+	$(".download-href").attr("href", "https://mobile.baidu.com/item?docid=10831423&f0=search_searchContent%400_appBaseNormal%400");
+  }
+  
+ // alert('是否是Android：'+isAndroid);
+  //alert('是否是iOS：'+isiOS);
+
+
+function call(){
+    window.location = "tel:01089007361";
+}
+</script>
+

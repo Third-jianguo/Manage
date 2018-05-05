@@ -1,0 +1,155 @@
+<include file="Index/top"/>
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    /*   $(".zk").eq(e).text("{$lang.hide}")*/;
+                } else {
+                    $(".icon-fold-gg").removeClass("jiajian");
+                    $(this).addClass("jiajian");
+                    $(".menu-item-cont").eq(e).hide();
+                }
+            });
+        });
+    });
+</script>
+<div class="con_top container clear-float main ">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item active">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item ">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr">
+        <div class="setting-title">{$lang.userInfo}</div>
+        <div class="setting-panel">
+            <div class="head-cont">
+                <img class="user-logo" onerror="this.src='/Public/images/noHead.png'" src="{$user.head_img}" alt="">
+                <a class="edit-logo">编辑头像</a>
+
+                <form id="headImgForm">
+                    <input class="avatar-input" id="headImg" name="headImg" type="file"
+                           accept="image/jpg,image/jpeg,image/png">
+                </form>
+            </div>
+            <div class="user-profile">
+                <div class="user-name">{$user.name}</div>
+                <!-- <div class="grey-text">VIP 666</div> -->
+                <ul class="profile-detail">
+                    <li class="profile-item">
+                        <!-- <span class="item-name">UID: </span><span class="item-text">1000140278</span> -->
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.authentication}: </span>
+                        <eq name="user.verify" value="1">
+                            {$lang.verify}
+                            <else/>
+                            <a href="__URL__/setting_verify" class="link" style="    color: #1798f2;">{$lang.unverified}</a>
+                        </eq>
+
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.email}: </span>
+                        <empty name="user.email">
+                            <a href="__URL__/edit_email" class="link" style="    color: #1798f2;">{$lang.unverified}</a>
+                            <else/>
+                            {$lang.verify}
+                        </empty>
+
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.mobile}: </span>
+
+                        <span class="item-text">{$lang.verify}</span>
+
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.registerTime}: </span>
+                        <span class="item-text">{$user.createtime|date="Y-m-d H:s:i",###}</span>
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.dealFirst}: </span>
+                        <span class="item-text">{$user.firest_pay_time|date="Y-m-d H:s:i",###}</span>
+                    </li>
+                    <!--<li class="profile-item">-->
+                        <!--<span class="item-name">{$lang.language}: </span>-->
+                        <!--<select name="language" id="setLang" class="lang-select">-->
+                            <!--<option value="zh-CN" selected="">简体中文</option>-->
+                            <!--<option value="zh-HK">繁體中文</option>-->
+                            <!--<option value="en-US">English</option>-->
+                        <!--</select>-->
+                    <!--</li>-->
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.trustNum}: </span>
+                        <span class="item-text">{$lang.trusted} {$trust.trust} {$lang.trusted2}</span>
+                    </li>
+                    <li class="profile-item">
+                        <span class="item-name">{$lang.dealCount}: </span>
+                        <span class="item-text">{$trust.dealCount}</span>
+                    </li>
+                    <!--<li class="profile-item">-->
+                        <!--<span class="item-name">累计交易量: </span>-->
+                        <!--<span class="item-text">0 BTC</span>-->
+                    <!--</li>-->
+                </ul>
+                <div class="form-cont">
+                    <div class="input-cont new-ad">
+                        <textarea class="input textarea" name="intro" id="intro" autocomplete="off"
+                                  placeholder="{$lang.individual}">{$_SESSION['user']['intro']}</textarea>
+
+                        <div class="mt-10">{$lang.individualComment}</div>
+                    </div>
+                    <a class="btn1 submit  save-mark">{$lang.save}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script language="javascript">
+    $(function(){
+        $(".save-mark").click(function(){
+            intro = $("#intro").val();
+            $.post("__URL__/edit_intro", {intro:intro}, function(d){
+                showAlert(d.msg, function(){
+                    location.reload();
+                });
+            }, 'json');
+        });
+    })
+</script>
+
+<include file="Index/footer"/>

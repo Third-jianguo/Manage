@@ -1,0 +1,18 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <input type="hidden" name="id" value="{$admin.id}">
+    <table>
+        <tr>
+            <td align="right" height="40px" width="35%"><label>选择商户：</label></td>
+            <td align="left">
+                <select name="erplab" class="level select radius">
+                    <option value="0" <eq name="admin.erplab" value="0">selected</eq> >请选择</option>
+                    <volist name="list" id="vo">
+                        <option value="{$vo.id}" <eq name="admin.erplab" value="$vo.id">selected</eq> >{$vo.l_name}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>
+<include file="Index/foot" />

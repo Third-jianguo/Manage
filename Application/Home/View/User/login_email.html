@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录 - CoinCola</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.2.1.min.js"></script>
+    <script src="__PUBLIC__/btc/js/jquery-1.8.2.min.js"></script>
+    <script src="__PUBLIC__/btc/js/active.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/signup.css">
+    <link rel="stylesheet" type="text/css" href="/Public/alert/component.css"/>
+
+    <style>
+        .footer.fix {
+            position: absolute;
+        }
+
+        @media (max-width: 1500px) {
+            .footer.fix {
+                position: relative;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+<div class="header header-xl">
+    <div class="container clear-float">
+        <a href="/"><span class="logo-b"></span></a>
+
+        <div class="xl-logo">
+            <h1 class="xl-title">欢迎来到 CoinCola</h1>
+
+            <h3 class="xl-decs">安全可信赖的香港场外交易平台</h3>
+        </div>
+        <div class="nav clear-float fl">
+            <a class="nav-item" href="/">首页</a>
+            <volist name="menu" id="m">
+                <eq name="m.parent" value="0">
+                    <a class="nav-item" href="{$m.url}">{$m.name}</a>
+                </eq>
+            </volist>
+        </div>
+        <div class="clear-float fr">
+            <a class="user-action" href="__APP__/Home/User/register"><span class="sp sp-register"></span><span
+                    class="va-middle">注册</span></a>
+            <!-- <a class="user-action" href="/login-email"><span class="sp sp-login"></span><span class="va-middle">登录</span></a> -->
+        </div>
+        <div class="opt">
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+        </div>
+    </div>
+</div>
+<div class="md-modal md-effect-1" id="jianguoAlert"> <div class="md-content"> <h3>Hello</h3> <div> <p id="alertContent">nice to meet you</p> <button class="md-close" >{$lang.close}</button> </div> </div> </div> <div class="md-overlay"></div>
+
+<script language="javascript">
+    var return_func = '';
+    function showAlert(content, func) {
+        return_func = func;
+        $("#alertContent").html(content);
+        $("#jianguoAlert").addClass("md-show");
+    }
+    $(function () {
+        $(".md-close").click(function () {
+            $("#jianguoAlert").removeClass("md-show");
+            if (return_func != '' && return_func != undefined) {
+                return_func();
+                return_func = '';
+            }
+        });
+    })
+</script>
+<div class="container-s pt-20">
+    <form class="form-cont">
+        <input type="hidden" id="csrf" value="{$csrf}"/>
+
+        <div class="form-title mb-20">
+            <span class="form-name">邮箱登录 </span>
+            <span class="form-decs">使用<a href="__URL__/login" class="link">手机登录 </a></span>
+        </div>
+
+        <div class="input-cont">
+            <span class="icon form-email"></span>
+            <input class="input" id="email" name="email" placeholder="请输入邮箱">
+        </div>
+        <div class="input-cont">
+            <span class="icon form-password"></span>
+            <input class="input" type="text" onfocus="this.type='password'" name="password" id="password" autocomplete="off" placeholder="请输入密码(6~16个字符或字母组成)">
+        </div>
+        <div class="input-cont">
+            <span class="icon form-token"></span>
+            <input class="input" type="text" id="code" name="code" placeholder="请输入右侧图像验证码">
+
+            <div class="captcha-cont">
+                <img id="verify" src="__URL__/verify" width="100%" onclick="this.src='__URL__/verify?'+Math.random()"/>
+            </div>
+        </div>
+        <a class="btn submit">登录</a>
+
+        <div class="form-title pt-30">
+            <a href="" class="form-decs link">忘记密码</a>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+<div class="gg-shade ta-c" style="display:none; position: fixed;left: 0;right: 0;top: 0;bottom: 0;background:
+rgba(0,0,0,0.5);">
+    <div class="gg-cont clear-float" style="width: 340px;margin: 0 auto;background: #fff;padding: 30px 10px;font-size: 16px;position: relative;top: 20%;">
+        <div style="margin-bottom: 20px;">您已开启谷歌验证，请输入谷歌验证码</div>
+        <span class="gg-code-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <input type="number" maxlength="1" class="gg-input">
+            <br>
+        </span>
+        <a style="float: right;margin-right: 40px;margin-top: 20px;color: #1798f2;" class="btn-cancel">取消</a>
+    </div>
+</div>
+
+<script language="JavaScript">
+    $(function(){
+        $(".submit").click(function (){
+            code = $("#code").val();
+            email = $("#email").val();
+            password = $("#password").val();
+            csrf = $("#csrf").val();
+
+            if(code == ''){
+                //            showAlert("");
+                showAlert('验证码错误');
+                return false;
+            }
+            if(email == ''){
+                //            showAlert("");
+                return false;
+            }
+            if(password == ''){
+                //            showAlert("");
+                return false;
+            }
+            $.post("__URL__/login",{csrf:csrf,code:code,password:password,email:email},function(msg){
+                if(msg.code == 0){
+                    $("#verify").attr("src","__URL__/verify?"+Math.random());
+                }
+
+
+                if(msg.code != 3){
+                    showAlert(msg.msg, function(){
+                        if(msg.code == 1){
+
+                            var callback = "/index.php/Home/{$callback}";
+                            url = "__APP__/Home";
+                            if(callback != ''){
+                                url = callback;
+                            }
+                            window.location = url;
+                        }
+                    });
+                }
+
+                //google check
+                if(msg.code == 3){
+                    $(".gg-shade").show();
+                    $(".gg-input").eq(0).focus();
+                    $(".gg-input").each(function(e){
+                        $(".gg-input").eq(e).keyup(function(){
+                            $(".gg-input").eq(e+1).focus();
+                            if(e == 5){
+                                google_code = $(".gg-input").eq(0).val();
+                                google_code += $(".gg-input").eq(1).val();
+                                google_code += $(".gg-input").eq(2).val();
+                                google_code += $(".gg-input").eq(3).val();
+                                google_code += $(".gg-input").eq(4).val();
+                                google_code += $(".gg-input").eq(5).val();
+                                $.post("__URL__/check_google",{code:google_code, id:msg.id},function(res){
+
+                                    showAlert(res.msg, function(){
+                                        if(res.code == 1){
+
+                                            var callback = "/index.php/Home/{$callback}";
+                                            url = "__APP__/Home";
+                                            if(callback != ''){
+                                                url = callback;
+                                            }
+                                            window.location = url;
+                                        }else{
+                                            $(".gg-input").val("");
+                                            $(".gg-input").eq(0).focus();
+                                        }
+                                    });
+                                },'json')
+                            }
+                        });
+                        $(this).click(function(){
+                            $(this).val("");
+                        });
+                    });
+                }
+
+
+            }, 'json');
+        });
+
+        $(".btn-cancel").click(function(){$(".gg-shade").hide();$(".gg-input").val("");})
+
+        document.onkeydown = function () {
+            if (event.keyCode == 13) {
+                $(".submit").click();
+            }
+        }
+    })
+
+</script>
+<include file="Index/footer"/>

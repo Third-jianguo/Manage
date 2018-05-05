@@ -1,0 +1,571 @@
+<include file="Index/top"/>
+
+<!-- <div class="float-cont">
+  <div class="cont-item">需要帮助</div>
+</div> -->
+<style >
+    .show-2{
+        display: none;
+    }
+</style>
+<script language="JavaScript">
+    //发布选择国家
+    function get_country(keyword) {
+        $.post("/index.php/Home/Static/get_country", {keyword: keyword}, function (data) {
+            $("#selectReleaseCountry").empty();
+            for (var key in data) {
+                var x = data[key].sn;
+                var name = data[key].name;
+                var id = data[key].id;
+
+                $("#selectReleaseCountry").append("<li class='active-result' onclick='f_country(\"" + id + "\",\"" + name + "\")' data-option-array-index='" + x + "'>" + name + "</li>");
+            }
+        }, 'json');
+    }
+
+    function f_country(id, name) {
+        $(".countryShow").html(name);
+        $(".selectSerach").val('');
+        $("#country_id").val(id);
+        $(".chosen-drop-r").hide();
+    }
+
+    function get_money(keyword) {
+//    <li class="active-result result-selected" data-option-array-index="31">CNY 人民币</li>
+        $.post("/index.php/Home/Static/get_money", {keyword: keyword}, function (data) {
+            $(".selectReleaseMoney").empty();
+            for (var key in data) {
+                var x = data[key].sn;
+                var name = data[key].name;
+                var id = data[key].id;
+                var sn = data[key].sn;
+
+                $(".selectReleaseMoney").append('<li class="active-result" onclick="f_money(\'' + id + '\',\'' + name + '\',\'' + sn + '\')" >' + name + '</li>');
+            }
+        }, 'json');
+
+    }
+    function f_money(id, name, sn) {
+        $(".moneyShow").html(name);
+        $(".selectSerach").val('');
+        $("#pay_currency_type").val(sn);
+        $(".moneyName").html(sn);
+        $(".chosen-drop-r").hide();
+    }
+
+
+    function get_pay_way(keyword) {
+        $.post("/index.php/Home/Static/get_pay_way", {keyword: keyword}, function (data) {
+
+            $(".selectPayWay").empty();
+            for (var key in data) {
+                var x = data[key].sn;
+                var name = data[key].name;
+                var id = data[key].id;
+
+                $(".selectPayWay").append('<li class="active-result" onclick="f_pay_way(\'' + id + '\',\'' + name + '\')" >' + name + '</li>');
+            }
+        }, 'json');
+
+    }
+    function f_pay_way(id, name) {
+        $(".payWayShow").html(name);
+        $(".selectSerach").val('');
+        $("#pay_way").val(name);
+
+        $(".chosen-drop-r").hide();
+    }
+
+    var dateTime = [{"show": "0:00", "val": "0"}, {"show": "1:00", "val": "1"},
+        {"show": "2:00", "val": "2"}, {"show": "3:00", "val": "3"},
+        {"show": "4:00", "val": "4"}, {"show": "5:00", "val": "5"},
+        {"show": "6:00", "val": "6"}, {"show": "7:00", "val": "7"},
+        {"show": "8:00", "val": "8"}, {"show": "9:00", "val": "9"},
+        {"show": "10:00", "val": "10"}, {"show": "11:00", "val": "11"},
+        {"show": "12:00", "val": "12"}, {"show": "13:00", "val": "13"},
+        {"show": "14:00", "val": "14"}, {"show": "15:00", "val": "15"},
+        {"show": "16:00", "val": "16"}, {"show": "17:00", "val": "17"},
+        {"show": "18:00", "val": "18"}, {"show": "19:00", "val": "19"},
+        {"show": "20:00", "val": "20"}, {"show": "21:00", "val": "21"},
+        {"show": "22:00", "val": "22"}, {"show": "23:00", "val": "23"},
+        {"show": "24:00", "val": "24"}];
+
+    window.onload = function () {
+        $(".begin_time").each(function (e) {
+            var options = '';
+            var t = 0;
+
+            $(this).append('<option value="0">{$lang.begin_time}</option>');
+            $(this).append('<option value="-1">{$lang.close}</option>');
+            for (t in dateTime) {
+                if(dateTime[t].val == 24){
+                    break;
+                }
+                options += '<option value="' + dateTime[t].val + '">' + dateTime[t].show + '</option>';
+            }
+            $(this).append(options);
+        });
+        $(".end_time").each(function (e) {
+            var options = '';
+            var t = 0;
+
+            $(this).append('<option value="0">{$lang.end_time}</option>');
+
+            for (t in dateTime) {
+                if(dateTime[t].val == "0"){
+
+                }else{
+                    options += '<option value="' + dateTime[t].val + '">' + dateTime[t].show + '</option>';
+                }
+            }
+            $(this).append(options);
+        });
+    };
+
+    $(document).ready(function () {
+
+        $(".high-opt ").each(function (e) {
+            $("#highOpt").eq(e).click(function () {
+                if ($(".high-opt ").eq(e).css("display") == "none") {
+                    $(".high-opt ").eq(e).show();
+                    $("#highOpt").eq(e).text("{$lang.hideAdvanced}...");//隐藏高级设置
+
+                        /*   $(".zk").eq(e).text("{$lang.hide}")*/;
+                } else {
+                    $("#highOpt").eq(e).text("{$lang.showAdvanced}...");
+                    $(".high-opt ").eq(e).hide();
+                }
+            });
+        });
+
+        $(".begin_time").each(function (e) {
+//            开始时间的change
+            $(".begin_time").eq(e).change(function () {
+                //如果开始时间选择的是关闭，则结束时间只有关闭
+                end_time_val = $(".end_time").eq(e).val();
+                if ($(this).val() == '-1') {
+                    $(".end_time").eq(e).empty();
+                    $(".end_time").eq(e).append('<option value="-1">{$lang.close}</option>');
+                    return;
+                }
+
+                var options = '';
+                var t = 0;
+                for (t in dateTime) {
+                    if (parseInt(t) > parseInt($(this).val())) {
+                        options += '<option value="' + dateTime[t].val + '">' + dateTime[t].show + '</option>';
+                    }
+                }
+                $(".end_time").eq(e).empty();
+                $(".end_time").eq(e).append('<option value="0">{$lang.end_time}</option>');
+                $(".end_time").eq(e).append(options);
+                $(".end_time").eq(e).val(end_time_val);
+
+            });
+
+//            结束时间的change
+            $(".end_time").eq(e).change(function () {
+                begin_time_val = $(".begin_time").eq(e).val();
+                var options = '';
+                var t = 0;
+                for (t in dateTime) {
+                    if (parseInt(t) < parseInt($(this).val())) {
+                        options += '<option value="' + dateTime[t].val + '">' + dateTime[t].show + '</option>';
+                    }
+                }
+
+                $(".begin_time").eq(e).empty();
+                $(".begin_time").eq(e).append('<option value="-1">{$lang.close}</option>');
+                $(".begin_time").eq(e).append(options);
+                $(".begin_time").eq(e).val(begin_time_val);
+            });
+
+        });
+
+        $("#submit-r").click(function () {
+            country_id = $("#country_id").val();
+            pay_currency_type = $("#pay_currency_type").val();
+            premium = $("#premium").val();
+            price_low = $("#price_low").val();
+            price_high = $("#price_high").val();
+            payment_window_minutes = $("#payment_window_minutes").val();
+            pay_way = $("#pay_way").val();
+            comment = $("#comment").val();
+            if(country_id == ''){
+                showAlert("{$lang.buyAddressD}");
+                return false;
+            }
+            if(pay_currency_type == ''){
+                showAlert("{$lang.please_select}{$lang.formMoneyTypeD}");
+                return false;
+            }
+            if(premium == ''){
+                showAlert("{$lang.please_input_price}");
+                return false;
+            }
+            if(price_low == ''){
+                showAlert("{$lang.please_input}{$lang.quotaLow}");
+                return false;
+            }
+            if(price_high == ''){
+                showAlert("{$lang.please_input}{$lang.quotaHigh}");
+                return false;
+            }
+            if($('.show-2').css('display') != 'none'){
+                if(payment_window_minutes == ''){
+                    showAlert("{$lang.please_input}{$lang.formPaymentTime}");
+                    return false;
+                }
+            }
+            if(pay_way == ''){
+                showAlert("{$lang.please_select}{$lang.proceeds}");
+                return false;
+            }
+            if(comment == ''){
+                showAlert("{$lang.please_input}{$lang.remark}");
+                return false;
+            }
+
+
+            $.post("__URL__/release", $("#newContent").serialize(),function(data){
+                    showAlert(data.msg, function(){
+                        if(data.code == 1){
+                            if($('.show-2').css('display') == 'none'){
+                                window.location = "__URL__/detail/id/"+data.id;
+                            }
+                        }
+                    });
+
+                }, 'json');
+//            $("#newContent").submit();
+        });
+
+
+        $("#premium").keyup(function(){
+
+            if(parseFloat($(this).val()) < -99){
+                $(this).val(0);
+                $("#price_count").val(0);
+                return false;
+            }
+            if(parseFloat($(this).val()) > 99){
+                $(this).val(0);
+                $("#price_count").val(0);
+                return false;
+            }
+            var money_info = 0;
+            pay_curr_type = $("#pay_currency_type").val();
+            if(pay_curr_type == "CNY" || pay_curr_type == "cny"){
+                 money_info = "{$moneyInfo.cny}";
+            }else if(pay_curr_type == "KRW" || pay_curr_type == 'krw'){
+                 money_info = "{$moneyInfo.krw}";
+            }else{
+//                alert("暂时不支持该币种交易");
+                showAlert("{$lang.can_not_transaction}");
+                $(this).val(0);
+            }
+//            console.log(pay_curr_type);
+//            console.log(money_info);
+//            console.log(parseFloat($(this).val()));
+            bl = parseFloat($(this).val()) / 100;
+            val = parseFloat(money_info) + ( bl * parseFloat(money_info));
+            val = Math.floor(val * 100) / 100;
+            $("#price_count").val(val);
+        });
+
+    });
+
+    function show1(){
+        $(".show-1").show();
+        $(".show-2").hide();
+    }
+    function show2(){
+        $(".show-2").show();
+        $(".show-1").hide();
+    }
+
+</script>
+<div class="pt-30"></div>
+<div class="container new-ad">
+    <h1 class="h1">{$lang.release} {$typeName} {$lang.dealAdvertising}</h1>
+
+
+    <form id="newContent" class="form-cont-rele clear-float" method="post">
+
+        <div class="form-title">
+            <span class="form-name">{$lang.dealType} </span>
+
+            <div class="line"></div>
+        </div>
+        <div class="input-cont">
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.selectAdvertisingType}: <span class="input-name-decs">{$lang.lang_what}
+                {$typeName}，{$lang.lang_what2} {$typeName}。</span>
+            </div>
+            <div>
+                <input type="radio" checked="" value="1" name="type" onclick="show1()"><label>{$lang.sellOnline}
+                {$typeName}</label>
+                <input type="radio" value="2" name="type" onclick="show2()"><label>{$lang.buyOnline}{$typeName}</label>
+            </div>
+        </div>
+        <div class="input-cont  mb-20">
+
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.buyAddress}: <span class="input-name-decs">{$lang.buyAddressD}。</span></div>
+
+            <div class="chosen-container-r chosen-container-single-r chosen-container-r-active chosen-with-drop-r"
+                 style="width: 600px;" title="">
+                <a class="chosen-single-r" onclick="get_country()"><span class="countryShow">--{$lang.please_select}--</span>
+
+                    <div><b></b></div>
+                </a>
+                <input type="hidden" name="country_id" id="country_id"/>
+
+                <div class="chosen-drop-r">
+                    <div class="chosen-search-r">
+                        <input type="text" class="selectSerach" onkeyup="get_country(this.value)" autocomplete="off">
+                    </div>
+                    <ul class="chosen-results-r" id="selectReleaseCountry">
+                        <!--country something-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-title">
+            <span class="form-name">{$lang.more}</span>
+
+            <div class="line"></div>
+        </div>
+        <div class="input-cont ">
+
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.formMoneyType}: <span class="input-name-decs">{$lang.formMoneyTypeD}。</span></div>
+
+            <div class="chosen-container-r chosen-container-single-r chosen-with-drop-r chosen-container-r-active"
+                 style="width: 600px;" title=""><a class="chosen-single-r" onclick="get_money();"><span
+                    class="moneyShow">--{$lang.please_select}--</span>
+
+                <div><b></b></div>
+            </a>
+                <input type="hidden" name="pay_currency_type" id="pay_currency_type"/>
+                <input type="hidden" name="currency_type" id="currency_type" value="{$type}"/>
+
+                <div class="chosen-drop-r">
+                    <div class="chosen-search-r"><input type="text" class="selectSerach" onkeyup="get_money(this.value)"
+                                                        autocomplete="off"></div>
+                    <ul class="chosen-results-r selectReleaseMoney">
+                        <!--<li class="active-result result-selected" data-option-array-index="31">CNY 人民币</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="input-cont ">
+
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.formPremium}:<span class="input-name-decs">{$lang.formPremiumD}。</span>
+            </div>
+            <input class="input-rele" type="number" name="premium" id="premium"/>
+
+            <div class="input-after-rele">%</div>
+        </div>
+        <div class="input-cont ">
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.formPrice}:<span class="input-name-decs">{$lang.formPriceD}。</span></div>
+            <input class="input-rele" name="price_count" placeholder="{$lang.formPriceD2}{$nowPrice}" id="price_count" readonly >
+
+            <div class="input-after-rele input-currency"><span class="moneyName">CNY</span></div>
+        </div>
+        <!--<div class="input-cont show-1">-->
+            <!--<div class="input-name">{$lang.priceLow}:<span class="input-name-decs">{$lang.priceLowD}</span>-->
+            <!--</div>-->
+            <!--<input class="input-rele" name="min_price" id="min_price">-->
+
+            <!--<div class="input-after-rele input-currency"><span class="moneyName">CNY</span></div>-->
+        <!--</div>-->
+        <!--<div class="input-cont show-2">-->
+            <!--<div class="input-name">{$lang.priceHigh}:<span class="input-name-decs">{$lang.priceHighD}</span>-->
+            <!--</div>-->
+            <!--<input class="input-rele" name="max_price" id="max_price">-->
+
+            <!--<div class="input-after-rele input-currency"><span class="moneyName">CNY</span></div>-->
+        <!--</div>-->
+        <div class="input-cont ">
+            <div class="input-name"><span class="require-r">*</span>{$lang.quotaLow}:<span
+                    class="input-name-decs">{$lang.quotaLowD}。</span></div>
+            <input class="input-rele" type="number" name="price_low" id="price_low" >
+
+            <div class="input-after-rele input-currency"><span class="moneyName">CNY</span></div>
+        </div>
+        <div class="input-cont ">
+            <div class="input-name"><span class="require-r">*</span>{$lang.quotaHigh}:<span class="input-name-decs">{$lang.quotaHighD}</span>
+            </div>
+            <input class="input-rele" type="number" name="price_high" id="price_high" >
+
+            <div class="input-after-rele input-currency"><span class="moneyName">CNY</span></div>
+        </div>
+        <div class="input-cont input-payment_window_minutes show-2" >
+            <div class="input-name"><span class="require-r">*</span>{$lang.formPaymentTime}:<span
+                    class="input-name-decs">{$lang.formPaymentTimeD}</span></div>
+            <input class="input-rele" type="number" name="payment_window_minutes" id="payment_window_minutes" placeholder="{$lang.formPaymentTime}">
+
+        </div>
+        <div class="input-cont ">
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.proceeds}:
+            </div>
+            <!--<select class="select" name="payment_provider" style="display: none;">-->
+            <select class="select" name="pay_way" style="width: 578px">
+
+                <notempty name="user.alipay"><option value="支付宝">支付宝</option></notempty>
+                <notempty name="user.wechat"><option value="微信">微信</option></notempty>
+                <notempty name="user.bank"><option value="银行转账">银行转帐</option></notempty>
+
+                <!--<volist name="pay_way" id="py">-->
+                    <!--<option value="{$py.id}">{$py.name}</option>-->
+                <!--</volist>-->
+
+            </select>
+
+            <!--<div class="chosen-container-r chosen-container-single-r chosen-with-drop-r chosen-container-r-active"-->
+                 <!--style="width: 600px;" title=""><a class="chosen-single-r" onclick="get_pay_way()"><span-->
+                    <!--class="payWayShow">--{$lang.please_select}--</span>-->
+
+                <!--<div><b></b></div>-->
+            <!--</a>-->
+                <!--<input type="hidden" name="pay_way" id="pay_way"/>-->
+
+                <!--<div class="chosen-drop-r" id="hide">-->
+                    <!--<div class="chosen-search-r"><input type="text" class="selectSerach" autocomplete="off"></div>-->
+                    <!--<ul class="chosen-results-r selectPayWay">-->
+                        <!--<volist name="pay_way" id="py1">-->
+                            <!--<li class="active-result-r result-selected-r" data-option-array-index="{$py1.id}">-->
+                                <!--{$py1.name}-->
+                            <!--</li>-->
+                        <!--</volist>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div class="input-cont">
+            <div class="input-name">
+                <div class="require-r">*</div>
+                {$lang.advertisingComment}: <span class="input-name-decs"></span></div>
+            <textarea class="input-r textarea-r" name="comment" id="comment" placeholder="{$lang.formComment}"></textarea>
+
+        </div>
+
+        <div class="input-cont">
+            <div class="input-name">{$lang.isSafety}：<span class="input-name-decs">{$lang.isSafetyD}</span>
+            </div>
+            <div>
+                <input type="radio" value="1" name="only_verify"><label>{$lang.enable}</label>
+                <input type="radio" value="0" checked="" name="only_verify"><label>{$lang.disable}</label>
+            </div>
+        </div>
+        <div class="input-cont">
+            <div class="input-name">{$lang.onlytrust}：<span class="input-name-decs">{$lang.onlytrust}</span></div>
+            <div>
+                <input type="checkbox" value="1" name="only_trust">
+            </div>
+        </div>
+
+
+        <div class="high-opt " style="display: none">
+            <div class="form-title">
+                <span class="form-name">{$lang.advanced}</span>
+
+                <div class="line"></div>
+            </div>
+
+            <div class="input-name">{$lang.openTime}：<span class="input-name-decs">{$lang.openTimeD}</span></div>
+
+            <div class="input-cont clear-float ">
+                <div class="input-name-rele">{$lang.Monday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+                </select>
+                <select class="select-rele select2-rele end_time" name="x[]">
+                </select>
+            </div>
+
+            <div class="input-cont  clear-float select2">
+                <div class="input-name-rele">{$lang.Tuesday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+                </select>
+                <select class="select-rele select2-rele  end_time" name="x[]">
+
+                </select>
+            </div>
+            <div class="input-cont  clear-float select2">
+                <div class="input-name-rele">{$lang.Wednesday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+                </select>
+                <select class="select-rele select2-rele end_time" name="x[]">
+
+                </select>
+            </div>
+            <div class="input-cont  clear-float select2">
+                <div class="input-name-rele">{$lang.Thursday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+
+                </select>
+                <select class="select-rele select2-rele end_time" name="x[]">
+
+
+                </select>
+            </div>
+            <div class="input-cont  clear-float select2">
+                <div class="input-name-rele">{$lang.Friday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+
+                </select>
+                <select class="select-rele select2-rele end_time" name="x[]">
+
+
+                </select>
+            </div>
+            <div class="input-cont  clear-float select2">
+                <div class="input-name-rele">{$lang.Saturday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+
+                </select>
+                <select class="select-rele select2-rele end_time" name="x[]">
+
+
+                </select>
+            </div>
+            <div class="input-cont  clear-float select2 mb-40">
+                <div class="input-name-rele">{$lang.Sunday}:</div>
+                <select class="select-rele select2-rele begin_time" name="xx[]">
+
+
+                </select>
+                <select class="select-rele select2-rele  end_time" name="x[]">
+
+
+                </select>
+            </div>
+        </div>
+        <div class="line"></div>
+        <a href="javascript:;" class="link high-opt-display" id="highOpt">{$lang.showAdvanced}...</a>
+
+        <div class="pt-30"></div>
+        <a id="submit-r" class="btn-r submit-r " href="javascript:;">{$lang.submitNow}</a>
+
+        <div class="pt-30"></div>
+    </form>
+
+</div>
+<include file="Index/footer"/>

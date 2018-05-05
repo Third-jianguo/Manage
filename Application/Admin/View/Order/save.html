@@ -1,0 +1,410 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>聊天记录</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="/Public/js/jquery-3.2.1.min.js"></script>
+    <!--<script type="text/javascript" src="/Public/btc/js/jq.js"></script>-->
+    <!--<script type="text/javascript" src="/Public/btc/js/jquery-1.4.2.min.js"></script>-->
+    <script type="text/javascript" src="/Public/btc/js/jq.js"></script>
+    <link rel="stylesheet" href="/Public/btc/css/ad-detail.css">
+    <link rel="stylesheet" href="/Public/btc/css/buy.css">
+
+
+    <link rel="stylesheet" href="/Public/btc/css/new-ad.css">
+
+    <link rel="stylesheet" href="/Public/btc/css/order-list.css">
+    <link rel="stylesheet" href="/Public/btc/css/order-manage.css">
+
+    <link rel="stylesheet" href="/Public/btc/css/signup.css">
+
+    <link rel="stylesheet" href="/Public/btc/css/wallet.css">
+    <link rel="stylesheet" href="/Public/btc/css/setting.css">
+    <link rel="stylesheet" href="/Public/btc/css/common.css">
+    <link rel="stylesheet" href="/Public/btc/css/user.css">
+    <link rel="stylesheet" href="/Public/btc/css/index.css">
+    <link rel="stylesheet" href="/Public/btc/css/order.css">
+
+    <link rel="stylesheet" type="text/css" href="/Public/alert/component.css" />
+
+</head>
+
+
+<body class="zh-CN">
+
+<script type="text/javascript" src="/Public/btc/js/swfobject.js"></script>
+<script type="text/javascript" src="/Public/btc/js/web_socket.js"></script>
+<script type="text/javascript" src="/Public/btc/js/jquery-sinaEmotion-2.1.0.min.js"></script>
+
+<script>
+    connect();
+    if (typeof console == "undefined") {
+        this.console = {
+            log: function (msg) {
+            }
+        };
+    }
+    WEB_SOCKET_SWF_LOCATION = "/Public/btc/swf/WebSocketMain.swf";
+    // 开启flash的websocket debug
+    WEB_SOCKET_DEBUG = true;
+    var ws, name, uid, client_list = {};
+//    var toUserId = '1';
+//    var toUserName = 'jianguo';
+//    var head_img = '/Uploads/';
+    var order_id = "{$_GET['id']}";
+//    uid = '1';
+    name = 'Admin';
+    function connect() {
+        ws = new WebSocket("ws://" + document.domain + ":7272");
+        ws.onopen = onopen;
+        ws.onmessage = onmessage;
+        ws.onclose = function () {
+//            console.log("连接关闭，定时重连");
+            connect();
+        };
+        ws.onerror = function () {
+//            console.log("出现错误");
+        };
+    }
+    // 连接建立时发送登录信息
+    function onopen() {
+
+        var login_data = '{"type":"admin_login","msg_type":"tip","client_id":"999999","client_name":"' + name + '","order_id":"' + order_id + '","content":"登录"}';
+//        console.log("websocket握手成功，发送登录数据:" + login_data);
+        ws.send(login_data);
+    }
+
+    // 服务端发来消息时
+    function onmessage(e) {
+        console.log(e.data);
+        var data = JSON.parse(e.data);
+        switch (data['type']) {
+            case 'ping':
+                ws.send('{"type":"pong"}');
+                break;
+            case 'login':
+//                console.log(data['client_name'] + "登录成功");
+                break;
+            case 'say':
+                say(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'say_img':
+                say_img(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'admin_say_img':
+                admin_say_img(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'admin_say':
+                admin_say(data['sayType'], data['content'], data['time'], data['head_img']);
+                break;
+            case 'tips':
+                tips(data['title'], data['content'], data['time']);
+                break;
+            case 'logout':
+//                say(data['from_client_id'], data['from_client_name'], data['from_client_name'] + ' 退出了', data['time']);
+//                delete client_list[data['from_client_id']];
+        }
+    }
+
+    // 提交对话
+    function onSubmit() {
+        var input = document.getElementById("sayInput");
+        if ('' == input) {
+            return false;
+        }
+
+        if ('0' == 40 || '0' == '99') {
+            return false;
+        }
+        ws.send('{"type":"admin_say","uid":"' + uid + '","order_id":"' + order_id + '","client_name":"' + name +
+        '" , "content":"' +
+        input.value.replace(/"/g, '\"').replace(/n/g, '\n').replace(/r/g,
+                '\r') + '"}');
+        input.value = "";
+        input.focus();
+    }
+
+    // 发言
+    function say(sayType, content, time, head_img) {
+            $(".chating").append('<div class="chat ta-l"><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ><span class="chat-message">' + content + '<span class="time">' + time + '</span></span></div>');
+        $(".chating").scrollTop($(".chating")[0].scrollHeight);
+    }
+
+    function admin_say(sayType, content, time, head_img) {
+            $(".chating").append('<div class="chat ta-r"><span class="chat-message">' + content + '<span class="time">' + time + '</span></span><img class="user-logo" src="/Public/images/adminHead.jpg" /></div>');
+
+        $(".chating").scrollTop($(".chating")[0].scrollHeight);
+    }
+    function admin_say_img(sayType, content, time, head_img) {
+        $(".chating").append('<div class="chat ta-r"><img src="' + content +
+        '" width="300" height=""/><span class="time">' + time + '</span><img class="user-logo" src="/Public/images/adminHead.jpg" ></div>');
+    }
+    function say_img(sayType, content, time, head_img) {
+            $(".chating").append('<div class="chat ta-l"><img class="user-logo" src="' + head_img + '" onerror="javascript:this.src=\'/Public/images/noHead.png\'" ><img src="' + content + '" width="300" height=""/><span class="time">' + time + '</span></div>');
+    }
+
+    function tips(title, content, time) {
+        $(".chating").append('<div class="chat sys1"> <div class="title">' + title + '</div> <div class="content">' + content + '</div> <span class="time">' + time + '</span> </div>');
+    }
+
+    //chat end ==================================
+
+    $(function () {
+        $(".news-text").each(function (e) {
+            $(".icon-view-news").eq(e).click(function () {
+                if ($(".news-text").eq(e).css("display") == "none") {
+                    $(".news-text").eq(e).show();
+                    /*   $(".zk").eq(e).text("收起")*/
+                } else {
+                    $(".news-text").eq(e).hide();
+                    /*  $(".zk").eq(e).text("展开");*/
+                }
+
+            });
+        });
+
+
+        document.onkeydown = function () {
+            if (event.keyCode == 13) {
+                if ($("#sayInput").val() != "") {
+                    onSubmit();
+                }
+            }
+        }
+    });
+
+</script>
+
+
+<div class="container order clear-float con_top">
+    <div class="flow-area">
+
+    </div>
+
+    <div class="order-info">
+        <strong>订单信息</strong>
+        <span class="item-name">价格: 840000.00 CNY</span>
+        <span class="item-name">交易数量: 0.09475683 BTC</span>
+        <span class="item-name">交易金额: 5777.00 CNY</span>
+
+    </div>
+
+    <div class="detail-left">
+        <div class="chat-cont">
+            <div class="chat-tab-cont clear-float">
+                <a class="tab col-50 active" click-for="chating">聊天</a>
+            </div>
+            <div class="tab-chat" id="chating">
+                <div class="chating">
+
+                    <volist name="list" id="li">
+                        <eq name="li.is_admin" value="1">
+                            <!--管理员  居右-->
+                            <eq name="li.is_img" value="1">
+                                <!--图片-->
+                                <div class="chat ta-r"><img src="{$li.content}" width="300" height=""/><span class="time">{$li.createtime|date="H:i:s",###}</span><img class="user-logo" src="{$li.head_img}" onerror="javascript:this.src='/Public/images/noHead.png'" ></div>
+
+                                <else/>
+                                <div class="chat ta-r"><span class="chat-message">{$li.content}<span class="time">{$li.createtime|date="H:i:s",###}</span></span><img class="user-logo" src="{$li.head_img}" onerror="javascript:this.src='/Public/images/noHead.png'" ></div>
+                                <!--文字-->
+                            </eq>
+                            <else/>
+                            <!--用户  居左-->
+                            <eq name="li.is_img" value="1">
+                                <!--图片-->
+                                <div class="chat ta-l"><img class="user-logo" src="{$li.head_img}" onerror="javascript:this.src='/Public/images/noHead.png'" >{$li.name}：<img src="{$li.content}" width="300" height=""/><span class="time">{$li.createtime|date="H:i:s",###}</span></div>
+                                <else/>
+                                <!--文字-->
+                                <div class="chat ta-l"><img class="user-logo" src="{$li.head_img}" onerror="javascript:this.src='/Public/images/noHead.png'" ><span class="chat-message">{$li.name}：{$li.content}<span class="time">{$li.createtime|date="H:i:s",###}</span></span></div>
+
+                            </eq>
+                        </eq>
+
+                    </volist>
+
+                </div>
+                <div class="btn-cont">
+                    <div class="add-pic">
+                        <form id="chatImgForm">
+                            <input type="file" name="chatImg" accept="image/jpg,image/jpeg,image/png" class="img-input">
+                        </form>
+
+                    </div>
+                    <input class="message-input" id="sayInput" type="text" name="" value="" placeholder="说点什么吧...">
+                    <a type="SELL" stage="PLACED_ORDER" onclick="onSubmit()" href="javascript:void(0)"
+                       class="icon-send send"></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script language="javascript">
+    $(function () {
+        var order_id = "4";
+
+        $("#btnCancel").click(function () {
+            $.post("/index.php/Home/Order/orderCancel", {order_id: order_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"cancel","order_id":"' + order_id + '"}');
+                window.location.reload();
+            }, "json");
+        });
+
+
+        $("#btnPay").click(function () {
+            $.post("/index.php/Home/Order/payOk", {order_id: order_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"pay_ok","order_id":"' + order_id + '"}');
+
+                showAlert(e.msg);
+            }, "json");
+        });
+
+
+        $("#btnComment").click(function () {
+            form = $(".feedback").serialize();
+            $.post("/index.php/Home/Order/commentOrder", form, function (e) {
+                ws.send('{"type":"tips","msg_type":"common"}');
+                $(".comment-cont").hide();
+//                alert(e.msg);
+            }, 'json');
+        });
+
+
+//举报begin
+
+        $(".ui-popup-backdrop").each(function (e) {
+            $(".complain").eq(e).click(function () {
+                if ($(".ui-popup-backdrop").eq(e).css("display") == "none") {
+                    $(".ui-popup-backdrop").eq(e).show();
+                }
+            });
+            //关闭
+            $(".btn_close").click(function () {
+                $(".ui-popup-backdrop").hide();
+            });
+            $(".label").each(function () {
+                $(this).click(function () {
+                    if ($(this).attr("check") == 'ok') {
+                        $(this).removeClass("active");
+                        $(this).attr("check", '');
+                    } else {
+                        $(this).addClass("active");
+                        $(this).attr("check", 'ok');
+                    }
+                    var string = '';
+                    $(".active").each(function () {
+                        if (string == '') {
+                            string += $(this).html();
+                        } else {
+                            string += ',' + $(this).html();
+                        }
+                        $("#selected").val(string);
+                    });
+                });
+            });
+        });
+
+        $(".btn_complain_ok").click(function () {
+            tip = $("#selected").val();
+            content = $("#content").val();
+            adv_id = "4";
+
+            if (content == "" || tip == '') {
+                showAlert("请填写申诉内容");
+                return false;
+            }
+            $.post("/index.php/Home/Advertising/advReport", {tip: tip, content: content, adv_id: adv_id}, function (e) {
+                ws.send('{"type":"tips","msg_type":"report","order_id":"' + order_id + '"}');
+
+                showAlert(e.msg, function () {
+                    $(".btn_close").click();
+                    $("#content").val('');
+                    $(".label").removeClass("active");
+                    $("#selected").val('');
+                });
+
+            }, "json");
+        });
+
+//        举报end
+        $(".news-title").each(function (e) {
+            $(".news-title").eq(e).click(function () {
+                $(".news-text").hide();
+                $(".news-text").eq(e).show();
+            });
+        });
+
+        $("#btnTipOffNext").click(function () {
+            $("#btnTipOffNext").hide();
+            $(".hidden").show();
+        });
+        $("#btnTipOff").click(function () {
+            reason = $(".tipoff-select").val();
+            comment = $(".textarea").val();
+            adv_id = "4";
+            if (comment == "") {
+                showAlert("请填写申诉内容");
+                return false;
+            }
+            $.post("/index.php/Home/Order/shensu", {adv_id: adv_id, reason: reason, comment: comment}, function (e) {
+                ws.send('{"type":"tips","msg_type":"report","order_id":"' + order_id + '"}');
+
+                showAlert(e.msg, function(){
+                    $(".shensu").hide();
+                });
+
+            }, "JSON");
+
+        });
+
+        //聊天图片
+        $(".img-input").change(function(){
+            var formData = new FormData($("#chatImgForm")[0]);
+            $.ajax({
+                type: "POST",
+                url:"/index.php/Home/Api/chat_img_upload",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    ws.send('{"type":"admin_say_img","uid":"' + uid + '","order_id":"' + order_id + '","client_name":"' + name + '", "content":"' + data + '"}');
+                }
+            });
+        });
+
+
+
+
+    })
+</script>
+
+<script language="javascript">
+    if(document.body.clientHeight < window.screen.availHeight){
+        $(".footer").css("position", 'absolute');
+    }
+    $(function(){
+        $(".language-item").click(function (){
+            $.get("/index.php/Home/Api/lang/lang/"+$(this).attr("id"), function (){
+                location.reload();
+            });
+        });
+    })
+
+</script>
+<script src="/Public/alert/classie.js"></script>
+<script src="/Public/alert/modalEffects.js"></script>
+</body>
+</html>
+
+
+
+
+
+

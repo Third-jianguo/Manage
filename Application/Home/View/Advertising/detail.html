@@ -1,0 +1,332 @@
+﻿<include file="Index/top"/>
+<style>
+    .qrz{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        width: 100%;
+        border-radius: 2px;
+        background: #1798f2;
+        display: block;
+        color: #fff;
+        font-size: 18px;
+    }
+</style>
+<script>
+    $(function () {
+        //举报对话框
+        $(".ui-popup-backdrop").each(function (e) {
+            $(".complain").eq(e).click(function () {
+                if ($(".ui-popup-backdrop").eq(e).css("display") == "none") {
+                    $(".ui-popup-backdrop").eq(e).show();
+                }
+            });
+            //关闭
+            $(".btn_close").click(function () {
+                $(".ui-popup-backdrop").hide();
+            });
+            $(".label").each(function () {
+                $(this).click(function () {
+                    if ($(this).attr("check") == 'ok') {
+                        $(this).removeClass("active");
+                        $(this).attr("check", '');
+                    } else {
+                        $(this).addClass("active");
+                        $(this).attr("check", 'ok');
+                    }
+                    var string = '';
+                    $(".active").each(function () {
+                        if (string == '') {
+                            string += $(this).html();
+                        } else {
+                            string += ',' + $(this).html();
+                        }
+                        $("#selected").val(string);
+                    });
+                });
+            });
+        });
+
+//提交订单检测
+        var curr_type = "{$info.currency_type}";//btc
+        var pay_curr_type = "{$info.pay_currency_type}"; //cny
+        var b_info = '';
+        $("#want_number").keyup(function () {
+
+            if (pay_curr_type == "CNY" || pay_curr_type == "cny") {
+                b_info = "{$moneyInfo.cny}";
+            } else if (pay_curr_type == "KRW" || pay_curr_type == 'krw') {
+                b_info = "{$moneyInfo.krw}";
+            } else {
+//                alert("暂时不支持该币种交易");
+                showAlert("{$lang.can_not_transaction}");
+                $(this).val(0);
+            }
+            val = parseFloat(b_info) * parseFloat($(this).val());
+            val = Math.floor(val * 100) / 100;
+
+            myNum = "{$money.money}";
+            maxMoney = parseFloat(b_info) * parseFloat(myNum);
+
+            if(parseFloat($(this).val()) > parseFloat(myNum)){
+                $("#want_number").val(myNum);
+                $("#want_money").val(maxMoney);
+                return false;
+            }
+
+            $("#want_money").val(val);
+
+        });
+
+        $("#want_money").keyup(function () {
+
+            if (pay_curr_type == "CNY" || pay_curr_type == "cny") {
+                b_info = "{$moneyInfo.cny}";
+            } else if (pay_curr_type == "KRW" || pay_curr_type == 'krw') {
+                b_info = "{$moneyInfo.krw}";
+            } else {
+//                alert("暂时不支持该币种交易");
+                showAlert("{$lang.can_not_transaction}");
+                $(this).val(0);
+            }
+            val = parseFloat($(this).val()) / parseFloat(b_info);
+            val = Math.floor(val * 100000000) / 100000000;
+
+            myNum = "{$money.money}";
+            maxMoney = parseFloat(b_info) * parseFloat(myNum);
+
+
+            if(parseFloat($(this).val()) > parseFloat(maxMoney)){
+                $("#want_number").val(myNum);
+                $("#want_money").val(maxMoney);
+                return false;
+            }
+            $("#want_number").val(val);
+        });
+
+    });
+</script>
+<body class="bg-white">
+
+<div class="container pt-20 clear-float ad-detail">
+    <div class="detail-left ">
+        <div class="poster-info clear-float">
+            <a href="__APP__/Home/User/user_detail/id/{$userInfo.id}"><img class="poster-head fl"
+                                                                           src="{$userInfo.head_img}"
+                                                                           onerror="this.src='/Public/images/noHead.png'"
+                                                                           alt=""></a>
+
+            <div class="fl">
+                <div class="user-name">
+                    <a href="__APP__/Home/User/user_detail/id/{$userInfo.id}">{$userInfo.name}</a>
+
+                    <span style="" class="icon-message"></span>
+
+                </div>
+                <div class="poster-info-cont clear-float">
+          <span class="poster-info-item">
+            <div class="item-d">{$trust.dealCount}+</div>
+            <div class="item-n">{$lang.transaction}</div>
+          </span>
+          <span class="poster-info-item">
+            <div class="item-d">{$trust.trust}</div>
+            <div class="item-n">{$lang.trust}</div>
+          </span>
+          <span class="poster-info-item">
+            <div class="item-d">{$trust.good}</div>
+            <div class="item-n">{$lang.goodReputation}</div>
+          </span>
+          <!--<span class="poster-info-item">-->
+            <!--<div class="item-d">5+ BTC</div>-->
+            <!--<div class="item-n">历史成交</div>-->
+          <!--</span>-->
+                </div>
+            </div>
+        </div>
+
+        <table class="table-info pt-30">
+            <tbody>
+            <tr>
+                <th>{$lang.priceReport}:</th>
+                <td></td>
+                <td class="price">{$info.price_count} {$info.currency_type_name}/{$info.pay_currency_type}</td>
+            </tr>
+            <tr>
+                <th>{$lang.dealLimit}:</th>
+                <td></td>
+                <td class="ad-limits">{$info.price_low}-{$info.price_high} {$info.pay_currency_type}</td>
+            </tr>
+            <tr>
+                <th>{$lang.paymentMethod}:</th>
+                <td></td>
+                <td>{$info.pay_way}</td>
+            </tr>
+            <tr>
+                <th>{$lang.paymentTime}:</th>
+                <td></td>
+                <td>{$info.pay_time} {$lang.minute}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-cont ad-detail clear-float">
+            <div class="form-title">
+
+
+                <span class="form-name">{$lang.buyHowMany}</span>
+
+
+                <span class="form-name"></span>
+            </div>
+            <div class="input-cont input2 mr-12">
+                <input type="number" placeholder="{$lang.buyHowMuch}" class=" input " name="want_money" id="want_money">
+
+                <div class="input-after">{$info.pay_currency_type}</div>
+            </div>
+            <span class="icon-equal"></span>
+
+            <div class="input-cont input2">
+                <input type="number" placeholder="{$lang.buyHowManyNumber}" class="input" name="want_number" id="want_number">
+
+                <div class="input-after">{$info.currency_type_name}</div>
+            </div>
+
+            <eq name="info.only_verify" value="1">
+                <eq name="user.verify" value="0">
+                    <a href="__APP__/Home/User/setting_verify" target="_blank" class="qrz">{$lang.go_to_rz}</a>
+                    <else/>
+                    <a id="haveLogin" style="" href="javascript:;" class="btn-goumai submit ">{$lang.buyNow}</a>
+                </eq>
+                <else/>
+                    <a id="haveLogin" style="" href="javascript:;" class="btn-goumai submit ">{$lang.buyNow}</a>
+            </eq>
+
+            <div class="form-title pt-30">
+                <span class="form-name">{$lang.dealKnow}</span>
+            </div>
+            <div class="line mt-20 mb-20"></div>
+
+            <p class="p">{$lang.dealKnowContent}</p>
+
+        </div>
+    </div>
+    <div class="detail-right">
+        <div class="form-cont">
+            <div class="form-title pt-30">
+                <span class="form-name">{$lang.advertisingComment}</span>
+            </div>
+            <div class="line mt-20 mb-20"></div>
+            {$info.comment}
+            <div class="complain">
+                <span class="icon-complain"></span>
+                <span class="text">{$lang.complain}</span>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<div tabindex="0"
+     style="display: none;     background: rgba(0,0,0,0.7); position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; overflow: hidden; -webkit-user-select: none; z-index: 1024;"
+     class="ui-popup-backdrop">
+    <div tabindex="-1" aria-labelledby="title:1515226772146" aria-describedby="content:1515226772146"
+         class=" ui-popup ui-popup-modal ui-popup-show ui-popup-focus" role="alertdialog"
+         style="position: absolute; outline: 0px; left: 746px; top: 218px; z-index: 1024;">
+        <div i="dialog" class="ui-dialog">
+            <div class="ui-dialog-arrow-a"></div>
+            <div class="ui-dialog-arrow-b"></div>
+            <table class="ui-dialog-grid">
+                <tbody>
+                <tr>
+                    <td i="header" class="ui-dialog-header" style="display: none;">
+                        <button i="close" class="ui-dialog-close" title="cancel">×</button>
+                        <div i="title" class="ui-dialog-title" id="title:1515226772146"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <input type="hidden" id="selected" />
+                    <td i="body" class="ui-dialog-body">
+                        <div i="content" class="ui-dialog-content0" id="content:1515226772146">
+                            <div class="complain-cont" style="">
+                                <div class="title">{$lang.complain}</div>
+                                <div class="desc">{$lang.complainContent}</div>
+                                <div class="opt-cont clear-float">
+                                    <label check="" class="label">{$lang.noRespond}</label>
+                                    <label check="" class="label">{$lang.bufangbi}</label>
+                                    <label check="" class="label nr">{$lang.qizha}</label>
+                                    <label check="" class="label">{$lang.induce}</label>
+                                    <label check="" class="label">{$lang.spite}</label>
+                                    <label check="" class="label nr">{$lang.falseAdvertising}</label>
+                                </div>
+                            <textarea name="content" id="content" maxlength="1000" class="textarea"
+                                      placeholder="{$lang.feedback}"></textarea>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td i="footer" class="ui-dialog-footer">
+                        <div i="statusbar" class="ui-dialog-statusbar" style="display: none;"></div>
+                        <div i="button" class="ui-dialog-button">
+                            <button type="button" class="btn_close">{$lang.close}</button>
+                            <button type="button" class="btn_complain_ok">{$lang.anonymitySubmit}</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="height: 30px;"></div>
+
+
+<script language="javascript">
+    $(function () {
+
+        $(".btn-goumai").click(function () {
+            if('{$is_trust}' == '0'){
+                showAlert("{$lang.only_trust}");
+                return false;
+            }
+            want_money = $("#want_money").val();
+            want_number = $("#want_number").val();
+            adv_id = "{$_GET['id']}";
+            $.post("__APP__/Home/Order/order_submit", {
+                        adv_id: adv_id,
+                        want_number: want_number,
+                        want_money: want_money
+                    },
+                    function (e) {
+                        if (e.code == 1) {
+                            window.location = "__APP__/Home/Order/chat/id/" + e.order_id;
+                        }
+                        showAlert(e.msg);
+
+                    }, 'json');
+        });
+
+        $(".btn_complain_ok").click(function(){
+            tip = $("#selected").val();
+            content = $("#content").val();
+            adv_id = "{$_GET['id']}";
+
+            $.post("__URL__/advReport", {tip:tip,content:content,adv_id:adv_id},function(e){
+                showAlert(e.msg, function(){
+                    $(".btn_close").click();
+                    $("#content").val('');
+                    $(".label").removeClass("active");
+                    $("#selected").val('');
+                });
+
+            },"json");
+        });
+    })
+
+</script>
+
+<include file="Index/footer"/>

@@ -1,0 +1,59 @@
+<include file="Index/header"/>
+<ul id="ztree" class="ztree"></ul>
+<div style="position:absolute;bottom: 0;right:10px;">
+    <button class="save btn btn-success radius" data-id="{$Think.get.id}">保存</button>
+    <button class="btn btn-secondary radius closee" data-id="{$Think.get.id}">关闭</button>
+</div>
+<include file="Index/foot"/>
+<script>
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "belongid",
+                rootPId: 0
+            }
+        },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {"Y": "ps", "N": "ps"}
+        }
+    };
+    var zTreeNodes = [
+        {$str}
+    ]
+    var index = parent.layer.getFrameIndex(window.name);
+    var zTreeObj = $.fn.zTree.init($("#ztree"), setting, zTreeNodes);
+    $('button.save').click(function () {
+        var id = $(this).data('id');
+        var nodes = zTreeObj.transformToArray(zTreeObj.getNodes());
+        var Pso = new Object();
+        $.each(nodes, function (i, v) {
+            Pso[i] = {'name': v.name, 'id': v.id, 'checked': v.checked};
+        })
+        console.log(Pso);
+        //// console.log(nodes);
+        $.post('__URL__/rbac', {data: Pso, id: id}, function (data) {
+            if (data.status == 1) {
+                layer.msg(data.msg, {
+                    time: 2000,
+                    //shade: [0.8, '#393D49'],
+                    end: function () {
+                        console.log(index)
+                        parent.layer.close(index);
+                    }
+                });
+            } else {
+                layer.msg(data.msg, function () {
+                })
+            }
+        }, 'json');
+    })
+    $('button.closee').click(function () {
+        console.log(index)
+        parent.layer.close(index);
+
+    })
+</script>

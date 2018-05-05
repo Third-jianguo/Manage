@@ -1,0 +1,73 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <table>
+        <input type="hidden" name="id" value="{$info.id}" />
+
+
+        <tr>
+            <td align="right" width="15%" height="40px"><label>上传图片：</label></td>
+            <td align="left">
+                <img src="" id="show_image" height="50" style="display: none"/>
+                <input type="hidden" value="" id="url"  name="url" class="input-text radius" />
+                <input type="button" id="uploadButton" value="Upload" />
+                <img src="{$info.url}" width="55px" height="55px" />
+            </td>
+        </tr>
+
+
+
+    </table>
+</form>
+<include file="Index/foot" />
+<script>
+    KindEditor.ready(function(K) {
+        var uploadbutton = K.uploadbutton({
+            button : K('#uploadButton')[0],
+            fieldName : 'image',
+            url : '__URL__/upload',
+            afterUpload : function(data) {
+                //console.log(data)
+                data= eval(data);
+                if (data.status == 1) {
+                    K('#url').val(data.msg);
+                    var img = '__APP__/../'+data.msg;
+                    $('#show_image').attr('src',img);
+                    $('#show_image').css('display','');
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+        uploadbutton.fileBox.change(function(e) {
+            uploadbutton.submit();
+        });
+    });
+</script>
+
+<script>
+    var editor;
+    KindEditor.ready(function (K) {
+        editor = K.create('textarea[name="content"]', {
+            resizeType: 1,width:"80%",height:"280px",
+            allowPreviewEmoticons: false,
+            allowImageUpload: true,
+            items: [
+                'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                'table', 'hr',  'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink'
+            ],
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+    });
+
+    function getcontent(){
+        var content = editor.html();
+        $('#inscontent').val(content);
+    }
+</script>

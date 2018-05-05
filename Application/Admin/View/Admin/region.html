@@ -1,0 +1,68 @@
+<include file="Index/header" />
+<form method="get" style="width:90%;text-align: center">
+    <div class="search_list">
+        <span class="search_list_content">&nbsp;
+        <!--小区名称：<input type="text" name="title" value="{$search.title}" class="search_input"/></span>-->
+        <span class="search_list_content">&nbsp;所属区：
+            <select name="area_id" class="search_input" id="area" onchange="changearea()">
+                <option <empty name="search.area_id">selected</empty> value="">请选择</option>
+                <volist name="arealist" id="vo">
+                    <option <eq name="search.area_id" value="$vo.id">selected</eq> value="{$vo.id}">{$vo.area_name}</option>
+                </volist>
+            </select>
+        </span>
+        <span class="search_list_content">&nbsp;所属街道：
+            <select name="street_id" id="street" class="search_input">
+                <option <empty name="search.street_id">selected</empty> value="">请选择</option>
+                <volist name="streetlist" id="vo">
+                    <option <eq name="search.street_id" value="$vo.id">selected</eq> value="{$vo.id}">{$vo.street_name}</option>
+                </volist>
+            </select>
+        </span>
+        <span class="search_list_content">
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="查询" class="btn_fa_css btn btn-primary" style="margin:0;"/></span>
+    </div>
+    <table>
+        <input type="hidden" name="id" value="{$cons.id}"/>
+        <input type="hidden" name="username" value="{$cons.username}"/>
+        <tr>
+            <td align="right" height="40px" width="15%" valign="top"><label>小区列表：</label></td>
+            <td align="left" class="zlregions">
+                <input type="checkbox" id="cball" onclick="checkall(this.form,chekcall)" name="chekcall"/>全选<br/>
+                <volist name="rlist" id="vo">
+                    <span><input type="checkbox" name="region_id[]" value="{$vo.id}" <eq name="vo.checked" value="1">checked</eq>/>&nbsp;{$vo.title}&nbsp;</span>
+                </volist>
+            </td>
+        </tr>
+    </table>
+</form>
+<include file="Index/foot" />
+<script>
+    function checkall(frm, checkbox)
+    {
+        for (i = 0; i < frm.elements.length; i++)
+        {
+            if (frm.elements[i].name == 'region_id[]')
+            {
+                frm.elements[i].checked = checkbox.checked;
+            }
+        }
+    }
+</script>
+<script>
+    function changearea(){
+        var areaid = $('#area').val();
+//        if(areaid == 0){
+//            $('#street').empty();
+//            $('#street').append('<option value="0" selected>请选择</option>');
+//        }else{
+        $.post('__URL__/changearea', {id:areaid}, function (data) {
+            $('#street').empty();
+            $('#street').append('<option value="0" selected>请选择</option>');
+            for(var i = 0;i < data.length;i++){
+                $('#street').append('<option value="'+data[i]["id"]+'">'+data[i]["street_name"]+'</option>');
+            }
+        }, 'json');
+//        }
+    }
+</script>

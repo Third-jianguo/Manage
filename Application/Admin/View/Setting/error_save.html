@@ -1,0 +1,13 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <div style="padding: 10px">
+        <label>错误代码：</label>
+        <input name="error_id" class="input-text radius" placeholder="输入错误代码" value="{$info.error_id}" style="width:200px;height: 30px">
+    </div>
+    <div style="padding: 10px">
+        <label>错误详情：</label>
+        <input name="error_detail" class="input-text radius" placeholder="输入错误详情" value="{$info.error_detail}" style="width:200px;height: 30px">
+    </div>
+    <input name="id" type="hidden" value="{$info.id}" >
+</form>
+<include file="Index/foot" />

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>注册 - CoinCola</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.2.1.min.js"></script>
+    <script src="__PUBLIC__/btc/js/jquery-1.8.2.min.js"></script>
+    <script src="__PUBLIC__/btc/js/active.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/common.css">
+    <link rel="stylesheet" href="__PUBLIC__/btc/css/signup.css">
+    <link rel="stylesheet" type="text/css" href="/Public/alert/component.css" />
+
+    <!--<script data-cfasync="false" src="__PUBLIC__/btc/js/email-decode.min_3.js"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/common.js" charset="utf-8"></script>-->
+    <!--<script src="__PUBLIC__/btc/js/login.js" charset="utf-8"></script>-->
+    <style>
+        .footer.fix{
+            position: absolute;
+        }
+        @media (max-width: 1500px) {
+            .footer.fix{
+                position:relative;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+<div class="header header-xl">
+    <div class="container clear-float">
+        <a href="/"><span class="logo-b"></span></a>
+
+        <div class="xl-logo">
+            <h1 class="xl-title">欢迎来到 CoinCola</h1>
+
+            <h3 class="xl-decs">安全可信赖的香港场外交易平台</h3>
+        </div>
+        <div class="nav clear-float fl">
+            <a class="nav-item" href="/">首页</a>
+            <volist name="menu" id="m">
+                <eq name="m.parent" value="0">
+                    <a class="nav-item" href="{$m.url}">{$m.name}</a>
+                </eq>
+            </volist>
+        </div>
+        <div class="clear-float fr">
+            <a class="user-action" href="__APP__/Home/User/login"><span class="sp sp-register"></span><span
+                    class="va-middle">登录</span></a>
+            <!-- <a class="user-action" href="/login-email"><span class="sp sp-login"></span><span class="va-middle">登录</span></a> -->
+        </div>
+        <div class="opt">
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+            <div class="opt-line"></div>
+        </div>
+    </div>
+</div>
+
+<div class="md-modal md-effect-1" id="jianguoAlert"> <div class="md-content"> <h3>Hello</h3> <div> <p id="alertContent">nice to meet you</p> <button class="md-close" >{$lang.close}</button> </div> </div> </div> <div class="md-overlay"></div>
+
+<script language="javascript">
+    var return_func = '';
+    function showAlert(content, func){
+        return_func = func;
+        $("#alertContent").html(content);
+        $("#jianguoAlert").addClass("md-show");
+    }
+    $(function(){
+        $(".md-close").click(function(){
+            $("#jianguoAlert").removeClass("md-show");
+            if(return_func != '' && return_func != undefined){
+                return_func();
+                return_func = '';
+            }
+        });
+    })
+</script>
+<div class="container-s pt-20">
+    <div class="form-cont">
+        <div class="form-title mb-20">
+            <span class="form-name">手机注册 </span>
+        </div>
+        <div class="input-cont new-username">
+            <span class="icon form-username"></span>
+            <input class="input" type="text" name="name" id="name" placeholder="请输入英文用户名">
+
+        </div>
+        <div class="input-cont">
+            <span class=" form-location"></span>
+            <select class="select" name="country_code" style="display: none">
+
+                <option value="244">安哥拉 244</option>
+
+                <option value="93">阿富汗 93</option>
+
+                <option value="355">阿尔巴尼亚 355</option>
+
+                <option value="213">阿尔及利亚 213</option>
+
+                <option value="376">安道尔共和国 376</option>
+
+                <option value="1264">安圭拉岛 1264</option>
+
+                <option value="1268">安提瓜和巴布达 1268</option>
+
+                <option value="54">阿根廷 54</option>
+
+                <option value="374">亚美尼亚 374</option>
+
+                <option value="247">阿森松 247</option>
+
+                <option value="61">澳大利亚 61</option>
+
+                <option value="43">奥地利 43</option>
+
+                <option value="994">阿塞拜疆 994</option>
+
+                <option value="1242">巴哈马 1242</option>
+
+                <option value="973">巴林 973</option>
+
+                <option value="880">孟加拉国 880</option>
+
+                <option value="1246">巴巴多斯 1246</option>
+
+                <option value="375">白俄罗斯 375</option>
+
+                <option value="32">比利时 32</option>
+
+                <option value="501">伯利兹 501</option>
+
+                <option value="229">贝宁 229</option>
+
+                <option value="1441">百慕大群岛 1441</option>
+
+                <option value="591">玻利维亚 591</option>
+
+                <option value="267">博茨瓦纳 267</option>
+
+                <option value="55">巴西 55</option>
+
+                <option value="673">文莱 673</option>
+
+                <option value="359">保加利亚 359</option>
+
+                <option value="226">布基纳法索 226</option>
+
+                <option value="95">缅甸 95</option>
+
+                <option value="257">布隆迪 257</option>
+
+                <option value="237">喀麦隆 237</option>
+
+                <option value="1">加拿大 1</option>
+
+                <option value="1345">开曼群岛 1345</option>
+
+                <option value="236">中非共和国 236</option>
+
+                <option value="235">乍得 235</option>
+
+                <option value="56">智利 56</option>
+
+                <option selected value="86">中国 86</option>
+
+                <option value="57">哥伦比亚 57</option>
+
+                <option value="242">刚果 242</option>
+
+                <option value="682">库克群岛 682</option>
+
+                <option value="506">哥斯达黎加 506</option>
+
+                <option value="53">古巴 53</option>
+
+                <option value="357">塞浦路斯 357</option>
+
+                <option value="420">捷克 420</option>
+
+                <option value="45">丹麦 45</option>
+
+                <option value="253">吉布提 253</option>
+
+                <option value="1890">多米尼加共和国 1890</option>
+
+                <option value="593">厄瓜多尔 593</option>
+
+                <option value="20">埃及 20</option>
+
+                <option value="503">萨尔瓦多 503</option>
+
+                <option value="372">爱沙尼亚 372</option>
+
+                <option value="251">埃塞俄比亚 251</option>
+
+                <option value="679">斐济 679</option>
+
+                <option value="358">芬兰 358</option>
+
+                <option value="33">法国 33</option>
+
+                <option value="594">法属圭亚那 594</option>
+
+                <option value="241">加蓬 241</option>
+
+                <option value="220">冈比亚 220</option>
+
+                <option value="995">格鲁吉亚 995</option>
+
+                <option value="49">德国 49</option>
+
+                <option value="233">加纳 233</option>
+
+                <option value="350">直布罗陀 350</option>
+
+                <option value="30">希腊 30</option>
+
+                <option value="1809">格林纳达 1809</option>
+
+                <option value="1671">关岛 1671</option>
+
+                <option value="502">危地马拉 502</option>
+
+                <option value="224">几内亚 224</option>
+
+                <option value="592">圭亚那 592</option>
+
+                <option value="509">海地 509</option>
+
+                <option value="504">洪都拉斯 504</option>
+
+                <option value="852">中国香港 852</option>
+
+                <option value="36">匈牙利 36</option>
+
+                <option value="354">冰岛 354</option>
+
+                <option value="91">印度 91</option>
+
+                <option value="62">印度尼西亚 62</option>
+
+                <option value="98">伊朗 98</option>
+
+                <option value="964">伊拉克 964</option>
+
+                <option value="353">爱尔兰 353</option>
+
+                <option value="972">以色列 972</option>
+
+                <option value="39">意大利 39</option>
+
+                <option value="225">科特迪瓦 225</option>
+
+                <option value="1876">牙买加 1876</option>
+
+                <option value="81">日本 81</option>
+
+                <option value="962">约旦 962</option>
+
+                <option value="855">柬埔寨 855</option>
+
+                <option value="327">哈萨克斯坦 327</option>
+
+                <option value="254">肯尼亚 254</option>
+
+                <option value="82">韩国 82</option>
+
+                <option value="965">科威特 965</option>
+
+                <option value="331">吉尔吉斯坦 331</option>
+
+                <option value="856">老挝 856</option>
+
+                <option value="371">拉脱维亚 371</option>
+
+                <option value="961">黎巴嫩 961</option>
+
+                <option value="266">莱索托 266</option>
+
+                <option value="231">利比里亚 231</option>
+
+                <option value="218">利比亚 218</option>
+
+                <option value="423">列支敦士登 423</option>
+
+                <option value="370">立陶宛 370</option>
+
+                <option value="352">卢森堡 352</option>
+
+                <option value="853">中国澳门 853</option>
+
+                <option value="261">马达加斯加 261</option>
+
+                <option value="265">马拉维 265</option>
+
+                <option value="60">马来西亚 60</option>
+
+                <option value="960">马尔代夫 960</option>
+
+                <option value="223">马里 223</option>
+
+                <option value="356">马耳他 356</option>
+
+                <option value="1670">马里亚那群岛 1670</option>
+
+                <option value="596">马提尼克 596</option>
+
+                <option value="230">毛里求斯 230</option>
+
+                <option value="52">墨西哥 52</option>
+
+                <option value="373">摩尔多瓦 373</option>
+
+                <option value="377">摩纳哥 377</option>
+
+                <option value="976">蒙古 976</option>
+
+                <option value="1664">蒙特塞拉特岛 1664</option>
+
+                <option value="212">摩洛哥 212</option>
+
+                <option value="258">莫桑比克 258</option>
+
+                <option value="264">纳米比亚 264</option>
+
+                <option value="674">瑙鲁 674</option>
+
+                <option value="977">尼泊尔 977</option>
+
+                <option value="599">荷属安的列斯 599</option>
+
+                <option value="31">荷兰 31</option>
+
+                <option value="64">新西兰 64</option>
+
+                <option value="505">尼加拉瓜 505</option>
+
+                <option value="227">尼日尔 227</option>
+
+                <option value="234">尼日利亚 234</option>
+
+                <option value="850">朝鲜 850</option>
+
+                <option value="47">挪威 47</option>
+
+                <option value="968">阿曼 968</option>
+
+                <option value="92">巴基斯坦 92</option>
+
+                <option value="507">巴拿马 507</option>
+
+                <option value="675">巴布亚新几内亚 675</option>
+
+                <option value="595">巴拉圭 595</option>
+
+                <option value="51">秘鲁 51</option>
+
+                <option value="63">菲律宾 63</option>
+
+                <option value="48">波兰 48</option>
+
+                <option value="689">法属玻利尼西亚 689</option>
+
+                <option value="351">葡萄牙 351</option>
+
+                <option value="1787">波多黎各 1787</option>
+
+                <option value="974">卡塔尔 974</option>
+
+                <option value="262">留尼旺 262</option>
+
+                <option value="40">罗马尼亚 40</option>
+
+                <option value="7">俄罗斯 7</option>
+
+                <option value="1758">圣卢西亚 1758</option>
+
+                <option value="1784">圣文森特岛 1784</option>
+
+                <option value="684">东萨摩亚(美) 684</option>
+
+                <option value="685">西萨摩亚 685</option>
+
+                <option value="378">圣马力诺 378</option>
+
+                <option value="239">圣多美和普林西比 239</option>
+
+                <option value="966">沙特阿拉伯 966</option>
+
+                <option value="221">塞内加尔 221</option>
+
+                <option value="248">塞舌尔 248</option>
+
+                <option value="232">塞拉利昂 232</option>
+
+                <option value="65">新加坡 65</option>
+
+                <option value="421">斯洛伐克 421</option>
+
+                <option value="386">斯洛文尼亚 386</option>
+
+                <option value="677">所罗门群岛 677</option>
+
+                <option value="252">索马里 252</option>
+
+                <option value="27">南非 27</option>
+
+                <option value="34">西班牙 34</option>
+
+                <option value="94">斯里兰卡 94</option>
+
+                <option value="1758">圣卢西亚 1758</option>
+
+                <option value="1784">圣文森特 1784</option>
+
+                <option value="249">苏丹 249</option>
+
+                <option value="597">苏里南 597</option>
+
+                <option value="268">斯威士兰 268</option>
+
+                <option value="46">瑞典 46</option>
+
+                <option value="41">瑞士 41</option>
+
+                <option value="963">叙利亚 963</option>
+
+                <option value="886">中国台湾 886</option>
+
+                <option value="992">塔吉克斯坦 992</option>
+
+                <option value="255">坦桑尼亚 255</option>
+
+                <option value="66">泰国 66</option>
+
+                <option value="228">多哥 228</option>
+
+                <option value="676">汤加 676</option>
+
+                <option value="1809">特立尼达和多巴哥 1809</option>
+
+                <option value="216">突尼斯 216</option>
+
+                <option value="90">土耳其 90</option>
+
+                <option value="993">土库曼斯坦 993</option>
+
+                <option value="256">乌干达 256</option>
+
+                <option value="380">乌克兰 380</option>
+
+                <option value="971">阿拉伯联合酋长国 971</option>
+
+                <option value="44">英国 44</option>
+
+                <option value="1">美国 1</option>
+
+                <option value="598">乌拉圭 598</option>
+
+                <option value="233">乌兹别克斯坦 233</option>
+
+                <option value="58">委内瑞拉 58</option>
+
+                <option value="84">越南 84</option>
+
+                <option value="967">也门 967</option>
+
+                <option value="381">南斯拉夫 381</option>
+
+                <option value="27">南非 27</option>
+
+                <option value="263">津巴布韦 263</option>
+
+                <option value="243">扎伊尔 243</option>
+
+                <option value="260">赞比亚 260</option>
+
+            </select>
+
+            <div class="chosen-container chosen-container-single" style="width: 400px;" title="">
+                <input type="hidden" name="country_code" id="country_code" />
+
+                <a class="chosen-single" tabindex="-1"><span id="country_show">中国 86</span>
+
+                    <div><b></b></div>
+                </a>
+
+                <div class="chosen-drop">
+                    <div
+                            class="chosen-search"><input type="text" id="check" onkeyup="get_tel(this.value)"
+                                                         autocomplete="off"></div>
+                    <ul class="chosen-results">
+                        <volist name="telList" id="tel">
+                            <li class="active-result" value="{$tel.id}">{$tel.name}</li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="input-cont new-phone">
+            <span class="icon form-phone"></span>
+            <input class="input" id="mobile" type="phone" name="mobile" placeholder="请输入手机号码">
+
+        </div>
+        <div class="input-cont new-token">
+            <span class="icon form-token"></span>
+            <input class="input" type="number" id="code" name="code" placeholder="请输入验证码">
+
+            <a class="link get-token">发送验证码</a>
+        </div>
+        <div class="input-cont">
+            <span class="icon form-password"></span>
+            <input class="input" onfocus="this.type='password'" id="password" autocomplete="off"
+                   placeholder="请输入6-16位的登录密码">
+
+        </div>
+        <div class="input-cont mb-30">
+            <input type="checkbox" class="checkbox"  id="checkboxx" name="confirm">
+            <label class="label">我已阅读并接受<a href="#" class="fwtk-link">《CoinCola 产品服务条款》</a></label>
+        </div>
+        <a href="javascript:;" class="btn submit ">注册</a>
+    </div>
+    <input type="hidden" id="csrf" name="csrf" value="{$csrf}">
+</div>
+
+<div id="fwtk" tabindex="-1" aria-labelledby="title:1515380659921" aria-describedby="content:1515380659921"
+     class="ui-popup ui-popup-modal ui-popup-show ui-popup-focus" role="alertdialog"
+     style="position: absolute; outline: 0px; left: 299px; top: 163px; z-index: 1024; display: none;">
+    <div i="dialog" class="ui-dialog">
+        <div class="ui-dialog-arrow-a"></div>
+        <div class="ui-dialog-arrow-b"></div>
+        <table class="ui-dialog-grid">
+            <tbody>
+            <tr>
+                <td i="body" class="ui-dialog-body">
+                    <div i="content" class="ui-dialog-content" id="content:1515380659921" style="width: 640px;">
+                        <div style="text-align:justify;height:480px;overflow:auto;margin-bottom:25px;"><h1>
+                            CoinCola服务条款</h1>
+
+                            <p>
+                                通过使用本网站，注册CoinCola帐户或使用我们的任何其他CoinCola服务，您同意接受并遵守条款和使用条款。在使用本网站或任何CoinCola服务之前，请仔细阅读完整的使用条款。本使用条款中使用的“CoinCola”是指可盈可乐有限公司，包括但不限于其所有者，董事，投资者，员工或其他相关方。根据上下文，“CoinCola”也可以指服务，产品，网站，内容或其他材料（统称为“CoinCola服务”）。若您不接受以下条款，请您立即停止注册或主动停止使用本网站的服务。根据您所居住的国家/地区，您可能无法使用本网站的所有功能。您有责任遵守您访问本网站和服务的居住国家和/或国家/地区的这些规则和法律。请注意，CoinCola有权对本协议进行修改，恕不另行通知补发，请您定期查看本条款，因为您继续使用该网站将被视为是不可撤销的接受任何修订。本条款不涉及CoinCola用户与其他用户之间因比特币交易而产生的法律关系及法律纠纷。</p>
+
+                            <h3>接受使用条款</h3>
+
+                            <p>
+                                通过使用本网站（“网站”），注册CoinCola帐户（“帐户”）或使用我们的任何其他CoinCola服务，您同意接受并遵守条款和使用条款。在使用本网站或任何CoinCola服务之前，请仔细阅读完整的使用条款。本使用条款中使用的“CoinCola”是指可盈可乐有限公司，包括但不限于其所有者，董事，投资者，员工或其他相关方。根据上下文，“CoinCola”也可以指服务，产品，网站，内容或其他材料（统称为“CoinCola服务”）。</p>
+
+                            <h3>服务内容</h3>
+                            <ul>
+                                <li><p>1.CoinCola运用自己的系统，通过互联网等方式为用户提供比特币交易服务。</p></li>
+                                <li><p>2.用户提供的注册资料，用户同意：</p>
+                                    <ul>
+                                        <li><p>（1）提供合法、真实、准确的个人资料；</p></li>
+                                        <li><p>
+                                            （2）如有变动，及时更新用户资料。如果用户提供的注册资料不合法、不真实、不准确的，用户需承担因此引起的相应责任及后果，并且CoinCola保留终止用户使用CoinCola各项服务的权利。</p>
+                                        </li>
+                                    </ul>
+                                    <p></p></li>
+                            </ul>
+                            <h3>服务的提供、修改及终止</h3>
+                            <ul>
+                                <li><p>
+                                    1.用户在接受CoinCola各项服务的同时，同意接受CoinCola提供的各类信息服务。用户在此授权CoinCola可以向其账户、电子邮件、手机等发送商业信息。用户可进入CoinCola相关页面更改联系方式。</p>
+                                </li>
+                                <li><p>2.CoinCola保留随时修改或中断服务而不需通知用户的权利，CoinCola有权行使修改或中断服务的权利，不需对用户或任何无直接关系的第三方负责。</p>
+                                </li>
+                                <li><p>
+                                    3.法律允许范围内，无论在以下何种情况下：信息网络设备维护、信息网络连接故障、电脑、通讯或其他系统的故障、电力故障、罢工、劳动争议、暴乱、起义、骚乱、生产力或生产资料不足、火灾、洪水、风暴、爆炸、战争、政府行为、司法行政机关的命令、其他不可抗力或第三方的不作为而造成的服务终止或服务延迟以及用户因此而遭受的损失，CoinCola不承担责任。</p>
+                                </li>
+                                <li><p>4.用户对本协议的修改有任何异议或对CoinCola的服务有任何不满，可以行使以下权利:</p>
+                                    <ul>
+                                        <li><p>（1）停止使用CoinCola的网络服务。</p></li>
+                                        <li><p>
+                                            （2）通过客服、支持等渠道告知CoinCola停止对其服务。结束服务后，用户使用CoinCola网络服务条款的权利立即终止。在此情况下，CoinCola没有义务传送任何未处理的消息或未完成&lt;的服务给用户或任何无直接关系的第三方。</p>
+                                        </li>
+                                    </ul>
+                                    <p></p></li>
+                            </ul>
+                            <h3>用户信息的保密</h3>
+                            <ul>
+                                <li><p>1.本协议所称之CoinCola用户信息是指符合法律、法规及相关规定，并符合下述范围的信息：</p>
+                                    <ul>
+                                        <li><p>（1）用户注册CoinCola时，向CoinCola提供的个人信息；</p></li>
+                                        <li><p>
+                                            （2）用户在使用CoinCola服务、参加网站活动或访问网站网页时，CoinCola自动接收并记录的用户浏览器端数据，包括但不限于IP地址、网站Cookie中的资料及用户要求取用的网页记录；</p>
+                                        </li>
+                                    </ul>
+                                    <p></p></li>
+                                <ul>
+                                    <li><p>（3）CoinCola从商业伙伴处合法获取的用户个人信息；</p></li>
+                                    <li><p>（4）其它CoinCola通过合法途径获取的用户个人信息。</p></li>
+                                </ul>
+                                <li><p>2.CoinCola承诺未经法定原因或用户事先许可，CoinCola不会向任何第三方透露用户的密码、姓名、手机号码、证件号码等非公开信息。</p></li>
+                                <li><p>3.在下述法定情况下，用户的个人信息将会被部分或全部披露。</p></li>
+                                <ul>
+                                    <li><p>（1）经用户同意向用户本人或其他第三方披露；</p></li>
+                                    <li><p>（2）根据法律、法规等相关规定，或行政机构要求，向行政、司法机构或其他法律规定的第三方披露；</p></li>
+                                    <li><p>（3）其他CoinCola根据法律、法规等相关规定进行的披露。</p></li>
+                                </ul>
+                                <p></p></ul>
+                            <h3>用户权利</h3>
+                            <ul>
+                                <li><p>1.用户的用户名、密码和安全性</p>
+                                    <ul>
+                                        <li><p>（1）用户名不可重复注册。用户名一旦注册成功，不可更改。</p></li>
+                                        <li><p>
+                                            （2）用户一旦注册成功，成为CoinCola的用户，将得到用户名（用户邮箱）和密码，并对以此组用户名和密码登入系统后所发生的所有活动和事件负责，自行承担一切使用该用户名发布的言语、行为等而直接或间接导致的法律责任。</p>
+                                        </li>
+                                        <li><p>
+                                            （3）用户有义务妥善保管CoinCola账号、用户名和密码、短信验证码、谷歌验证码，用户将对用户名和密码、和谷歌密钥安全负全部责任。因用户原因导致用户名或密码、谷歌密钥泄露而造成的任何法律后果由用户本人负责，由于用户自身原因泄露这些信息导致的财产损失，本站不负相关责任。由于CoinCola是交易网站，登录密码、防钓鱼码等不得使用相同密码，否则会有安全隐患，相关责任由用户自身承担。</p>
+                                        </li>
+                                        <li><p>
+                                            （4）用户密码遗失的，可以通过注册电子邮箱发送的链接重置密码。用户若发现任何非法使用用户名或存在其他安全漏洞的情况，应立即告知CoinCola。</p>
+                                        </li>
+                                        <li><p>
+                                            （5）CoinCola不会向任何用户索取密码，不会让用户往任何非本站交易中心里提供的帐户、BTC充值地址充值比特币，请大家不要相信任何非CoinCola官方发布的诈骗信息，往非BTC交易中心提供的账户、地址里充值比特币造成的损失本站不负责任。</p>
+                                        </li>
+                                    </ul>
+                                    <p></p></li>
+                                <li><p>2.用户有权修改其账户个人中心、安全设置中各项可修改信息，自行选择录入介绍性文字，自行决定是否提供非必填项的内容；</p></li>
+                                <li><p>3.用户有权在CoinCola浏览比特币的资讯详情以及交易信息并发表符合国家法律规定、CoinCola社区规则的文章及观点；</p></li>
+                                <li><p>4.用户有权根据网站相关规定，获得CoinCola给与的奖励（如手续费按比例返现等）；</p></li>
+                                <li><p>5.用户有权按照CoinCola发布的活动规则参与CoinCola组织的各项线上、线下活动（包括各官方平台社区发起的活动）。</p></li>
+                                <li><p>6.用户有权查看其CoinCola账号下的信息。</p></li>
+                                <li><p>7.用户有权根据CoinCola网站规定，应用CoinCola提供的功能进行操作、享受CoinCola提供的其它各类服务。</p></li>
+                            </ul>
+                            <h3>用户义务</h3>
+                            <ul>
+                                <li><p>1.不得利用本站危害国家安全、泄露国家秘密，不得侵犯国家社会集体的和公民的合法权益，不得利用本站制作、复制和传播下列信息：</p>
+                                    <ul>
+                                        <li><p>（1）煽动抗拒、破坏宪法和法律、行政法规实施的；</p></li>
+                                        <li><p>（2）煽动颠覆国家政权，推翻社会主义制度的；</p></li>
+                                        <li><p>（3）煽动分裂国家、破坏国家统一的；</p></li>
+                                        <li><p>（4）煽动民族仇恨、民族歧视，破坏民族团结的；</p></li>
+                                        <li><p>（5）捏造或者歪曲事实，散布谣言，扰乱社会秩序的；</p></li>
+                                        <li><p>（6）宣扬封建迷信、淫秽、色情、赌博、暴力、凶杀、恐怖、教唆犯罪的；</p></li>
+                                        <li><p>（7）公然侮辱他人或者捏造事实诽谤他人的，或者进行其他恶意攻击的；</p></li>
+                                        <li><p>（8）损害国家机关信誉的；</p></li>
+                                        <li><p>（9）其他违反宪法和法律行政法规的；</p></li>
+                                        <li><p>（10）进行商业广告行为的。</p></li>
+                                    </ul>
+                                    <p></p></li>
+                                <li><p>
+                                    2.用户不得通过任何手段恶意注册CoinCola帐号，包括但不限于以牟利、炒作、套现等为目的多个账号注册。用户亦不得盗用其他用户帐号。如用户违反上述规定，则CoinCola有权直接采取一切必要的措施，包括但不限于删除用户发布的内容、取消用户在网站获得的星级、荣誉以及虚拟财富，暂停或查封用户帐号，取消因违规所获利益，乃至通过诉讼形式追究用户法律责任等。</p>
+                                </li>
+                                <li><p>
+                                    3.禁止用户将CoinCola以任何形式作为从事各种非法活动的场所、平台或媒介。未经CoinCola的授权或许可，用户不得借用本站的名义从事任何商业活动，也不得以任何形式将CoinCola作为从事商业活动的场所、平台或媒介。如用户违反上述规定，则CoinCola有权直接采取一切必要的措施，包括但不限于删除用户发布的内容、取消用户在网站获得的星级、荣誉以及虚拟财富，暂停或查封用户帐号，取消因违规所获利益，乃至通过诉讼形式追究用户法律责任等。</p>
+                                </li>
+                                <li><p>
+                                    4.用户在CoinCola以各种形式发布的一切信息，均应符合国家法律法规等相关规定及网站相关规定，符合社会公序良俗，并不侵犯任何第三方主体的合法权益，否则用户自行承担因此产生的一切法律后果，且CoinCola因此受到的损失，有权向用户追偿。</p>
+                                </li>
+                            </ul>
+                            <h3>拒绝担保与免责</h3>
+                            <ul>
+                                <li><p>
+                                    1.CoinCola作为“网络服务提供者”的第三方平台，不担保网站平台上的信息及服务能充分满足用户的需求。对于用户在接受CoinCola的服务过程中可能遇到的错误、侮辱、诽谤、不作为、淫秽、色情或亵渎事件，CoinCola不承担法律责任。</p>
+                                </li>
+                                <li><p>
+                                    2.基于互联网的特殊性，CoinCola也不担保服务不会受中断，对服务的及时性、安全性都不作担保，不承担非因CoinCola导致的责任。CoinCola力图使用户能对本网站进行安全访问和使用，但CoinCola不声明也不保证本网站或其服务器是不含病毒或其它潜在有害因素的；因此用户应使用业界公认的软件查杀任何自CoinCola下载文件中的病毒。</p>
+                                </li>
+                                <li><p>
+                                    3.CoinCola不对用户所发布信息的保存、修改、删除或储存失败负责。对网站上的非因CoinCola故意所导致的排字错误、疏忽等不承担责任。CoinCola有权但无义务，改善或更正本网站任何部分之疏漏、错误。</p>
+                                </li>
+                                <li><p>
+                                    4.除非CoinCola以书面形式明确约定，CoinCola对于用户以任何方式（包括但不限于包含、经由、连接或下载）从本网站所获得的任何内容信息，包括但不限于广告等，不保证其准确性、完整性、可靠性；对于用户因本网站上的内容信息而购买、获取的任何产品、服务、信息或资料，CoinCola不承担责任。用户自行承担使用本网站信息内容所导致的风险。</p>
+                                </li>
+                                <li><p>5.CoinCola内所有用户所发表的用户评论，仅代表用户个人观点，并不表示本网站赞同其观点或证实其描述，本网站不承担用户评论引发的任何法律责任。</p>
+                                </li>
+                                <li><p>6.CoinCola有权删除CoinCola内各类不符合法律或协议规定的信息，而保留不通知用户的权利。</p></li>
+                                <li><p>
+                                    7.所有发给用户的通告，CoinCola都将通过正式的页面公告、站内消息、电子邮件、客服电话、手机短信或常规的信件送达。任何非经CoinCola正规渠道获得的中奖、优惠等活动或信息，CoinCola不承担法律责任。</p>
+                                </li>
+                                <li><p>8.CoinCola有权根据市场情况调整提现、交易、对冲工具利息等手续费费率，有权决定免费推广期的终止。</p></li>
+                            </ul>
+                            <h3>关于协议</h3>
+                            <ul>
+                                <li><p>
+                                    1.本协议是CoinCola网与用户注册成为CoinCola用户，使用CoinCola服务之间的重要法律文件，CoinCola或者用户的任何其他书面或者口头意思表示与本协议不一致的，均应当以本协议为准。</p>
+                                </li>
+                                <li><p>2.如果本协议的任何条款被视为不合法、无效或因任何原因而无法执行，则此等规定应视为可分割，不影响任何其它条款的法律效力。</p></li>
+                                <li><p>3.因用户使用CoinCola而引起或与之相关的一切争议、权利主张或其它事项，均受中华人民共和国法律的管辖。</p></li>
+                                <li><p>4.用户和CoinCola发生争议的，应首先本着诚信原则通过协商加以解决。如果协商不成，则应向CoinCola所在地人民法院提起诉讼。</p></li>
+                                <li><p>5.本协议于用户勾选CoinCola注册页面的网络服务条款并完成注册程序、获得CoinCola账号和密码时生效，对CoinCola和用户均具有约束力。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script language="javascript">
+
+    $(".fwtk-link").click(function(){
+        $("#fwtk").show();
+    })
+
+//    $("body").click(function(){
+//        $("#fwtk").hide();
+//    });
+    $(function(){
+        $("#fwtk").mouseleave(function(){
+            $("#fwtk").hide();
+
+        });
+        $("#country_show").click(function(){
+            $(".chosen-drop").css("left", '0');
+            $("#check").focus();
+        });
+
+        $(".chosen-drop").mouseleave(function(){
+            $(".chosen-drop").css("left", '-9999px');
+
+        });
+
+        $(".active-result").each(function(){
+            $(this).click(function(){
+                $("#country_code").val($(this).attr('value'));
+                $("#country_show").html($(this).html());
+                $(".chosen-drop").css("left", '-9999px');
+            });
+        });
+
+        $(".submit").click(function (){
+
+
+            name = $("#name").val();
+            code = $("#code").val();
+            mobile = $("#mobile").val();
+            password = $("#password").val();
+            country_code = $("#country_code").val();
+            if(country_code == ''){
+                country_code = 37;
+            }
+            csrf = $("#csrf").val();
+
+            if(name == ''){
+                showAlert("请填写用户名");
+                return false;
+            }
+            if(mobile == ''){
+                showAlert("请填写手机号");
+                return false;
+            }
+            if(password == ''){
+                showAlert("请填写密码");
+                return false;
+            }
+
+            if(document.getElementById("checkboxx").checked){
+
+            }else{
+                showAlert("需要同意服务条款");
+                return false;
+            }
+            $.post("__URL__/register",{csrf:csrf,code:code,name:name,password:password,tel_country:country_code,tel:mobile},function(msg){
+                showAlert(msg.msg, function(){
+                    if(msg.code == 1){
+                        window.location = "__APP__/Home";
+                    }
+                });
+
+            }, 'json');
+        });
+    })
+
+    function get_tel(keyword){
+        var options = '';
+        $.post("__APP__/Home/Static/get_tel",{keyword:keyword},function(data){
+            $(".chosen-results").empty();
+            for(k in data){
+                options +=
+                        '<li class="active-result" onclick="select_code(\''+data[k].id+'\',\''+data[k].name+'\')" value="'+
+                        data[k].id
+                        +'">'+
+                        data[k].name
+                        +'</li>';
+            }
+            $(".chosen-results").append(options);
+        },'json');
+    }
+    function select_code(id, name){
+        $("#country_code").val(id);
+        $("#country_show").html(name);
+        $(".chosen-drop").css("left", '-9999px');
+    }
+
+</script>
+<include file="Index/footer"/>

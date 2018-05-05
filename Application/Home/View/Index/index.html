@@ -1,0 +1,426 @@
+<include file="top" />
+<!--头部-->
+
+
+
+
+<!--头部-->
+<!--幻灯片-->
+<div id="banner" class="banner">
+    <div id="owl-demo" class="owl-carousel">
+        <volist name="slide" id="s">
+            <a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">
+                <img src="{$s.img}" alt="">
+            </a>
+        </volist>
+        <!--<a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner.jpg" alt="">-->
+        <!--</a>-->
+        <!---->
+        <!--<a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner3.jpg" alt="">-->
+        <!--</a>-->
+        <!--<a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner4.jpg" alt="">-->
+        <!--</a>-->
+        <!--<a class="item"  href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner5.jpg" alt="">-->
+        <!--</a>-->
+        <!--<a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner6.jpg" alt="">-->
+        <!--</a>-->
+        <!--<a class="item" href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner7.jpg" alt="">-->
+        <!--</a>-->
+        <!--<a class="item"  href="javascript:void(0);" style="background-image:url(/Public/Home/images/banner.jpg)">-->
+            <!--<img src="/Public/Home/picture/banner8.jpg" alt="">-->
+        <!--</a>-->
+    </div>
+</div>
+
+<div  style="     background: rgb(241, 169, 127);">
+    <div  style="padding: 10px;">
+    
+   
+
+       <div class="scrollbox">
+    <div id="scrollDiv">
+        <ul>
+            <volist name="announce" id="ann">
+                <li><h3><a href="javascript:void(0)" class="linktit">{$ann.title}</a></h3></li>
+            </volist>
+
+        </ul>
+    </div>
+    
+</div>
+
+
+        
+  
+    </div>
+</div>
+
+<div class="box">
+    <div class="bcon">
+        <h1><b>开户入金实时展示</b></h1>
+        <!-- 代码开始 -->
+        <div class="list_lh">
+            <ul>
+                <volist name="tel" id="t">
+                    <li>
+                        <p>
+                            <a href="javascript:void(0)">{$t.tel}</a>
+                            <a href="javascript:void(0)" class="btn_lh">{$t.money}</a></p>
+
+                        <p>
+                            <a href="javascript:void(0)" class="a_blue">开户入金金额</a>
+                            <span>{$t.createtime|date="Y-m-d h:i",###}</span>
+                        </p>
+                    </li>
+                </volist>
+
+
+            </ul>
+        </div>
+        <!-- 代码结束 -->
+    </div>
+</div>
+
+
+<!--幻灯片-->
+<div style="    background: #f6f7f1;padding-bottom: 20px;">
+
+    <div class="container">
+        <h2 class="title">关于PRCBroker
+            <span class="line2"></span></h2>
+        <div class="desc">PRCBroker Group集团（下简称：PRC集团）是一家为个人客户及机构客户提供外汇，贵金属，CFD合约及大宗商品交易服务的环球经纪商。旗下子公司PRCCY受到塞浦路斯证监会（CySEC）授权和监管，可以进行纯代理模式执行交易（监管执照号：253/14）查看，受英国金融行为监管局(FCA)监管，注册号731259查看 ，所有的经营和监管业务符合欧盟金融市场工具法之《投资服务和规范市场法2007》.</div>
+        <a href="__URL__/news" class="more">
+            <span data-more="了解更多">了解更多</span></a>
+    </div>
+
+
+</div>
+
+<script>
+	$(function(){
+		new WOW().init();
+	})
+	var wow = new WOW({  
+    boxClass: 'wow',  
+    animateClass: 'animated',  
+    offset: 0,  
+    mobile: true,  
+    live: true  
+});  
+wow.init(); 
+</script>
+
+<div class="i_name  bounceInLeft animated  wow" >
+    <div class="tu">
+        <div class="line line_l">&nbsp;</div>
+        <div class="line line_r">&nbsp;</div>
+        <img src="/Public/Home/picture/n1.png" alt="" width="146" height="31"/>
+    </div>
+    <p class="en">Trading products</p>
+    <!--<p class="des">通过全程风险控制，为节点企业提供完善的商业保理服务</p>-->
+</div>
+
+<ul class="i_ma clearfix">
+    <li>
+        <a href="__URL__/waihui.html">
+            <div class="tu">
+                <img src="/Public/Home/picture/pic1.jpg" alt=""/>
+
+                <div class="bg_a"><span>&nbsp;</span></div>
+            </div>
+            <div class="wen">
+                <h5>外汇市场 秒懂版介绍视频</h5>
+
+                <p class="des">国际外汇市场是一个24小时全天候运行的全球一体化的市场</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="__URL__/guijinshu.html">
+            <div class="tu">
+                <img src="/Public/Home/picture/pic2.jpg" alt=""/>
+
+                <div class="bg_a"><span>&nbsp;</span></div>
+            </div>
+            <div class="wen">
+                <h5>贵金属</h5>
+
+                <p class="des">国际黄金市场已经形成一个24小时不间断连续运转的全球化市场</p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="__URL__/cfd.html">
+            <div class="tu">
+                <img src="/Public/Home/picture/pic3.jpg" alt=""/>
+
+                <div class="bg_a"><span>&nbsp;</span></div>
+            </div>
+            <div class="wen">
+                <h5>原油交易</h5>
+
+                <p class="des">原油交易是重要的金融交易方式，对于国家的经济发展及个人的财富创造都提供了更多的机会。国内的原油交易市场的起步比国外晚，机构体系都还在进一步的完善中，但这往往意味着广阔的发展空间以及潜力商机。
+</p>
+            </div>
+        </a>
+    </li>
+
+    <!--<li>
+    	<a href="">
+        	<div class="tu">
+            	<img src="/Public/Home/picture/pic6.jpg" alt=""/>
+                <div class="bg_a"><span>&nbsp;</span></div>
+            </div>
+            <div class="wen">
+            	<h5>了解更多</h5>
+                <p class="des">鑫科国际保理更多服务</p>
+            </div>
+        </a>
+    </li>-->
+</ul>
+<div class="space_hx">&nbsp;</div>
+<div class="bg_b">
+    <div class="i_name">
+        <div class="tu bounceInLeft animated  wow">
+            <div class="line line_l">&nbsp;</div>
+            <div class="line line_r">&nbsp;</div>
+            <img src="/Public/Home/picture/n2.png" alt="" width="146" height="31"/>
+        </div>
+        <p class="en">Foreign exchange</p>
+
+        <p class="des">基于完善的风险管理体系，形成对特定行业的业务模式</p>
+    </div>
+    <ul class="i_mb clearfix">
+
+       <volist name="news" id="new">
+            <li>
+                <a href="__URL__/news/id/{$new.id}">
+                    <img src="{$new.image}" alt=""/>
+
+                    <div class="ms">
+                        <div class="title">{$new.title}</div>
+                        <p class="des">{$new.title2}
+                        </p>
+
+                    </div>
+                </a>
+            </li>
+       </volist>
+        <!--<li>-->
+            <!--<a href="__URL__/xuexiziyuan.html">-->
+                <!--<img src="/Public/Home/picture/pic8.jpg" alt=""/>-->
+
+                <!--<div class="ms">-->
+                    <!--<div class="title">财经日记</div>-->
+                    <!--<p class="des">开设外汇保证金交易账户以及入金之后，通常就可以开始交易了，但是在 ......</p>-->
+                <!--</div>-->
+            <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="__URL__/yanjiubaogao.html">-->
+                <!--<img src="/Public/Home/picture/pic9.jpg" alt=""/>-->
+
+                <!--<div class="ms">-->
+                    <!--<div class="title">专家分析报告</div>-->
+                    <!--<p class="des">美元兑一篮子主要货币周一留守在逾一周最低水平附近，因一些持有美元......</p>-->
+                <!--</div>-->
+            <!--</a>-->
+        <!--</li>-->
+        <li>
+            <a href="__URL__/video">
+                <img src="{$video.url}" alt=""/>
+
+                <div class="ms" style="top:0">
+                    <div class="title" style="    padding-top: 0;
+    text-align: left;
+    padding-left: 11px;">视频教程</div>
+                    <p class="des" style=" width:100%">
+                        <!--<video src="{$video}" autoplay="autoplay" loop="loop" controls="controls" style="position: absolute; top: 0px; left: 0px; width:100%; height:100%; ">-->
+                        <!--your browser does not support the video tag-->
+                        <!--</video>-->
+<!---->
+<!---->
+                        <!--<video controls="controls" autoplay="autoplay"  style="position: absolute; top: 0px; left: 0px; width:100%; height:100%;" >-->
+                            <!--<source src="{$video}" type="video/ogg" />-->
+                            <!--Your browser does not support the video tag.-->
+                        <!--</video>-->
+					</p>
+                </div>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<div class="bg_c">
+    <div class="i_name">
+        <div class="tu   bounceInLeft animated  wow">
+            <div class="line line_l" style="left:-60px">&nbsp;</div>
+            <div class="line line_r" style="right:-60px">&nbsp;</div>
+            <img src="/Public/Home/picture/n4.png" alt="" width="230" height="32"/>
+        </div>
+        
+
+        
+    </div>
+    <ul class="i_md clearfix">
+        <li>
+            <div class="sj"> <img src="/Public/Home/picture/Jg01.png" alt=""/></div>
+            <div class="name">英国最高等级监管机构 </div>
+            <div class="des">负责监管银行、保险以及投资事业，包括证券。</div>
+        </li>
+        <li>
+            <div class="sj"><img src="/Public/Home/picture/Jg02.png" alt=""/></div>
+            <div class="name">塞浦路斯证监会</div>
+            <div class="des">塞浦路斯证监会，
+                塞浦路斯共和国内金融监管机构。
+            </div>
+        </li>
+        <li>
+            <div class="sj"><img src="/Public/Home/picture/Jg03.png" alt=""/></div>
+            <div class="name">日本金融厅<br/></div>
+            <div class="des">投资者利益以及促进金融便利化为目的。</div>
+        </li>
+       
+
+    </ul>
+
+</div>
+<div class="space_hx">&nbsp;</div>
+<div class="i_name">
+    <div class="tu   bounceInLeft animated  wow">
+        <div class="line line_l">&nbsp;</div>
+        <div class="line line_r">&nbsp;</div>
+        <img src="/Public/Home/picture/n7.png" alt="" width="146" height="31"/>
+    </div>
+    <p class="en">Partners</p>
+
+    <p class="des">坚持“共生双赢，和谐发展”的合作理念，与他们实现互利共赢</p>
+</div>
+<ul class="i_me clearfix">
+    <li><a href=""><img src="/Public/Home/picture/pic13.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.2.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.3.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.4.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.5.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.6.jpg" alt=""/></a></li>
+	<li><a href=""><img src="/Public/Home/picture/pic13.7.jpg" alt=""/></a></li>
+    <li><a href=""><img src="/Public/Home/picture/pic13.8.jpg" alt=""/></a></li>
+    
+
+</ul>
+<div class="space_hx">&nbsp;</div>
+
+<div class="i_name " style="background: #f6f5f0;">
+    <div class="tu   bounceInLeft animated  wow">
+        <div class="line line_l">&nbsp;</div>
+        <div class="line line_r">&nbsp;</div>
+        <img src="/Public/Home/picture/n3.png" alt="" width="146" height="31"/>
+    </div>
+    <p class="en">customer service</p>
+
+    <p class="des">流程化管理，以求在最短时间内为客户提供最优质的服务</p>
+    <div class="space_hx">&nbsp;</div>
+    <div class="space_hx">&nbsp;</div>
+    <!--
+    <div class="i_mc">
+        <img src="/Public/Home/picture/bg_c.png" alt=""/>
+        <ul class="clearfix">
+            <li>
+                <div class="name"></div>
+                <p class="des">
+    
+                </p>
+            </li>
+            <li class="odd">
+            	<a href="#">
+                <div class="name">在线开户</div>
+                <a/>
+                <p class="des">
+    
+                </p>
+            </li>
+            <li class="odd">
+            	<a href="https://itunes.apple.com/cn/app/metatrader-4/id496212596? utm_source=www.metatrader4.com&utm_campaign=download">
+                <div class="name name2">MT4平台<br/>下载</div>
+                </a>
+                <p class="des">
+    
+                </p>
+            </li>
+            <li class="odd">
+            	<a href="#">
+                <div class="name"></div>
+                </a>
+                <p class="des">
+    
+                </p>
+            </li>
+        </ul>
+    </div>
+    -->
+</div>
+
+<div class="bg_e">
+    <div class="foot">
+        <div class="i_name">
+            <div class="tu   bounceInLeft animated  wow">
+                <div class="line line_l">&nbsp;</div>
+                <div class="line line_r">&nbsp;</div>
+                <img src="/Public/Home/picture/n6.png" alt="" width="146" height="31"/>
+            </div>
+            <p class="en">Contact</p>
+        </div>
+        <ul class="clearfix">
+            <li>
+               
+                <p onclick="call()">
+                    联系电话：
+                    <b style="color:#fff">010 8900 7361</b>
+                </p>
+
+				
+                <p>
+                    <span>邮箱：</span>
+                    seoul@prcbroker.com
+
+                </p>
+
+                <p>
+                    <span>官网：</span>
+                    http://www.prcbrokers.com/
+                </p>
+
+
+
+                <p>
+                    <span>扫一扫关注我们：</span>
+
+                
+                </p>
+            </li>
+			
+        </ul>
+        <div class="code" style="clear:both;">
+                   <div style=" float:left; width:50%;"> <img width="145" src="/Public/Home/images/gzh.jpg" alt=""/><p style="color:#fff; text-align:right;padding-right: 13px;">公众号二维码</p></div>
+                   
+                  <div  style=" float:right; width:50%;">  <img width="145"  src="/Public/Home/images/kefu.jpg" alt=""/><p  style="color:#fff; text-align:right;padding-right: 13px;">客服二维码</p></div>
+                  
+            </div>
+            <div class="clearfix">
+    </div>
+</div>
+<script data-cfasync="false" src="/Public/Home/js/email-decode.min.js"></script>
+
+
+
+<!--<script type="text/javascript" src="/Public/Home/js/su.js"></script>-->
+</body>
+</html>

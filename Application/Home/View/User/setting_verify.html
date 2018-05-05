@@ -1,0 +1,559 @@
+<include file="Index/top"/>
+<script>
+    $(function () {
+        $(".menu-item-cont").each(function (e) {
+            $(".icon-fold-gg").eq(e).click(function () {
+                if ($(".menu-item-cont").eq(e).css("display") == "none") {
+                    $(".menu-item-cont").eq(e).show();
+                    $(".icon-fold-gg").eq(e).removeClass("jiajian");
+                } else {
+                    $(".menu-item-cont").eq(e).hide();
+                    $(".icon-fold-gg").eq(e).addClass("jiajian");
+                }
+            });
+        });
+    });
+</script>
+<div class="container clear-float main con_top">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item ">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item active">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr">
+        <div class="setting-title">{$lang.authentication}</div>
+        <div class="setting-panel">
+            <div class="tips-area">
+                <span class="icon-warning-1"></span>
+                {$lang.lang_idcard}
+            </div>
+
+            <div class="real-name-cont ">
+                <div class="head">
+                    <div class="expand">
+                        <span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang
+                        .hide}</span><span
+                            class="icon-expand"></span>
+                    </div>
+                    <span class="icon-id-card "></span>
+
+                    <div class="head-title">
+                        <div class="title-1">{$lang.idCard}
+              <span class="status-tag">
+                {$lang.unverified}
+              </span>
+                        </div>
+                        <div class="decs"></div>
+                    </div>
+                    <!--<div class="content ver-cont">
+                        <img class="ver-img" src="/static/imgs/authenticated.png" alt="">
+                        <div class="ver-info">
+                            <div class="name">
+                                <span class="status-tag">{$lang.verify}</span>
+                            </div>
+                                <div class="decs">证件类型: 中国大陆身份证</div>
+                        </div>
+                    </div>-->
+                </div>
+
+                <div class="content-v normal-form form-cont clear-float " style="display: none;padding-top: 20px;">
+                    <div class="form-item input-cont">
+                        <div class="input-name">{$lang.name}:</div>
+                        <input type="text" name="name" id="name" value="{$user.id_name}" class="input">
+                    </div>
+                    <div class="form-item input-cont">
+                        <div class="input-name">{$lang.idCard}:</div>
+                        <input type="text" id="idcard" name="number" value="{$user.id_card}" class="input">
+                    </div>
+
+                    <div class="form-item input-cont wx_img">
+                        <div class="input-name">正面:</div>
+                        <form id="form_idc1">
+                            <input type="hidden" name="id_card_img1" id="hidden_card1" />
+                            <empty name="user.id_card_img1">
+                                <input name="front" type="file" id="idc1" class="passport-img" accept="image/jpg,image/jpeg,image/png">
+                                <else/>
+                                <img src="{$user.id_card_img1}" height="200"/>
+                            </empty>
+                        </form>
+                    </div>
+
+                    <div class="form-item input-cont wx_img">
+                        <div class="input-name">反面:</div>
+                        <form id="form_idc2">
+                            <input type="hidden" name="id_card_img2" id="hidden_card2" />
+                            <empty name="user.id_card_img2">
+                                <input name="front" type="file" id="idc2" class="passport-img" accept="image/jpg,image/jpeg,image/png">
+                                <else/>
+                                <img src="{$user.id_card_img2}" height="200"/>
+                            </empty>
+                        </form>
+                    </div>
+
+                    <div class="form-item input-cont wx_img">
+                        <div class="input-name">手持:</div>
+                        <form id="form_idc3">
+                            <input type="hidden" name="id_card_img3" id="hidden_card3" />
+                            <empty name="user.id_card_img3">
+                                <input name="front" type="file" id="idc3" class="passport-img" accept="image/jpg,image/jpeg,image/png">                                <else/>
+                                <img src="{$user.id_card_img3}" height="200"/>
+                            </empty>
+                        </form>
+                    </div>
+
+                    <empty name="user.id_card">
+                        <a class="btn-verify submit btn-idcard">{$lang.ok}</a>
+                    </empty>
+                </div>
+
+            </div>
+
+            <div class="real-name-cont">
+                <div class="head">
+                    <div class="expand">
+                        <span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang.hide}</span><span class="icon-expand"></span>
+                    </div>
+                    <span class="icon-drive-card"></span>
+
+                    <div class="head-title">
+                        <div class="title-1">{$lang.passport}
+                            <span class="status-tag">{$lang.unverified}</span>
+                        </div>
+                        <div class="decs">{$lang.passportD}</div>
+                    </div>
+                </div>
+                <div class="content-v upload-pic" style="display: none">
+                    <input type="hidden" id="input-hz"/>
+
+                    <div class="upload-area">
+                        <div class="square square-hz">
+                            <span class="defalt-img"></span>
+
+                            <div class="link">+{$lang.upload}</div>
+                            <form id="form-hz">
+                                <input id="hz" name="front" type="file" class="passport-img"
+                                       accept="image/jpg,image/jpeg,image/png">
+                            </form>
+                        </div>
+                        <div class="text">{$lang.uploadInfo}</div>
+
+                        <empty name="user.hz">
+                            <div class="btn btn-save-pic btn-hz">{$lang.ok}</div>
+                        </empty>
+                    </div>
+                    <div class="upload-decs">{$lang.uploadRule}</div>
+                </div>
+            </div>
+            <div class="real-name-cont">
+                <div class="head">
+                    <div class="expand">
+                        <span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang.hide}</span><span class="icon-expand"></span>
+                    </div>
+                    <span class="icon-drive-card"></span>
+
+                    <div class="head-title">
+                        <div class="title-1">{$lang.driving}
+                            <span class="status-tag">{$lang.unverified}</span>
+                        </div>
+                        <div class="decs">{$lang.uploadRule}</div>
+                    </div>
+                </div>
+                <div class="content-v upload-pic" style="display: none">
+                    <input type="hidden" id="input-jz"/>
+
+                    <div class="upload-area">
+                        <div class="square square-jz">
+                            <span class="defalt-img"></span>
+
+                            <div class="link">+{$lang.upload}</div>
+                            <form id="form-jz">
+
+                                <input name="front" type="file" id="jz" class="passport-img"
+                                       accept="image/jpg,image/jpeg,image/png">
+                            </form>
+                        </div>
+                        <div class="text">{$lang.uploadInfo}</div>
+                        <empty name="user.jz">
+                            <div class="btn btn-save-pic btn-jz">{$lang.ok}</div>
+                        </empty>
+                    </div>
+                    <div class="upload-decs">{$lang.uploadRule}</div>
+                </div>
+            </div>
+
+            <!--<div class="real-name-cont ">-->
+                <!--<div class="head">-->
+                    <!--<div class="expand">-->
+                        <!--<span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang.hide}</span><span-->
+                            <!--class="icon-expand"></span>-->
+                    <!--</div>-->
+                    <!--<span class="icon-id-card "></span>-->
+
+                    <!--<div class="head-title">-->
+                        <!--<div class="title-1">银行卡-->
+                          <!--<span class="status-tag">-->
+                            <!--{$lang.unverified}-->
+                          <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="decs"></div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+
+                <!--<div class="content-v normal-form form-cont clear-float " style="display: none;padding-top: 20px;">-->
+                    <!--<form id="bankForm">-->
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">银行:</div>-->
+                            <!--<input type="text" name="bank" id="bank" value="{$user.bank}" class="input">-->
+                        <!--</div>-->
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">卡号:</div>-->
+                            <!--<input type="text" id="bank_sn" name="bank_sn" value="{$user.bank_sn}" class="input">-->
+                        <!--</div>-->
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">交易密码:</div>-->
+                            <!--<input type="password"  name="pwd" class="input">-->
+                        <!--</div>-->
+                        <!--<empty name="user.bank_sn">-->
+                            <!--<a class="btn-verify submit btn-bank">{$lang.ok}</a>-->
+                        <!--</empty>-->
+                    <!--</form>-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="real-name-cont ">-->
+                <!--<div class="head">-->
+                    <!--<div class="expand">-->
+                        <!--<span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang.hide}</span><span-->
+                            <!--class="icon-expand"></span>-->
+                    <!--</div>-->
+                    <!--<span class="icon-id-card "></span>-->
+
+                    <!--<div class="head-title">-->
+                        <!--<div class="title-1">支付宝-->
+              <!--<span class="status-tag">-->
+                <!--{$lang.unverified}-->
+              <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="decs"></div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+
+                <!--<div class="content-v normal-form form-cont clear-float " style="display: none;padding-top: 20px;">-->
+                    <!--<form id="alipayForm">-->
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">帐号:</div>-->
+                            <!--<input type="text" name="alipay" id="alipay" value="{$user.alipay}" class="input">-->
+                            <!--<input type="hidden" name="alipay_img" id="hidden_alipay_img" />-->
+                        <!--</div>-->
+                        <!--<div class="form-item input-cont zfb_img">-->
+                            <!--<div class="input-name">收款码:</div>-->
+                            <!--<empty name="user.alipay_img">-->
+                                <!--<input name="front" type="file" id="alipay_img" class="passport-img" accept="image/jpg,image/jpeg,image/png">-->
+                                <!--<else/>-->
+                                <!--<img src="{$user.alipay_img}" height="200"/>-->
+                            <!--</empty>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">交易密码:</div>-->
+                            <!--<input type="password"  name="pwd" class="input">-->
+                        <!--</div>-->
+
+                        <!--<empty name="user.alipay">-->
+                            <!--<a class="btn-verify submit btn-alipay">{$lang.ok}</a>-->
+                        <!--</empty>-->
+                    <!--</form>-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="real-name-cont ">-->
+                <!--<div class="head">-->
+                    <!--<div class="expand">-->
+                        <!--<span class="text-expand zk">{$lang.show}</span><span class="text-close">{$lang.hide}</span><span-->
+                            <!--class="icon-expand"></span>-->
+                    <!--</div>-->
+                    <!--<span class="icon-id-card "></span>-->
+
+                    <!--<div class="head-title">-->
+                        <!--<div class="title-1">微信-->
+              <!--<span class="status-tag">-->
+                <!--{$lang.unverified}-->
+              <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="decs"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="content-v normal-form form-cont clear-float " style="display: none;padding-top: 20px;">-->
+                    <!--<form id="wechatForm">-->
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">微信昵称:</div>-->
+                            <!--<input type="text" name="wechat" id="wechat" value="{$user.wechat}" class="input">-->
+                            <!--<input type="hidden" name="wechat_img" id="hidden_wechat_img" />-->
+                        <!--</div>-->
+                        <!--<div class="form-item input-cont wx_img">-->
+                            <!--<div class="input-name">收款码:</div>-->
+                            <!--<empty name="user.wechat_img">-->
+                                <!--<input name="front" type="file" id="wechat_img" class="passport-img" accept="image/jpg,image/jpeg,image/png">-->
+                                <!--<else/>-->
+                                <!--<img src="{$user.wechat_img}" height="200"/>-->
+                            <!--</empty>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-item input-cont">-->
+                            <!--<div class="input-name">交易密码:</div>-->
+                            <!--<input type="password"  name="pwd" class="input">-->
+                        <!--</div>-->
+                        <!--<empty name="user.wechat">-->
+                            <!--<a class="btn-verify submit btn-wechat">{$lang.ok}</a>-->
+                        <!--</empty>-->
+                    <!--</form>-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $("#idc3").change(function () {
+            var formData = new FormData($("#form_idc3")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $("#hidden_card3").val(data);
+                    $("#form_idc3").append('<br/><img src="'+data+'" height="200"/>');
+                }
+            });
+        });
+
+        $("#idc2").change(function () {
+            var formData = new FormData($("#form_idc2")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $("#hidden_card2").val(data);
+                    $("#form_idc2").append('<br/><img src="'+data+'" height="200"/>');
+                }
+            });
+        });
+        $("#idc1").change(function () {
+            var formData = new FormData($("#form_idc1")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $("#hidden_card1").val(data);
+                    $("#form_idc1").append('<br/><img src="'+data+'" height="200"/>');
+                }
+            });
+        });
+
+        $(".btn-wechat").click(function () {
+            formlist = $("#wechatForm").serialize();
+            $.post("__URL__/bind_wechat", formlist, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+        $(".btn-alipay").click(function () {
+            formlist = $("#alipayForm").serialize();
+            $.post("__URL__/bind_alipay", formlist, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+
+        $("#alipay_img").change(function () {
+            var formData = new FormData($("#alipayForm")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+//                    console.log(data);
+                    $("#hidden_alipay_img").val(data);
+                    $(".zfb_img").append('<br/><img src="'+data+'" height="200"/>');
+                }
+            });
+        });
+        $("#wechat_img").change(function () {
+            var formData = new FormData($("#wechatForm")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+//                    console.log(data);
+                    $("#hidden_wechat_img").val(data);
+                    $(".wx_img").append('<br/><img src="'+data+'" height="200"/>');
+                }
+            });
+        });
+
+
+        $(".btn-bank").click(function () {
+            formlist = $("#bankForm").serialize();
+            $.post("__URL__/bind_bank", formlist, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+
+
+        $(".text-expand").each(function (e) {
+            $(".expand").eq(e).click(function () {
+                if ($(".content-v").eq(e).css("display") == "none") {
+                    $(".content-v").hide();
+                    $(".content-v").eq(e).show();
+                    $(".zk").eq(e).text("{$lang.hide}");
+                } else {
+                    $(".content-v").eq(e).hide();
+                    $(".zk").eq(e).text("{$lang.show}");
+                }
+
+            });
+        });
+
+        $("#jz").change(function () {
+            var formData = new FormData($("#form-jz")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $(".square-jz").empty();
+                    $("#input-jz").val(data);
+                    $(".square-jz").append('<img src="' + data + '" width="100%" height="100%"/>');
+                }
+            });
+        });
+
+        $("#hz").change(function () {
+            var formData = new FormData($("#form-hz")[0]);
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Home/User/uploadImg",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $(".square-hz").empty();
+                    $("#input-hz").val(data);
+                    $(".square-hz").append('<img src="' + data + '" width="100%" height="100%"/>');
+                }
+            });
+        });
+
+        $(".btn-jz").click(function () {
+            url = $("#input-jz").val();
+            $.post("__URL__/change_jz", {url: url}, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+        $(".btn-hz").click(function () {
+            url = $("#input-hz").val();
+            $.post("__URL__/change_hz", {url: url}, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+
+
+        $(".btn-idcard").click(function () {
+            name = $("#name").val();
+            idcard = $("#idcard").val();
+            idcard_img1 = $("#hidden_card1").val();
+            idcard_img2 = $("#hidden_card2").val();
+            idcard_img3 = $("#hidden_card3").val();
+            if(idcard_img1 == '' || idcard_img2 == '' || idcard_img3 == '' ){
+                showAlert("请完整上传身份证照片");
+                return false;
+            }
+            $.post("__URL__/change_idcard", {name: name, idcard: idcard, img1:idcard_img1,img2:idcard_img2,img3:idcard_img3}, function (d) {
+                showAlert(d.msg, function () {
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+            }, 'json');
+        });
+
+
+    });
+
+</script>
+<!--<div style="height: 100px"></div>-->
+<!--<include file="Index/footer"/>-->

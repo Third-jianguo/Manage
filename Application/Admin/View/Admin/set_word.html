@@ -1,0 +1,36 @@
+<include file="Index/header"/>
+<div>
+    <nav class="breadcrumb"><i class="fa fa-home"></i> 管理员日志
+    </nav>
+    <form action="__APP__/Admin/Admin/log_view" >
+    <div class="page-container">
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg table-hover table-sort">
+                <thead>
+                <tr class="text-c">
+                    <th>No.</th>
+                    <th>管理员</th>
+                    <th>时间</th>
+                    <th>登陆IP</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="vo" key="k">
+                    <tr class="text-c va-m">
+                        <td><span class="label label-success radius">{$k}</span></td>
+                        <td>{$vo.admin_name}</td>
+                        <td>{$vo.time}</td>
+                        <td>{$vo.login_ip}</td>
+                        <td>{$vo.details}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <div class="scott">{$page}</div>
+        </div>
+    </div>
+    </form>
+    <a href="__URL__/set_word">word</a>
+</div>
+<include file="Index/foot"/>

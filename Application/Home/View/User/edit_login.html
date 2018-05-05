@@ -1,0 +1,101 @@
+<include file="Index/top" />
+<body class="zh-CN">
+
+<!-- <div class="float-cont">
+  <div class="cont-item">需要帮助</div>
+</div> -->
+<div class="container clear-float main">
+    <div class="setting-leftmenu fl">
+        <div class="menu-head-one">{$lang.userHome}</div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.userInfo}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/index" class="menu-item ">{$lang.user_info}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.anquan_moeny}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_security" class="menu-item active">{$lang.anquan_setting}</a>
+            </div>
+        </div>
+        <div class="menu-c">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">审核</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_verify" class="menu-item ">{$lang.authentication}</a>
+                <a href="__URL__/setting_verify_money" class="menu-item ">资金验证</a>
+                <a href="__URL__/edit_google" class="menu-item ">google验证</a>
+            </div>
+        </div>
+        <div class="menu-c bt">
+            <div class="icon-fold-gg"></div>
+            <div class="menu-title">{$lang.is_trusted}</div>
+            <div class="menu-item-cont">
+                <a href="__URL__/setting_trusted/type/1" class="menu-item ">{$lang.trustYou}</a>
+                <a href="__URL__/setting_trusted/type/2" class="menu-item ">{$lang.youTrust}</a>
+                <a href="__URL__/setting_trusted/type/3" class="menu-item ">{$lang.untrust}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="fr">
+        <div class="setting-title">{$lang.anquan_setting}&gt;{$lang.edit_pwd}</div>
+        <div class="setting-panel">
+            <form class="form-cont" id="step1">
+
+                <div class="form-text">
+                    {$lang.pwd_tip}
+                </div>
+
+                <div class="input-cont">
+                    <span class="icon form-password"></span>
+                    <input class="input" onfocus="this.type='password'" name="oldpassword" id="oldpwd"
+                           autocomplete="off" placeholder="{$lang.old_pwd}">
+
+                </div>
+                <div class="input-cont">
+                    <span class="icon form-password"></span>
+                    <input class="input" onfocus="this.type='password'"  name="password" id="pwd" autocomplete="off" placeholder="{$lang.new_pwd}">
+                </div>
+                <div class="input-cont">
+                    <span class="icon form-password"></span>
+                    <input class="input" onfocus="this.type='password'"  name="password2" id="pwd2" autocomplete="off" placeholder="{$lang.new_pwd2}">
+                </div>
+
+                <a id="submit" class="btn submit">{$lang.ok}</a>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script language="javascript">
+    $(function(){
+        $(".submit").click(function(){
+            oldpwd = $("#oldpwd").val();
+            pwd = $("#pwd").val();
+            pwd2 = $("#pwd2").val();
+            if(oldpwd == '' || pwd == '' || pwd2 == ''){
+                return false;
+            }
+            if(pwd != pwd2){
+                showAlert('{$lang.no_pipei}');
+                return false;
+            }
+            $.post("__URL__/edit_login", {oldpwd:oldpwd,pwd:pwd,pwd2:pwd2}, function(d){
+                showAlert(d.msg, function(){
+                    if(d.code == 1){
+                        location.reload();
+                    }
+                });
+
+            }, 'json');
+        });
+    })
+</script>
+<include file="Index/footer"/>

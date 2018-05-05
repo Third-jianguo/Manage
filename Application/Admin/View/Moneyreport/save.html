@@ -1,0 +1,17 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <table>
+        <input type="hidden" name="id" value="{$_GET.id}" />
+
+        <volist name="currency" id="curr">
+            <tr>
+                <td align="right" height="40px"><label>{$curr.sn}：</label></td>
+                <td align="left">
+                    <input name="{$curr.id}" value="{$info[$curr[id]]['money']}" class="input-text radius" style="width:200px;height: 30px">
+                </td>
+            </tr>
+        </volist>
+
+    </table>
+</form>
+<include file="Index/foot" />

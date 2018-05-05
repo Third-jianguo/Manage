@@ -1,0 +1,225 @@
+<include file="Index/header"/>
+<div>
+    <nav class="breadcrumb"><i class="fa fa-home"></i> 分类列表
+        <div class="nav_right_nav">&nbsp;&nbsp;
+            <volist name="ActBtns" id="btn">
+                <eq name="btn.action" value="add">
+                <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action} add message-right">
+                    <i class="fa fa-{$btn.icon}"></i>&nbsp;{$btn.name}
+                </a>
+                </eq>
+            </volist>
+        </div>
+    </nav>
+    <form action="__URL__/index" >
+    <div class="search_list">
+        <span class="search_list_content">&nbsp;
+        分类名称：<input type="text" name="name" value="{$search.name}" class="search_input"/></span>
+        <span class="search_list_content">
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="查询" class="btn_fa_css btn btn-primary" style="margin:0;"/></span>
+    </div>
+    <div class="page-container">
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg table-hover table-sort">
+                <thead>
+                <tr class="text-c">
+                    <!--<th width="20"><input name="" type="checkbox" value=""></th>-->
+                    <th width="30">No.</th>
+                    <th>显示顺序</th>
+                    <th>分类名称</th>
+                    <th width="100">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <empty name="list">
+                    <tr class="text-c va-m"><td colspan="5">暂无符合条件的数据！</td></tr>
+                <else/>
+                <volist name="list" id="vo" key="k">
+                    <tr class="text-c va-m">
+                        <td><span class="label label-success radius">{$k}</span></td>
+                        <td>{$vo.display_order}</td>
+                        <td>
+                        {$vo.name}
+                        </td>
+
+                        <td class="td-manage">
+                            <volist name="ActBtns" id="btn">
+                                <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">
+                                    <i class="fa fa-{$btn.icon}"></i>&nbsp;
+                                </a>
+                            </volist>
+                        </td>
+                    </tr>
+                </volist>
+                </empty>
+                </tbody>
+            </table>
+        </div>
+        <div class="scott">{$page}</div>
+    </div>
+    </form>
+</div>
+<include file="Index/foot"/>
+<script>
+    $(document).ready(function () {
+        /* 添加菜单按钮单击 */
+        $('.add').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 添加',
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/add/id/'+id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/add', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /* 修改按钮单击 */
+        $('.save').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/save/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/save', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /* addlower按钮单击 */
+        $('.addlower').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['85vw', '85vh'],
+                fix: false, //不固定
+                content: '__URL__/addlower/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/addlower', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json')
+                }
+            });
+        })
+        /* 删除数据 */
+        $('.del').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否删除' + title + '? ！', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['删除', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/del', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        })
+        /* 恢复数据 */
+        $('.getback').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否恢复' + title + '?', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['恢复', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/getback', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        })
+        /* 查看单击 */
+        $('.view').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 查看' + title,
+                area: ['95vw', '95vh'],
+                fix: false, //不固定
+                content: '__URL__/view/id/' + id,
+                btn: [ '关闭'],
+                yes: function () {
+                    layer.close(index);
+                }
+            });
+        })
+        //-----------------------------------------------------
+    })
+</script>

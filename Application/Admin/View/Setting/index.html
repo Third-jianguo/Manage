@@ -1,0 +1,145 @@
+<include file="Index/header"/>
+<style>
+    .table th, .table td{
+        padding: 5px;
+    }
+</style>
+<nav class="breadcrumb"><i class="fa fa-log"></i>全局菜错误代码表
+    </nav>
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        <table class="table table-border table-bordered">
+            <tr>
+                <th>序号</th>
+                <th>错误代码</th>
+                <th>错误描述</th>
+                <th>操作</th>
+            </tr>
+            <volist name="list" id="vo" key="k">
+                <tr>
+                    <td width="4%"><span class="label label-success radius">{$k}</span></td>
+                    <td width="30">
+                        {$vo.error_id}
+                    </td>
+                    <td width="60%">{$vo.error_detail}</td>
+                    <td class="td-manage" width="6%">
+                        <volist name="ActBtns" id="btn">
+                            <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">
+                                <i class="fa fa-{$btn.icon}"></i>&nbsp;
+                            </a>
+                        </volist>
+                    </td>
+                </tr>
+
+            </volist>
+        </table>
+    </div>
+</div>
+<include file="Index/foot"/>
+<script>
+    $(document).ready(function () {
+
+        /**
+         * 添加菜单按钮
+         */
+        $('.error_add').click(function () {
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 新增树形菜单结构',
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/error_add',
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/error_add', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json')
+                }
+            });
+        });
+        /**
+         * 修改菜单按钮单击
+         */
+        $('.error_save').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/error_save/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/error_save', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json')
+                }
+            });
+
+        })
+        /**
+         * 删除数据
+         */
+
+        $('.error_del').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否删除' + title + '? <br>删除后不可恢复，请谨慎操作！', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['删除', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/error_del', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json');
+
+                }
+
+            });
+
+
+        })
+        //-----------------------------------------------------
+    })
+</script>

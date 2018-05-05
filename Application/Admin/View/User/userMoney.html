@@ -1,0 +1,105 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center">
+    <table>
+        <tr>
+            <input type="hidden" name="id" value="{$Dbname.id}" />
+            <td align="right" height="40px"><label>排序：</label></td>
+            <td align="left"><input name="display_order" value="{$Dbname.display_order}" class="input-text radius" placeholder="输入排序默认100" style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>标题：</label></td>
+            <td align="left"><input name="title"  value="{$Dbname.title}"class="input-text radius" placeholder="输入标题" style="width:200px;height: 30px"></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>副标题：</label></td>
+            <td align="left">
+                <textarea name="subtitle"  style="height: 200px; width: 400px;">{$Dbname.subtitle}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>分类：</label></td>
+            <td align="left">
+                <select name="category">
+                    <volist name="category" id="cate">
+                        <option value="{$cate.id}" <eq name="cate.id" value="$Dbname.category">selected</eq> >{$cate.title}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" width="15%" height="40px"><label>上传图片：</label></td>
+            <td align="left">
+                <img src="" id="show_image" height="50" style="display: none"/>
+                <input type="hidden" value="" id="url"  name="img" class="input-text radius" />
+                <input type="button" id="uploadButton" value="Upload" />
+                <img src="{$Dbname.img}" width="55px" height="55px" />
+            </td>
+        </tr>
+
+        <tr>
+            <td align="right" height="40px"><label>状态：</label></td>
+            <td align="left">
+                <input type="radio" name="status" value="0" <eq name="Dbname.status" value="0">checked</eq> />显示
+                <input type="radio" name="status" value="1" <neq name="Dbname.status" value="0">checked</neq> />不显示</td>
+        </tr>
+
+        <tr>
+            <td align="right" height="40px"><label>内容：</label></td>
+            <td align="left"> <textarea class="textarea" id="inscontent" placeholder="......" name="content" onchange="getcontent()">{$Dbname.content}</textarea></td>
+        </tr>
+
+    </table>
+</form>
+<include file="Index/foot" />
+<script>
+    KindEditor.ready(function(K) {
+        var uploadbutton = K.uploadbutton({
+            button : K('#uploadButton')[0],
+            fieldName : 'image',
+            url : '__URL__/upload',
+            afterUpload : function(data) {
+                //console.log(data)
+                data= eval(data);
+                if (data.status == 1) {
+                    K('#url').val(data.msg);
+                    var img = '__APP__/../'+data.msg;
+                    $('#show_image').attr('src',img);
+                    $('#show_image').css('display','');
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+        uploadbutton.fileBox.change(function(e) {
+            uploadbutton.submit();
+        });
+    });
+</script>
+
+<script>
+    var editor;
+    KindEditor.ready(function (K) {
+        editor = K.create('textarea[name="content"]', {
+            resizeType: 1,width:"80%",height:"280px",
+            allowPreviewEmoticons: false,
+            allowImageUpload: true,
+            items: [
+                'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                'table', 'hr',  'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink'
+            ],
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+    });
+
+    function getcontent(){
+        var content = editor.html();
+        $('#inscontent').val(content);
+    }
+</script>

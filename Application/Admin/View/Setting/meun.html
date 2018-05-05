@@ -1,0 +1,229 @@
+<include file="Index/header"/>
+
+<nav class="breadcrumb"><i class="fa fa-cog"></i>全局菜单管理设置，修改后需要清除缓存！图标查看网址：http://fontawesome.dashgame.com 
+    </nav>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table table-border table-bordered">
+            <tr>
+                <th>No.</th>
+                <th>类型</th>
+                <th>验证</th>
+                <th align="center">图标</th>
+                <th>名称</th>
+                <th>控制器</th>
+                <th>方法</th>
+                <th>操作</th>
+            </tr>
+            <volist name="list" id="vo">
+                <tr>
+                    <td width="30"><span class="label label-success radius">{$vo.id}</span></td>
+                    <td width="30">
+                        <eq name="vo.level" value="1"><span class="label label-secondary radius">菜单</span></eq>
+                        <eq name="vo.level" value="2"><span class="label label-secondary radius">模型</span></eq>
+                        <eq name="vo.level" value="3"><span class="label label-secondary radius">方法</span></eq>
+                    </td>
+                    <td width="30">
+                        <eq name="vo.verify" value="1"><span class="label label-primary radius">是</span></eq>
+                        <eq name="vo.verify" value="2"><span class="label label-primary radius">否</span></eq>
+                    </td>
+                    <td width="25" align="center"><i class="fa fa-{$vo.icon}"></i></td>
+                    <td>{$vo.number_str}{$vo.name}</td>
+                    <td>{$vo.controller}</td>
+                    <td>{$vo.action}</td>
+                    <td class="td-manage" width="60">
+                        <volist name="ActBtns" id="btn">
+                            <a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">
+                                <i class="fa fa-{$btn.icon}"></i>&nbsp;
+                            </a>
+                        </volist>
+                    </td>
+                </tr>
+                <!--<empty name="vo.number">-->
+                    <!--<tr>-->
+                        <!--<td width="30"><span class="label label-success radius">{$vo.id}</span></td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.level" value="1"><span class="label label-secondary radius">菜单</span></eq>-->
+                            <!--<eq name="vo.level" value="2"><span class="label label-secondary radius">模型</span></eq>-->
+                            <!--<eq name="vo.level" value="3"><span class="label label-secondary radius">方法</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.verify" value="1"><span class="label label-primary radius">是</span></eq>-->
+                            <!--<eq name="vo.verify" value="2"><span class="label label-primary radius">否</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="25" align="center"><i class="fa fa-{$vo.icon}"></i></td>-->
+                        <!--<td>{$vo.name}</td>-->
+                        <!--<td>------</td>-->
+                        <!--<td>------</td>-->
+                        <!--<td class="td-manage" width="60">-->
+                            <!--<volist name="ActBtns" id="btn">-->
+                                <!--<a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">-->
+                                    <!--<i class="fa fa-{$btn.icon}"></i>&nbsp;-->
+                                <!--</a>-->
+                            <!--</volist>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</empty>-->
+                <!--<eq name="vo.number" value="1">-->
+                    <!--<tr>-->
+                        <!--<td width="30"><span class="label label-success radius">{$vo.id}</span></td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.level" value="1"><span class="label label-secondary radius">菜单</span></eq>-->
+                            <!--<eq name="vo.level" value="2"><span class="label label-secondary radius">模型</span></eq>-->
+                            <!--<eq name="vo.level" value="3"><span class="label label-secondary radius">方法</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.verify" value="1"><span class="label label-primary radius">是</span></eq>-->
+                            <!--<eq name="vo.verify" value="2"><span class="label label-primary radius">否</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="25" align="center"><i class="fa fa-{$vo.icon}"></i></td>-->
+                        <!--<td>├─ ─ ─ ─ ─{$vo.name}</td>-->
+                        <!--<td>{$vo.controller}</td>-->
+                        <!--<td>{$vo.action}</td>-->
+                        <!--<td class="td-manage" width="60">-->
+                            <!--<volist name="ActBtns" id="btn">-->
+                                <!--<a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">-->
+                                    <!--<i class="fa fa-{$btn.icon}"></i>&nbsp;-->
+                                <!--</a>-->
+                            <!--</volist>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</eq>-->
+                <!--<eq name="vo.number" value="2">-->
+                    <!--<tr>-->
+                        <!--<td width="30"><span class="label label-success radius">{$vo.id}</span></td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.level" value="1"><span class="label label-secondary radius">菜单</span></eq>-->
+                            <!--<eq name="vo.level" value="2"><span class="label label-secondary radius">模型</span></eq>-->
+                            <!--<eq name="vo.level" value="3"><span class="label label-secondary radius">方法</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="30">-->
+                            <!--<eq name="vo.verify" value="1"><span class="label label-primary radius">是</span></eq>-->
+                            <!--<eq name="vo.verify" value="2"><span class="label label-primary radius">否</span></eq>-->
+                        <!--</td>-->
+                        <!--<td width="25" align="center"><i class="fa fa-{$vo.icon}"></i></td>-->
+                        <!--<td>├ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─{$vo.name}</td>-->
+                        <!--<td>{$vo.controller}</td>-->
+                        <!--<td>{$vo.action}</td>-->
+                        <!--<td class="td-manage" width="60">-->
+                            <!--<volist name="ActBtns" id="btn">-->
+                                <!--<a href="javascript:;" title="{$btn.name}" data-id="{$vo.id}" data-name="{$vo.name}" class="{$btn.action}">-->
+                                    <!--<i class="fa fa-{$btn.icon}"></i>&nbsp;-->
+                                <!--</a>-->
+                            <!--</volist>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</eq>-->
+            </volist>
+        </table>
+    </div>
+</div>
+
+
+<include file="Index/foot"/>
+<script>
+    $(document).ready(function () {
+
+        /**
+         * 添加菜单按钮
+         */
+        $('.add').click(function () {
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 新增树形菜单结构',
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/add',
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/add', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json')
+                }
+            });
+        });
+        /**
+         * 修改菜单按钮单击
+         */
+        $('.save').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.open({
+                type: 2,
+                title: '<i class="fa fa-plus-square-o" style="color: red;"> </i> 编辑' + title,
+                area: ['700px', '470px'],
+                fix: false, //不固定
+                content: '__URL__/save/id/' + id,
+                btn: ['确定', '关闭'],
+                yes: function () {
+                    var form = layer.getChildFrame('form', index);
+                    $.post('__URL__/save', form.serialize(), function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 2000,
+                                end: function () {
+                                    layer.close(index);
+                                    window.location.reload();
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json')
+                }
+            });
+
+        })
+        /**
+         * 删除数据
+         */
+
+        $('.del').click(function () {
+            var title = $(this).data('name');
+            var id = $(this).data('id');
+            var index = layer.msg('是否删除' + title + '? <br>删除后不可恢复，请谨慎操作！', {
+                icon: 5,
+                time: 0,
+                shade: [0.8, '#393D49'],
+                btn: ['删除', '取消'],
+                yes: function () {
+                    layer.close(index);
+                    $.post('__URL__/del', {id: id}, function (data) {
+                        if (data.status == 1) {
+                            layer.msg(data.msg, {
+                                time: 1000, end: function () {
+                                    window.location.reload();
+
+                                }
+                            })
+                        } else {
+                            layer.msg(data.msg, function () {
+                            });
+                        }
+
+                    }, 'json');
+
+                }
+
+            });
+
+
+        })
+        //-----------------------------------------------------
+    })
+</script>

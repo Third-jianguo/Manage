@@ -1,0 +1,202 @@
+<include file="Index/top" />
+<body class="user">
+<!-- <div class="float-cont">
+  <div class="cont-item">需要帮助</div>
+</div> -->
+
+<div class="container con_top">
+    <div class="user-panel">
+        <div class="poster-info-guangao clear-float">
+            <img class="poster-head fl" width="60" height="60"
+                 src="{$user.head_img}" onerror="this.src='/Public/images/noHead.png'" alt="">
+
+            <div class="fl">
+                <div class="user-name">{$user.name}</div>
+                <!-- <div class="user-level">VIP 666</div> -->
+                <div class="poster-info-cont clear-float">
+                    <span class="poster-info-item">
+                    <div class="item-d">{$user.trust.dealCount}+</div>
+                    <div class="item-n">{$lang.dealCount}</div>
+                    </span>
+                    <span class="poster-info-item">
+                    <div class="item-d">{$user.trust.trust}</div>
+                    <div class="item-n">{$lang.trustCount}</div>
+                    </span>
+                    <span class="poster-info-item">
+                    <div class="item-d">{$user.trust.good}</div>
+                    <div class="item-n">{$lang.goodReputation}</div>
+                    </span>
+                    <!--<span class="poster-info-item">-->
+                    <!--<div class="item-d">300+ BTC</div>-->
+                    <!--<div class="item-n">历史交易</div>-->
+                    <!--</span>-->
+                </div>
+                <div class="poster-sign"></div>
+            </div>
+            <div>
+                <div class="btn-cont-guangao">
+                    <empty name="checkT">
+                        <a href="javascript:;" id="btnTrust" class="btn-guangao ">{$lang.trust}</a>
+                        <else/>
+                        <a href="javascript:;" id="btnTrust" class="btn-guangao btn-line">{$lang.trust_ok}</a>
+                    </empty>
+                    <empty name="checkB">
+                        <a href="javascript:;" id="btnIgnore" class="btn-guangao grey ">{$lang.pingbi}</a>
+                        <else/>
+                        <a href="javascript:;" id="btnIgnore" class="btn-guangao grey btn-line">{$lang.pingbi_ok}</a>
+                    </empty>
+                </div>
+
+                <div class="ta-r">
+                    <div class="user-check">
+                        <div class="icon-mail-check-s active"></div>
+                        <empty name="user.email"  >
+                        {$lang.email}{$lang.unverified}
+                            <else/>
+                            {$lang.email}{$lang.verify}
+                        </empty>
+                    </div>
+                    <div class="user-check">
+                        <div class="icon-bind-phone-s active"></div>
+                           <empty name="user.tel" >
+                               {$lang.mobile}{$lang.unverified}
+                        <else/>
+                               {$lang.mobile}{$lang.verify}
+                    </empty>
+                    </div>
+                    <div class="user-check">
+                        <div class="icon-id-card-s active"></div>
+                        <empty name="user.id_card" >
+                            {$lang.idCard}{$lang.unverified}
+                            <else/>
+                            {$lang.idCard}{$lang.verify}
+                        </empty>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="user-panel mt-20">
+        <h3 class="h3"><span class="blue-text">{$user.name}</span>{$lang.sendAdvertisinged}</h3>
+
+        <div class="tab-cont">
+            <div class="switch-tab line-buy current">{$lang.buyOnline}</div>
+            <div class="switch-tab line-sell">{$lang.sellOnline}</div>
+        </div>
+
+
+        <table class="table-he">
+            <thead>
+            <tr>
+                <th class="col-25">{$lang.moneyType}</th>
+                <th class="col-25">{$lang.paymentMethod}</th>
+                <th>{$lang.dealLimit}</th>
+                <th>{$lang.formPrice}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <empty name="advInfo">
+                <div class="pagination"></div>
+                <div class="no-record">
+                    <div class="icon-no-record"></div>
+                    <div class="text-no-record">{$lang.no_adv}</div>
+                </div>
+                <div class="mask">
+                    <img class="loading-img" src="__PUBLIC__/btc/images/loading_new.gif">
+                </div>
+            <else/>
+                <volist name="advInfo" id="adv">
+                    <eq name="adv.advertising_type" value="1">
+                        <!--购买-->
+                        <tr class="buy">
+                            <td class="col-25">{$adv.currency_type_name}</td>
+                            <td class="col-25">{$adv.pay_way}</td>
+                            <td>{$adv.price_low}-{$adv.price_high} {$adv.pay_currency_type}</td>
+                            <td>{$adv.price_count} {$adv.currency_type_name}/{$adv.pay_currency_type}</td>
+                            <td><a class="btn fr" href="__APP__/Home/Advertising/detail/id/{$adv.id}">{$lang.buy} {$adv.currency_type_name}</a></td>
+                        </tr>
+                        <else/>
+                        <tr class="shop" style="display: none;">
+                            <td class="col-25">{$adv.currency_type_name}</td>
+                            <td class="col-25">{$adv.pay_way}</td>
+                            <td>{$adv.price_low}-{$adv.price_high} {$adv.pay_currency_type}</td>
+                            <td>{$adv.price_count} {$adv.currency_type_name}/{$adv.pay_currency_type}</td>
+                            <td><a class="btn fr" href="__APP__/Home/Advertising/detail/id/{$adv.id}">{$lang.sell} {$adv.currency_type_name}</a></td>
+                        </tr>
+                    </eq>
+                </volist>
+            </empty>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<script language="javascript">
+    $(function(){
+        $("#btnIgnore").click(function(){
+            var type = 1;
+            if($("#btnIgnore").hasClass("btn-line")){
+                type = 0;//取消信任/屏蔽
+            }else{
+                type = 1;
+            }
+            userId = '{$user.id}';
+            $.post("__URL__/ajax_trust", {userId:userId,type:type,check:'black'},function(d){
+                showAlert(d.msg);
+                if(type == 1){
+                    $("#btnIgnore").addClass("btn-line");
+                    $("#btnIgnore").html('{$lang.pingbi_ok}');
+                }else{
+                    $("#btnIgnore").removeClass("btn-line");
+                    $("#btnIgnore").html('{$lang.pingbi}');
+                }
+            },'json');
+        });
+
+        $("#btnTrust").click(function(){
+            var type = 1;
+            if($("#btnTrust").hasClass("btn-line")){
+                type = 0;//取消信任/屏蔽
+            }else{
+                type = 1;
+            }
+            userId = '{$user.id}';
+            $.post("__URL__/ajax_trust", {userId:userId,type:type,check:'trust'},function(d){
+                showAlert(d.msg);
+                if(type == 1){
+                    $("#btnTrust").addClass("btn-line");
+                    $("#btnTrust").html("{$lang.trust_ok}");
+                }else{
+                    $("#btnTrust").removeClass("btn-line");
+                    $("#btnTrust").html("{$lang.trust}");
+                }
+            },'json');
+        });
+
+//        切换买卖
+        $(".switch-tab").each(function(e){
+            $(this).click(function(){
+                $(".switch-tab").removeClass('current');
+                $(this).addClass('current');
+
+                if($(this).hasClass("line-buy")){
+                    $(".buy").show();
+                    $(".shop").hide();
+                }
+                if($(this).hasClass("line-sell")){
+                    $(".buy").hide();
+                    $(".shop").show();
+                }
+            })
+        })
+
+
+
+    })
+</script>
+
+<include file="Index/footer" />

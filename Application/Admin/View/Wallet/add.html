@@ -1,0 +1,24 @@
+<include file="Index/header" />
+<form style="width:90%;text-align: center" >
+    <table>
+        <tr>
+            <td align="right" height="40px"><label>地址：</label></td>
+            <td
+                    align="left"><textarea name="address" class="input-text radius"
+                                           style="height: 180px; width: 300px;"></textarea></td>
+        </tr>
+        <tr>
+            <td align="right" height="40px"><label>钱包类型：</label></td>
+            <td align="left">
+                <select name="wallet_type">
+                    <option value="0">--请选择--</option>
+                    <volist name="wallet_type" id="type">
+                        <option value="{$type.id}">{$type.name}</option>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+
+    </table>
+</form>
+<include file="Index/foot" />

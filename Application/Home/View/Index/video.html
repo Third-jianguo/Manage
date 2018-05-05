@@ -1,0 +1,60 @@
+<include file="top"/>
+
+<section class="yjbg_bg animsition">
+    <div class="container1">
+        <div class="row">
+            <div class="met-shownews-body">
+                <div class="row">
+                    <div class="met-shownews-header title1"><b>视频</b></div>
+                    <div class="desc1 lazyload clearfix">
+                        <div>
+                            <div>
+                                <p></p>
+
+                                <!--<p class="desc1main">-->
+                                <!--<img src="/Public/Home/images/icon13.png"><strong class="title1style">有市无场</strong><br> </p>-->
+                                <!--<div class="video">-->
+                                <!--<video src="/video/K线-阴线2(1).mp4" autoplay="autoplay" loop="loop" controls="controls" style="position: absolute;top: 0px;left: 8px;width: 97%;height:100%; ">-->
+                                <!--your browser does not support the video tag-->
+                                <!--</video>-->
+                                <!---->
+                                <!--</div>-->
+                                <!--<br>-->
+                                <!--<br>-->
+                                <!--<br>-->
+
+                                <volist name="video" id="v">
+                                    <p class="desc1main" >
+                                        <img src="/Public/Home/images/icon13.png"><strong class="title1style">{$v.title}</strong><br>
+                                    </p>
+                                    <div class="video">
+                                        <!--autoplay="autoplay" loop="loop"-->
+                                        <video src="{$v.url}" poster="{$v.img}" controls="controls" style="position: absolute;top: -30px;left: 8px;width: 97%;height:100%; ">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+
+                                </volist>
+                                <!--<p  class="desc1main" style=" padding-top:20px">    -->
+                                <!--<img src="/Public/Home/images/icon13.png"><strong class="title1style">零和游戏</strong><br>								<div class="video">-->
+                                <!--</p>-->
+                                <!--<video src="/video/K线-阴线2(1).mp4" autoplay="autoplay" loop="loop" controls="controls" style="position: absolute;top: 0px;left: 8px;width: 97%;height:100%; ">-->
+                                <!--your browser does not support the video tag-->
+                                <!---->
+                                <!--</video>-->
+
+                                <!--</div>-->
+                                <!--</p>-->
+
+                            </div>
+                            <div id="minfo_additional"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
