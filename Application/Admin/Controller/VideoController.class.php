@@ -71,7 +71,9 @@ class VideoController extends TemplateController
 
 // Settings
 //        $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        $targetDir = 'D:\phpStudy\PHPTutorial\WWW\money\video';
+//        $targetDir = 'D:\phpStudy\PHPTutorial\WWW\money\video';
+        $targetDir = '/home/wwwroot/m/video';
+        // set php.ini max post file size
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 50 * 3600; // Temp file age in seconds
 
@@ -118,7 +120,6 @@ class VideoController extends TemplateController
             }
             closedir($dir);
         }
-
 // Open temp file
         if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
             die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
