@@ -71,13 +71,14 @@ class VideoController extends TemplateController
 
 // Settings
 //        $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        $targetDir = '/home/wwwroot/m/video';
+        $targetDir = 'D:\phpStudy\PHPTutorial\WWW\money\video';
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 50 * 3600; // Temp file age in seconds
 
 // Create target dir
         if (!file_exists($targetDir)) {
-            @mkdir($targetDir);
+//            @mkdir($targetDir);
+            die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "目录不存在,请联系开发者."}, "id" : "id"}');
         }
 
 // Get a file name

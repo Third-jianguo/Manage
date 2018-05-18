@@ -364,24 +364,7 @@ function get_google_code(){
     return $ga->createSecret();
 }
 
-function get_google_code_url($name,$secret){
-    vendor("google.GoogleAuthenticator","", ".php");
-    $ga = new \PHPGangsta_GoogleAuthenticator();
 
-//创建一个新的"安全密匙SecretKey"
-//把本次的"安全密匙SecretKey" 入库,和账户关系绑定,客户端也是绑定这同一个"安全密匙SecretKey"
-//    $secret = $ga->createSecret();
-//    echo "安全密匙SecretKey: ".$secret."<br/>";
-
-    $qrCodeUrl = $ga->getQRCodeGoogleUrl($name, $secret); //第一个参数是"标识",第二个参数为"安全密匙SecretKey" 生成二维码信息
-//    echo "Google Charts URL for the QR-Code: ".$qrCodeUrl."\n\n"; //Google Charts接口 生成的二维码图片,方便手机端扫描绑定安全密匙SecretKey
-//    saveImage('http://www.jb51.net/images/logo.jpg');
-//    $img = file_get_contents($qrCodeUrl);
-    $img = file_get_contents($qrCodeUrl);
-    file_put_contents("/home/wwwroot/btc/Uploads/". $_SESSION['user']['name'] ."code.png",$img);
-
-    return "/Uploads/".$_SESSION['user']['name'] ."code.png";
-}
 
 function googleCheck($secret,$google_code){
     vendor("google.GoogleAuthenticator","", ".php");
